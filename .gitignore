@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+
+# Mac
+.DS_Store
+
+# Third-party material captured for verification. NOT redistributed.
+# sources/ holds the full text of another author's master's thesis
+# (131 pp, licensed CC BY-NC-ND) and saved captures of a commercial
+# vendor's website. Redistributing them adds nothing to reproducibility,
+# so this repository publishes the provenance record instead:
+# provenance/sources-provenance.md gives the retrieval URL, date, method
+# and integrity hash for every file, and provenance/CHECKSUMS.txt lets a
+# reader confirm that a re-retrieved copy is byte-identical to ours.
+sources/
+
+# Internal development documents (series convention: not published)
+PLAN.md
+PLAN-DEVIATIONS.md
+LITERATURE.md
+RESEARCH-*.md
+REVIEW-REPORT*.md
+GPT-REVIEW-*.md
