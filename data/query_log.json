@@ -1,0 +1,34 @@
+{
+  "retrieved_on": "2026-08-18",
+  "window": {
+    "from": "2015-01-01",
+    "to": "2026-12-31"
+  },
+  "openalex": {
+    "filter": "title_and_abstract.search:MBTI OR \"Myers-Briggs\" OR \"Myers Briggs\",fulltext.search:16personalities OR \"16 Personalities\" OR \"16personalities.com\" OR \"NERIS Type Explorer\",from_publication_date:2015-01-01",
+    "records": 108
+  },
+  "europepmc": {
+    "query": "(TITLE_ABS:\"MBTI\" OR TITLE_ABS:\"Myers-Briggs\" OR TITLE_ABS:\"Myers Briggs\") AND (\"16personalities\" OR \"16 Personalities\" OR \"16personalities.com\" OR \"NERIS Type Explorer\" OR \"Type Explorer\") AND (FIRST_PDATE:[2015-01-01 TO 2026-12-31])",
+    "records": 10
+  },
+  "rows": 118,
+  "unique_works": 108,
+  "venue_class_counts": {
+    "journal_article": 67,
+    "preprint": 15,
+    "conference": 13,
+    "repository": 12,
+    "thesis": 6,
+    "book_chapter": 2,
+    "non_scholarly": 1,
+    "unclassified": 1,
+    "conference_abstract": 1
+  },
+  "validation_found": {
+    "10.1038/s41598-025-91361-w": "Bai 2025 Scientific Reports",
+    "10.4992/pacjpa.89.0_423": "Koshiro 2025 Japanese Psychological Association",
+    "10.3389/fncom.2026.1800284": "Tshimula 2026 Frontiers Comput Neurosci"
+  },
+  "validation_missing": {}
+}
