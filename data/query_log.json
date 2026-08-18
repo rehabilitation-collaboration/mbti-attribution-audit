@@ -12,9 +12,30 @@
     "query": "(TITLE_ABS:\"MBTI\" OR TITLE_ABS:\"Myers-Briggs\" OR TITLE_ABS:\"Myers Briggs\") AND (\"16personalities\" OR \"16 Personalities\" OR \"16personalities.com\" OR \"NERIS Type Explorer\" OR \"Type Explorer\") AND (FIRST_PDATE:[2015-01-01 TO 2026-12-31])",
     "records": 10
   },
+  "denominators": {
+    "openalex_from_2015": 3104,
+    "europepmc_from_2015": 166
+  },
+  "window_sensitivity": {
+    "intersection_from_2015": 108,
+    "intersection_from_2011": 110,
+    "denominator_from_2011": 3890,
+    "intersection_gained_by_2011": 2
+  },
   "rows": 118,
   "unique_works": 108,
-  "venue_class_counts": {
+  "venue_class_counts_unique_works": {
+    "journal_article": 58,
+    "preprint": 14,
+    "conference": 13,
+    "repository": 12,
+    "thesis": 6,
+    "book_chapter": 2,
+    "non_scholarly": 1,
+    "unclassified": 1,
+    "conference_abstract": 1
+  },
+  "venue_class_counts_all_rows": {
     "journal_article": 67,
     "preprint": 15,
     "conference": 13,

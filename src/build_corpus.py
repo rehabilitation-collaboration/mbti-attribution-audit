@@ -6,8 +6,11 @@ Two sources are queried with a single shared definition:
   intersection: denominator AND full text mentions any 16Personalities word form
   window      : published 2015-01-01 onwards
 
-The window is fixed at 2015 because widening it to 2011 adds no intersecting
-work (measured 2026-08-18: 39 in both), while the denominator grows by a fifth.
+The window is fixed at 2015: widening it to 2011 adds two intersecting works
+(108 -> 110) while the denominator grows by a quarter (3,104 -> 3,890), which is
+inside the pre-set rule of keeping 2015 when the gain is two or three works or
+fewer. Both figures are re-measured on every run and land in query_log.json, so
+the decision can be re-checked rather than taken on trust.
 
 Outputs
     data/corpus.csv     one row per retrieved record, both sources, with a
@@ -117,6 +120,24 @@ def fetch_europepmc(query: str) -> list[dict]:
         cursor = next_cursor
 
 
+def count_openalex(filter_expr: str) -> int:
+    response = requests.get(
+        OPENALEX, params={"filter": filter_expr, "per_page": 1, "mailto": MAILTO}, timeout=60
+    )
+    response.raise_for_status()
+    return response.json()["meta"]["count"]
+
+
+def count_europepmc(query: str) -> int:
+    response = requests.get(
+        EUROPEPMC,
+        params={"query": query, "format": "json", "pageSize": 1, "resultType": "idlist"},
+        timeout=60,
+    )
+    response.raise_for_status()
+    return response.json()["hitCount"]
+
+
 def classify_openalex(work: dict) -> str:
     """Assign a venue class used later to decide what counts as peer reviewed."""
     location = work.get("primary_location") or {}
@@ -219,14 +240,41 @@ def main() -> None:
     found = {d: n for d, n in VALIDATION_DOIS.items() if d in set(frame["doi"])}
     missing = {d: n for d, n in VALIDATION_DOIS.items() if d not in found}
 
+    # Denominators are reported in the manuscript, so they are measured here
+    # rather than typed in from a shell session.
+    denominators = {
+        "openalex_from_2015": count_openalex(f"{OA_DENOMINATOR},{OA_WINDOW}"),
+        "europepmc_from_2015": count_europepmc(f"{EPMC_DENOMINATOR} AND {EPMC_WINDOW}"),
+    }
+
+    # The 2015 window is a decision, so the numbers that decided it are measured
+    # under the production definition. An earlier note recorded 2,498 -> 3,110
+    # with no change in the intersection; those came from the pilot's
+    # single-token query and do not reproduce here.
+    from_2011 = "from_publication_date:2011-01-01"
+    window_sensitivity = {
+        "intersection_from_2015": count_openalex(f"{OA_DENOMINATOR},{OA_VARIANTS},{OA_WINDOW}"),
+        "intersection_from_2011": count_openalex(f"{OA_DENOMINATOR},{OA_VARIANTS},{from_2011}"),
+        "denominator_from_2011": count_openalex(f"{OA_DENOMINATOR},{from_2011}"),
+    }
+    window_sensitivity["intersection_gained_by_2011"] = (
+        window_sensitivity["intersection_from_2011"] - window_sensitivity["intersection_from_2015"]
+    )
+
+    unique = frame.drop_duplicates("dup_group")
     log = {
         "retrieved_on": date.today().isoformat(),
         "window": {"from": FROM_DATE, "to": TO_DATE},
         "openalex": {"filter": oa_filter, "records": len(oa_works)},
         "europepmc": {"query": epmc_query, "records": len(epmc_records)},
+        "denominators": denominators,
+        "window_sensitivity": window_sensitivity,
         "rows": len(frame),
         "unique_works": int(frame["dup_group"].nunique()),
-        "venue_class_counts": frame["venue_class"].value_counts().to_dict(),
+        # Two counts because they differ: a work retrieved from both sources
+        # occupies two rows. Reported figures use the unique-work count.
+        "venue_class_counts_unique_works": unique["venue_class"].value_counts().to_dict(),
+        "venue_class_counts_all_rows": frame["venue_class"].value_counts().to_dict(),
         "validation_found": found,
         "validation_missing": missing,
     }
