@@ -24,7 +24,9 @@ find, unasked: **what was actually administered.**
   written to `data/query_log.json` on each run.
 - **Frame.** Open-access full text only. This is a declared sampling frame, not
   a workaround: figures are stated as lower bounds and the direction of the bias
-  is reported.
+  is reported. Retrieval reached 61 of the 99 works and 42 of the 58 journal
+  articles; most of what is missing is a publisher refusing programmatic access,
+  and that refusal is recorded rather than worked around.
 - **Classification (planned).** Works are first coded by where their type data
   came from, because a good deal of the corpus administered nothing to anybody:
   classifiers trained on scraped labels, language models answering the
@@ -45,10 +47,12 @@ find, unasked: **what was actually administered.**
 
 ```
 src/build_corpus.py          corpus construction; re-measures every reported count
+src/fetch_fulltext.py        open-access retrieval, one document per work
 data/corpus.csv              retrieved records, both sources, nothing dropped
 data/query_log.json          queries, counts, window and word-form sensitivity, validation
 data/coding_protocol.md      how each work is coded, and what is claimed for each result
-data/boundary_notes.md       records the classifier could not place, inspected by hand
+data/fulltext_log.csv        what was retrieved, from where, and why a failure failed
+data/boundary_notes.md       records inspected by hand: duplicates, false positives, edge venues
 provenance/                  where each primary source came from, and its hash
 ```
 

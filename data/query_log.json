@@ -30,12 +30,12 @@
     "europepmc_with_type_explorer": 10
   },
   "rows": 118,
-  "unique_works": 108,
+  "unique_works": 99,
   "venue_class_counts_unique_works": {
     "journal_article": 58,
-    "preprint": 14,
     "conference": 13,
-    "repository": 12,
+    "repository": 10,
+    "preprint": 7,
     "thesis": 6,
     "book_chapter": 2,
     "non_scholarly": 1,

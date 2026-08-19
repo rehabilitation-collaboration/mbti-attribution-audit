@@ -24,6 +24,7 @@ Outputs
 
 from __future__ import annotations
 
+import html
 import json
 import re
 from datetime import date
@@ -80,10 +81,21 @@ def norm_doi(value: str | None) -> str:
     return re.sub(r"^https?://(dx\.)?doi\.org/", "", value.strip().lower())
 
 
+def clean_title(value: str | None) -> str:
+    """The title as the work states it, not as the API encodes it."""
+    return html.unescape(value).strip() if value else ""
+
+
 def norm_title(value: str | None) -> str:
+    """A matching key: entities resolved, version markers dropped."""
     if not value:
         return ""
-    return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
+    text = html.unescape(value).lower()
+    text = re.sub(r"\((pre)?print\)|\(version \d+\)|\bv\d+\b", " ", text)
+    # Not [^a-z0-9]: that empties a Cyrillic, Japanese or Greek title, and an
+    # empty key matches nothing, so those works could never be recognised as
+    # duplicates of each other. A quarter of this corpus is not in English.
+    return re.sub(r"[\W_]+", " ", text, flags=re.UNICODE).strip()
 
 
 def fetch_openalex(filter_expr: str) -> list[dict]:
@@ -180,7 +192,7 @@ def row_from_openalex(work: dict) -> dict:
         "source_db": "openalex",
         "source_id": work.get("id", ""),
         "doi": norm_doi(work.get("doi")),
-        "title": work.get("display_name") or "",
+        "title": clean_title(work.get("display_name")),
         "year": work.get("publication_year"),
         "pub_date": work.get("publication_date") or "",
         "venue": source.get("display_name") or "",
@@ -202,7 +214,7 @@ def row_from_europepmc(record: dict) -> dict:
         "source_db": "europepmc",
         "source_id": f"{record.get('source', '')}:{record.get('id', '')}",
         "doi": norm_doi(record.get("doi")),
-        "title": record.get("title") or "",
+        "title": clean_title(record.get("title")),
         "year": record.get("pubYear"),
         "pub_date": record.get("firstPublicationDate") or "",
         "venue": journal,
@@ -214,17 +226,77 @@ def row_from_europepmc(record: dict) -> dict:
 
 
 def assign_duplicate_groups(frame: pd.DataFrame) -> pd.DataFrame:
-    """Group records that are the same work: same DOI, else same normalised title.
+    """Group records that are the same work: same DOI *or* same normalised title.
 
-    Kept as a group id rather than a deletion so the manuscript can report how
-    many records collapsed and a reader can audit each collapse.
+    Matching on the DOI alone is not enough, and the corpus shows why. Zenodo and
+    OSF mint a DOI per version, and a preprint carries a different DOI from the
+    article it becomes, so nineteen records here belong to nine works: three
+    Zenodo version pairs, one OSF work in three versions, three preprint/published
+    pairs, and two records of one work deposited twice. Keying on the DOI counted
+    them as nineteen distinct works.
+
+    Records are joined transitively, so a work reachable through either key lands
+    in one group. Grouping rather than deleting keeps every retrieved record in
+    the file and lets a reader audit each collapse; boundary_notes.md lists them.
     """
-    keys, seen = [], {}
-    for _, row in frame.iterrows():
-        key = row["doi"] or f"title:{norm_title(row['title'])}"
-        keys.append(seen.setdefault(key, len(seen)))
+    parent: dict[str, str] = {}
+
+    def find(key: str) -> str:
+        parent.setdefault(key, key)
+        while parent[key] != key:
+            parent[key] = parent[parent[key]]
+            key = parent[key]
+        return key
+
+    def union(left: str, right: str) -> None:
+        left_root, right_root = find(left), find(right)
+        if left_root != right_root:
+            parent[left_root] = right_root
+
+    record_keys = []
+    for position, (_, row) in enumerate(frame.iterrows()):
+        title_key = norm_title(row["title"])
+        # A record with no usable title joins nothing but itself, so that an
+        # empty title cannot collapse the corpus into one group.
+        title_key = f"title:{title_key}" if title_key else f"row:{position}"
+        doi_key = f"doi:{row['doi']}" if row["doi"] else title_key
+        union(doi_key, title_key)
+        record_keys.append(doi_key)
+
+    roots: dict[str, int] = {}
     frame = frame.copy()
-    frame["dup_group"] = keys
+    frame["dup_group"] = [
+        roots.setdefault(find(key), len(roots)) for key in record_keys
+    ]
+    return frame
+
+
+# When one work reaches us as both a preprint and an article, the work is the
+# article. Ordered most to least authoritative; a group takes its first match.
+VENUE_PRIORITY = (
+    "journal_article",
+    "conference",
+    "book_chapter",
+    "conference_abstract",
+    "thesis",
+    "preprint",
+    "repository",
+    "unclassified",
+    "non_scholarly",
+)
+
+
+def assign_work_venue_class(frame: pd.DataFrame) -> pd.DataFrame:
+    """One venue class per work, so a preprint copy cannot inflate a count."""
+    rank = {name: index for index, name in enumerate(VENUE_PRIORITY)}
+    best = (
+        frame.assign(_rank=frame["venue_class"].map(lambda c: rank.get(c, len(rank))))
+        .sort_values("_rank")
+        .groupby("dup_group")["venue_class"]
+        .first()
+    )
+    frame = frame.copy()
+    frame["work_venue_class"] = frame["dup_group"].map(best)
     return frame
 
 
@@ -241,6 +313,7 @@ def main() -> None:
 
     rows = [row_from_openalex(w) for w in oa_works] + [row_from_europepmc(r) for r in epmc_records]
     frame = assign_duplicate_groups(pd.DataFrame(rows).sort_values(["source_db", "year", "title"]))
+    frame = assign_work_venue_class(frame)
     frame.to_csv(data / "corpus.csv", index=False)
 
     found = {d: n for d, n in VALIDATION_DOIS.items() if d in set(frame["doi"])}
@@ -296,7 +369,9 @@ def main() -> None:
         "unique_works": int(frame["dup_group"].nunique()),
         # Two counts because they differ: a work retrieved from both sources
         # occupies two rows. Reported figures use the unique-work count.
-        "venue_class_counts_unique_works": unique["venue_class"].value_counts().to_dict(),
+        # One class per work (VENUE_PRIORITY), so an article that also reached
+        # us as a preprint is counted once, as an article.
+        "venue_class_counts_unique_works": unique["work_venue_class"].value_counts().to_dict(),
         "venue_class_counts_all_rows": frame["venue_class"].value_counts().to_dict(),
         "validation_found": found,
         "validation_missing": missing,

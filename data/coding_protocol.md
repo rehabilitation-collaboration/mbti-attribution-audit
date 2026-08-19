@@ -24,8 +24,12 @@ pre-specified; the word used throughout is **planned**.
 
 ## 1. Unit of coding
 
-One row per distinct work — `dup_group` in `data/corpus.csv`, 108 works. A work
-retrieved from both sources is one unit, not two.
+One row per distinct work — `dup_group` in `data/corpus.csv`, **99 works** from
+118 retrieved records. A work is one unit however many times it was retrieved:
+from both sources, as several deposited versions, or as a preprint and then as
+the article it became. (The count read 108 until 2026-08-19, when grouping keyed
+on the DOI and so split eight works across nineteen records; `boundary_notes.md`
+lists them.)
 
 **Main analysis: the 58 works with `venue_class == "journal_article"`.** The
 audit's claim is about the peer-reviewed literature, and that column is the only
@@ -35,10 +39,26 @@ not moved after results are seen; §11 lists the arms that vary it.
 
 **Input is the full text**, not the abstract. A work whose full text cannot be
 obtained is coded `unobtainable` and leaves the denominator; the count and the
-reason are reported. This is expected to bite: Europe PMC's full-text *search
-index* is broader than its open-access subset, so a work can match the query on
-its full text and still not release it (measured 2026-08-19: all ten Europe PMC
-records returned HTTP 404 from the full-text endpoint).
+reason are reported. This bites: retrieval reached **61 of 99 works, and 42 of
+the 58 journal articles** (`data/fulltext_log.csv`, 2026-08-19). Ten of the
+sixteen missing journal articles are publishers refusing programmatic access
+(HTTP 403 or 404). Those refusals are recorded, not worked around, which is what
+makes the open-access frame a declared one.
+
+**Two kinds of absence are counted separately**, because they mean opposite
+things:
+
+- `unobtainable` — the text could not be retrieved. The work may or may not
+  report its instrument; nothing is known.
+- `no_word_form` — text was retrieved, is long enough to be the article, and
+  does not contain any 16Personalities word form. The work does not meet the
+  corpus's own inclusion rule, so this is a **false positive of the query**, not
+  a paper that hid its instrument. One of the three cases is confirmed by
+  reading the full PDF including its reference list; `boundary_notes.md` has it.
+
+Neither is coded. Both are reported, and the `no_word_form` count is reported as
+what it is: an upper bound of 4.7% (3 of the 64 checkable works) on how often
+the search index matched a text that does not contain the term.
 
 ## 2. Step 1 — where the type data came from
 
@@ -174,7 +194,7 @@ what it administered. A work that only describes designing one is E4.
 
 ## 5. Step 3 — what the 16Personalities citation is doing
 
-Coded on **all 108 works**, including E2, E3 and E4. Flags, not a single choice:
+Coded on **all 99 works**, including E2, E3 and E4. Flags, not a single choice:
 one work can do several, and several do.
 
 | Flag | The vendor's site or test is cited as… |
@@ -196,7 +216,7 @@ with its section.
 
 ## 6. Step 4 — conflation statements
 
-Coded on **all 108 works**. A conflation statement treats the vendor's test and
+Coded on **all 99 works**. A conflation statement treats the vendor's test and
 the MBTI as one instrument, or gives one the other's provenance or standing.
 
 | Flag | Meaning |
