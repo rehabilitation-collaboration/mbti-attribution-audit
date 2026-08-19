@@ -18,6 +18,13 @@ venv/
 # reader confirm that a re-retrieved copy is byte-identical to ours.
 sources/
 
+# Retrieved article full text, one file per work. Same decision as sources/:
+# these are third-party articles, and republishing an author's text is not what
+# makes this study reproducible. data/fulltext_log.csv publishes the part that
+# does — which URL served each work, on what date, how much text it yielded,
+# and why a retrieval failed — so a reader can re-retrieve the same documents.
+fulltext/
+
 # Internal development documents (series convention: not published)
 PLAN.md
 PLAN-DEVIATIONS.md
