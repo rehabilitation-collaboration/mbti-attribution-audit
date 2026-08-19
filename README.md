@@ -59,14 +59,18 @@ provenance/                  where each primary source came from, and its hash
 
 ### What is frozen, and what is not
 
-`corpus.csv` fixes the *set of works*. Re-running the build a day after the
-freeze left all 108 works, every DOI, every duplicate grouping and every venue
-class untouched. What moved were three columns describing where a copy could be
-read: one `venue`, four `oa_url` values, and one `is_oa` flag — a thesis that
-had stopped being reachable overnight. Those columns are inputs to full-text
-retrieval, not to any reported count, and they are a snapshot of the retrieval
-date rather than a fixed value. The repository history is the record of each
-move.
+`corpus.csv` fixes the *set of works*, not the metadata saying where to read
+them. Re-running the build the day after the freeze left every record, DOI and
+venue class untouched, and moved three columns that only describe where a copy
+can be found: one `venue`, four `oa_url` values, and one `is_oa` flag — a thesis
+that had stopped being reachable overnight. Those columns feed retrieval, not
+any reported count, and they are a snapshot of their retrieval date.
+
+The count of distinct works is a different matter, and it was corrected: it read
+108 until the grouping rule was found to split a work across its own versions,
+and it is 99. That is a change to a rule rather than drift in the data — the 118
+retrieved records never changed — and it is recorded in `data/boundary_notes.md`
+and held by a test. The repository history is the record of both kinds of change.
 
 Primary sources themselves are not redistributed: they include a third-party
 thesis in full and captures of a commercial website. `provenance/` records the
