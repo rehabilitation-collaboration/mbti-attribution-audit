@@ -24,9 +24,20 @@ and refuses to rate it: the corpus is built from 16Personalities word forms, so
 works conflating other look-alikes enter it only by accident and no proportion
 over them would have a denominator.
 
+**Rulings live in `data/adjudications.csv`, not in this script's output.** This
+script rebuilds `classification.csv` from the codings every time it runs, so a
+ruling typed into that file would be erased by the next run. The author writes
+one row per ruling — key, item, ruling, reasoning — and the ruling is applied
+here, which keeps it through every rebuild and keeps the reasoning next to the
+code it settles. The file may not exist yet; then nothing is adjudicated.
+
 Outputs
     data/classification.csv  one row per coded work, published
     stdout                   the disagreement list, for the adjudication pass
+
+Inputs beyond the codings
+    data/adjudications.csv   the author's rulings (optional), columns:
+                             key, item, ruling, reasoning
 """
 
 from __future__ import annotations
@@ -40,6 +51,7 @@ ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "coding_raw"
 LOG = ROOT / "data" / "fulltext_log.csv"
 OUT = ROOT / "data" / "classification.csv"
+RULINGS = ROOT / "data" / "adjudications.csv"
 
 CODERS = ("c1", "c2")
 E_CODES = {"E1", "E2", "E3", "E4"}
@@ -213,6 +225,79 @@ def agree(a, b):
     return a if a == b else None
 
 
+BOOLEAN_ITEMS = set(R_FLAGS) | set(C_FLAGS) | {
+    f"narrow_{f}" for f in NARROW_FLAGS
+} | {"states_distinction", "text_is_abstract"}
+
+
+def parse_ruling(item: str, ruling: str):
+    """Read a ruling as the type its column holds."""
+    text = str(ruling).strip()
+    if item in BOOLEAN_ITEMS:
+        lowered = text.lower()
+        if lowered in {"true", "yes", "1"}:
+            return True
+        if lowered in {"false", "no", "0"}:
+            return False
+        raise SchemaError(f"ruling on {item} must be true or false, got {ruling!r}")
+    return text
+
+
+def load_rulings() -> dict[str, dict[str, tuple[object, str]]]:
+    """The author's rulings, keyed by work and then by contested item.
+
+    Absent file means nothing has been adjudicated yet, which is a state this
+    study passes through rather than an error.
+    """
+    if not RULINGS.exists():
+        return {}
+    frame = pd.read_csv(RULINGS).fillna("")
+    required = {"key", "item", "ruling", "reasoning"}
+    if not required.issubset(frame.columns):
+        raise SchemaError(f"{RULINGS.name} needs columns {sorted(required)}")
+
+    rulings: dict[str, dict[str, tuple[object, str]]] = {}
+    for _, row in frame.iterrows():
+        key, item = str(row["key"]).strip(), str(row["item"]).strip()
+        if not key or not item:
+            continue
+        rulings.setdefault(key, {})[item] = (
+            parse_ruling(item, row["ruling"]),
+            str(row["reasoning"]).strip(),
+        )
+    return rulings
+
+
+def apply_rulings(row: dict, rulings: dict[str, tuple[object, str]]) -> dict:
+    """Fill the final columns the author has ruled on, and say who ruled.
+
+    A ruling on an item the coders agreed about is applied too and reported:
+    §9 lets the author overrule a shared reading, and silently ignoring such a
+    row would hide a decision rather than record it.
+    """
+    if not rulings:
+        return row
+
+    contested = [c for c in str(row["contested"]).split(",") if c]
+    notes = []
+    for item, (value, reasoning) in sorted(rulings.items()):
+        column = f"{item}_final"
+        if column not in row:
+            raise SchemaError(f"{row['key']}: no column for a ruling on {item!r}")
+        overruled = item not in contested and row[column] != "" and row[column] != value
+        row[column] = value
+        if item in contested:
+            contested.remove(item)
+        notes.append(f"{item} -> {value}" + (" (overruled agreement)" if overruled else "") + f": {reasoning}")
+
+    row["contested"] = ",".join(contested)
+    row["adjudicated"] = True
+    row["note"] = " || ".join(notes)
+    # Uncertainty flagged by a coder is discharged by the author having looked.
+    row["needs_adjudication"] = bool(contested)
+    return row
+
+
 def build_row(key: str, meta: pd.Series, gate: dict[str, dict], flag: dict[str, dict]) -> dict:
     g1, g2 = gate["c1"], gate["c2"]
     f1, f2 = flag["c1"], flag["c2"]
@@ -341,6 +426,7 @@ def build_row(key: str, meta: pd.Series, gate: dict[str, dict], flag: dict[str, 
 def main() -> None:
     log = pd.read_csv(LOG).set_index("key")
     keys = log.index[log["status"] == "ok"].tolist()
+    rulings = load_rulings()
 
     rows, missing = [], []
     for key in keys:
@@ -350,7 +436,11 @@ def main() -> None:
         except FileNotFoundError as exc:
             missing.append(str(exc))
             continue
-        rows.append(build_row(key, log.loc[key], gate, flag))
+        rows.append(apply_rulings(build_row(key, log.loc[key], gate, flag), rulings.get(key, {})))
+
+    unknown = set(rulings) - set(keys)
+    if unknown:
+        raise SchemaError(f"{RULINGS.name} rules on works not in the corpus: {sorted(unknown)}")
 
     if missing:
         print(f"not yet coded ({len(missing)}):")
@@ -360,6 +450,10 @@ def main() -> None:
     frame = pd.DataFrame(rows)
     frame.to_csv(OUT, index=False)
     print(f"\nwrote {OUT.relative_to(ROOT)} — {len(frame)} of {len(keys)} works")
+    if rulings:
+        print(f"applied rulings from {RULINGS.name}: {len(rulings)} works")
+    else:
+        print(f"no {RULINGS.name} yet — nothing adjudicated")
 
     if frame.empty:
         return

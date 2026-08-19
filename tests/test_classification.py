@@ -304,3 +304,66 @@ def test_score_reports_the_undefined_case_rather_than_a_number():
 def test_empty_input_raises_rather_than_returning_a_figure():
     with pytest.raises(ValueError, match="no works"):
         cohen_kappa([], [])
+
+
+# --- rulings survive a rebuild --------------------------------------------
+
+
+def test_a_ruling_fills_the_final_column_and_clears_the_dispute():
+    """The failure this exists to prevent: a ruling erased by the next rebuild."""
+    from build_classification import apply_rulings
+
+    g = {"c1": gate("c1"), "c2": gate("c2", e_code="E2", instrument=None, instrument_quote=None)}
+    row = row_for(gate_docs=g)
+    assert row["needs_adjudication"] is True
+
+    ruled = apply_rulings(row, {"e": ("E1", "Methods names the respondents")})
+    assert ruled["e_final"] == "E1"
+    assert ruled["adjudicated"] is True
+    assert ruled["needs_adjudication"] is False
+    assert "Methods names the respondents" in ruled["note"]
+
+
+def test_a_partial_ruling_leaves_the_rest_contested():
+    from build_classification import apply_rulings
+
+    c2 = copy.deepcopy(flags("c2"))
+    c2["roles"]["r7"] = True
+    c2["role_quotes"]["r7"] = "the site is the corpus — Method"
+    c2["roles"]["r2"] = True
+    c2["role_quotes"]["r2"] = "cited for the dichotomies — Introduction"
+    row = row_for(flag_docs={"c1": flags("c1"), "c2": c2})
+    assert set(row["contested"].split(",")) == {"r2", "r7"}
+
+    ruled = apply_rulings(row, {"r7": (True, "the vendor is the subject")})
+    assert ruled["r7_final"] is True
+    assert ruled["contested"] == "r2"
+    assert ruled["needs_adjudication"] is True
+
+
+def test_overruling_an_agreed_code_is_recorded_as_such():
+    """§9 lets the author overrule a shared reading; silence would hide it."""
+    from build_classification import apply_rulings
+
+    row = row_for()
+    assert row["r1_final"] is True
+    ruled = apply_rulings(row, {"r1": (False, "the quote is from a neighbouring abstract")})
+    assert ruled["r1_final"] is False
+    assert "overruled agreement" in ruled["note"]
+
+
+def test_a_ruling_on_an_unknown_item_is_rejected():
+    from build_classification import apply_rulings
+
+    with pytest.raises(SchemaError, match="no column for a ruling"):
+        apply_rulings(row_for(), {"r9": (True, "typo in the item name")})
+
+
+def test_boolean_rulings_are_parsed_and_bad_ones_rejected():
+    from build_classification import parse_ruling
+
+    assert parse_ruling("r4", "true") is True
+    assert parse_ruling("c2", "FALSE") is False
+    assert parse_ruling("e", "E1") == "E1"
+    with pytest.raises(SchemaError, match="must be true or false"):
+        parse_ruling("r4", "maybe")
