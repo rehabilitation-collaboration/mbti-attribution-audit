@@ -220,7 +220,8 @@ what it administered. A work that only describes designing one is E4.
 
 ## 5. Step 3 — what the 16Personalities citation is doing
 
-Coded on **all 99 works**, including E2, E3 and E4. Flags, not a single choice:
+Coded on **every work whose full text was retrieved — 61 of the 99** (§1) —
+including E2, E3 and E4. Flags, not a single choice:
 one work can do several, and several do.
 
 | Flag | The vendor's site or test is cited as… |
@@ -242,7 +243,8 @@ with its section.
 
 ## 6. Step 4 — conflation statements
 
-Coded on **all 99 works**. A conflation statement treats the vendor's test and
+Coded on **every work whose full text was retrieved — 61 of the 99** (§1).
+A conflation statement treats the vendor's test and
 the MBTI as one instrument, or gives one the other's provenance or standing.
 
 | Flag | Meaning |
@@ -391,5 +393,14 @@ All are reported whether or not they change the conclusion.
 
 ## 12. Changes after coding began
 
-None yet. Entries take the form: date, what changed, why, and whether any coding
-output had been seen at the time.
+Entries take the form: date, what changed, why, and whether any coding output had
+been seen at the time.
+
+**2026-08-19 — §5 and §6, denominator wording. No coding output existed; coding
+had not started.** Both sections said the R and C flags are coded on "all 99
+works", which contradicts §1: a work whose full text cannot be obtained is coded
+`unobtainable` and is not coded at all. The sections now read "every work whose
+full text was retrieved — 61 of the 99". This corrects an inconsistency between
+sections rather than changing a rule — the flags were never codable on a text
+nobody could read — and it is recorded here because the wording decides the
+denominator of M2 (§10), which the manuscript reports.

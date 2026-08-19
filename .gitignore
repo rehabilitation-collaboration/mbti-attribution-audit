@@ -25,6 +25,12 @@ sources/
 # and why a retrieval failed — so a reader can re-retrieve the same documents.
 fulltext/
 
+# Per-coder raw output, one JSON per work per coder. Intermediate: everything a
+# reader needs to recompute kappa or check a code against the text is published
+# in data/classification.csv, which carries both coders' codes and the located
+# quotes. These files additionally hold longer stretches of third-party text.
+coding_raw/
+
 # Internal development documents (series convention: not published)
 PLAN.md
 PLAN-DEVIATIONS.md
