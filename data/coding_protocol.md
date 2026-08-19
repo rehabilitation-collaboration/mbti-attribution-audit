@@ -1,0 +1,328 @@
+# Coding Protocol — What Papers Administer When They Say "MBTI"
+
+Written 2026-08-19, before any work in `data/corpus.csv` was classified and
+before any count was produced. It fixes three things: what each work is coded
+as, how disagreements are settled, and **what the manuscript claims for each
+result pattern**. The third is the reason the protocol comes first. A study
+whose headline is a proportion can always be made more interesting after the
+proportion is known, and the only defence against that is to write down the
+mapping from result to claim while the result is still unknown.
+
+Sections 2-6 define the codes. Section 10 fixes the reporting. Section 11 fixes
+the sensitivity analyses, so that running one later cannot be a way of looking
+for a better number.
+
+## 0. Change control
+
+Changes made after coding begins are appended to §12 with the date, the reason,
+and whether any coding had already been seen. A change made after counts are
+known is permitted only if it corrects an error that can be stated
+independently of the count it changes, and it is reported in the manuscript.
+
+The study is not registered anywhere, so nothing here is described as
+pre-specified; the word used throughout is **planned**.
+
+## 1. Unit of coding
+
+One row per distinct work — `dup_group` in `data/corpus.csv`, 108 works. A work
+retrieved from both sources is one unit, not two.
+
+**Main analysis: the 58 works with `venue_class == "journal_article"`.** The
+audit's claim is about the peer-reviewed literature, and that column is the only
+venue evidence the metadata supports. Every other class is coded too, and
+reported, but is not in the main denominator. The boundary is fixed here and is
+not moved after results are seen; §11 lists the arms that vary it.
+
+**Input is the full text**, not the abstract. A work whose full text cannot be
+obtained is coded `unobtainable` and leaves the denominator; the count and the
+reason are reported. This is expected to bite: Europe PMC's full-text *search
+index* is broader than its open-access subset, so a work can match the query on
+its full text and still not release it (measured 2026-08-19: all ten Europe PMC
+records returned HTTP 404 from the full-text endpoint).
+
+## 2. Step 1 — where the type data came from
+
+A work is in the corpus because its full text mentions a 16Personalities word
+form while its title or abstract mentions the MBTI. That is a string match. It
+says nothing yet about whether the work measured anybody, and the corpus
+contains a great deal that did not: text classifiers trained on scraped labels,
+language models answering questionnaires, translation studies, software
+designs. Coding those on the same three-way scheme as an administered survey
+would put a number on a question they were never asked.
+
+So the instrument codes in §3 are reached through a gate.
+
+| Code | Meaning |
+|---|---|
+| **E1** primary administration | Respondents completed a personality instrument for this study. |
+| **E2** secondary type data | Type labels came from an existing dataset, scraped profiles, or another study. The authors administered nothing. |
+| **E3** non-human respondents | An instrument was administered, but to a language model or other artificial agent. |
+| **E4** no type data | The work reports no type data: reviews, position pieces, translation and validation studies of the instrument itself, instrument or software design papers. |
+
+**Evidence** is the work's own account of how it obtained its data — Methods,
+Participants, Data Collection, or the equivalent. Where a work says nothing
+about provenance but reports type frequencies for named participants, it is E1
+with the instrument coded `(c)` (§3): failing to say what was administered is
+the finding, not a reason to exclude.
+
+**Mixed works** are coded on one code, by priority **E1 > E3 > E2 > E4**. The
+audit asks what was administered, so a work that administered anything is coded
+on that administration; a work that administered to both humans and agents is
+E1 and its agent arm is noted in free text. The priority is fixed here so it is
+not decided case by case.
+
+**Only E1 works receive an instrument code.** E2, E3 and E4 works are still
+coded for §5 and §6, which is where two of this study's three calibration
+records live.
+
+## 3. Step 2 — instrument attribution, coded on E1 works only
+
+| Code | Meaning |
+|---|---|
+| **(a)** | The instrument administered was the 16Personalities test / NERIS Type Explorer. |
+| **(b)** | The instrument administered was a published MBTI form. |
+| **(c)** | The instrument administered cannot be identified from the work. |
+
+### 3.1 Evidence hierarchy
+
+Coded from the highest available level; a lower level never overrides a higher.
+
+1. A statement in Methods of what respondents completed.
+2. A named instrument carrying a citation or URL that resolves to one of the two.
+3. An appendix, figure, or screenshot showing the administered items or the
+   result screen.
+4. Reference-list evidence only — a vendor URL among the references, with no
+   statement anywhere of what was administered. See §4.1.
+
+### 3.2 Triggers for (a)
+
+Any of: `16personalities`, `16 Personalities`, `16personalities.com`,
+`NERIS Type Explorer`, `NERIS Analytics`, or a described free/online test whose
+cited URL resolves to the vendor's domain — **stated as the thing respondents
+completed**. Worked example, verbatim from the corpus (Loma Linda, 2025):
+"Participants completed the MBTI through 16personalities.com and a Qualtrics
+survey". The work calls it the MBTI; what respondents completed is the vendor's
+test; that is (a), and the mismatch is the object of this study, not an obstacle
+to coding it.
+
+### 3.3 Triggers for (b)
+
+Any of: `Form M`, `Form G`, `Form Q`, `MBTI Step I`, `MBTI Step II`, a statement
+of purchase, licence or certified administration from The Myers-Briggs Company,
+CPP, OPP or a national distributor, or an authorised translation identified as
+licensed.
+
+**Citing the MBTI Manual is not by itself (b).** Works cite Myers et al. for
+background while administering something else entirely; (b) requires a statement
+about what respondents completed, not about what the authors read.
+
+### 3.4 (c) and its sub-labels
+
+(c) is the code for a work that administered something it does not identify.
+Sub-labels record the shape of the gap; they do not affect the main code and are
+reported alongside it.
+
+| Sub-label | Meaning |
+|---|---|
+| `c-unnamed` | "The MBTI was administered", with no form, publisher, version or URL. |
+| `c-online` | An unnamed online or free MBTI test. |
+| `c-authormade` | Items the authors wrote themselves, described as based on the MBTI. |
+| `c-vendor-cited-only` | Nothing in Methods, but a vendor URL appears in the reference list. See §4.1. |
+| `c-translated` | A translated MBTI-type questionnaire with no licence or source stated. |
+
+## 4. Boundary rules
+
+### 4.1 Reference-list-only vendor evidence
+
+A work that never says what respondents completed, but cites a vendor page among
+its references, is coded **(c) with `c-vendor-cited-only`** — not (a).
+
+This is more conservative than the rule the PLAN carried, which treated the
+shape as an (a) candidate, and the reason is that the corpus shows the shape
+occurring for reasons that have nothing to do with administration: a BERT
+classifier citing the vendor's `our-theory` page for its framework (2023), a
+prediction paper citing the vendor's `country-profiles` page for global type
+frequencies (2023). Neither administered anything; both are E2 and never reach
+this step, but the same citation habit appears in E1 works, where it is genuinely
+ambiguous and (a) would be an inference rather than a reading.
+
+Nothing is lost by the conservative choice: **S3 in §11 counts these as (a)**, so
+the PLAN's rule survives as a fixed sensitivity arm and both numbers are
+reported.
+
+### 4.2 More than one instrument
+
+Where a work administers both — a published form and the vendor's test, or two
+unnamed tests — it is coded on the instrument that produced the types used in
+the reported results, and the other is recorded in free text. Where both feed
+the results equally, code (a) if the vendor's test is one of them, and record
+why: the study's question is whether a paper reporting MBTI results administered
+something that is not the MBTI, and it did.
+
+### 4.3 Translations and adaptations
+
+An authorised translation of a published form is (b). A translation of unstated
+provenance is (c) `c-translated`. A translated version of the vendor's test is
+(a). Where the work describes translating "the MBTI" from an online source, the
+URL decides; with no URL it is (c) `c-online`.
+
+### 4.4 Instrument-design and validation papers
+
+A work whose subject is building, translating or validating an MBTI-type
+instrument, and which administers it to respondents to do so, is E1 and coded on
+what it administered. A work that only describes designing one is E4.
+
+## 5. Step 3 — what the 16Personalities citation is doing
+
+Coded on **all 108 works**, including E2, E3 and E4. Flags, not a single choice:
+one work can do several, and several do.
+
+| Flag | The vendor's site or test is cited as… |
+|---|---|
+| **R1** instrument | what was administered, to humans or to agents |
+| **R2** theory | the source of the MBTI's constructs, dichotomies or type descriptions |
+| **R3** norms | a source of type frequencies or population statistics |
+| **R4** psychometrics | evidence of reliability or validity |
+| **R5** data source | where labels or profiles were scraped from or matched to |
+| **R6** mention only | named in passing; no claim in the work rests on it |
+
+**R4 is the secondary measure the PLAN names** — the vendor's own webpage cited
+as psychometric evidence. The other five are recorded because the audit found
+the same citation habit wearing different clothes, and separating them costs one
+column while collapsing them would let a reader assume a single practice.
+
+Every flag requires a located sentence or reference entry, recorded verbatim
+with its section.
+
+## 6. Step 4 — conflation statements
+
+Coded on **all 108 works**. A conflation statement treats the vendor's test and
+the MBTI as one instrument, or gives one the other's provenance or standing.
+
+| Flag | Meaning |
+|---|---|
+| **C1** identity | The two are named as a single instrument. |
+| **C2** provenance | The vendor's test is given a lineage the vendor itself disclaims — Jung, Myers and Briggs, or the published MBTI. |
+| **C3** authority | The vendor's test is called official, standard, validated, or professional. |
+| **C0** none | No conflation, or the work states the distinction. |
+
+Verbatim evidence is required and is recorded with the sentence.
+
+This step exists because the instrument codes cannot carry the study's argument
+by themselves. A review that administers nothing still reproduces the conflation
+when it calls the vendor's test "the official 16 personalities test (a popular
+MBTI questionnaire)", and a work like that is invisible to §3. Two of the three
+records the corpus was validated against are exactly that shape (§7).
+
+## 7. Calibration — the three records the pipeline is built to contain
+
+Coders receive this table before coding. Expected codes are written now, from
+verbatim already verified against the sources; where a code is not yet knowable
+it is left open rather than guessed, because a wrong expected answer would
+mis-train a coder more than a missing one.
+
+| Work | Expected E | Expected instrument | Expected R | Expected C | Verbatim basis |
+|---|---|---|---|---|---|
+| **Bai et al. 2025**, *Sci Rep*, `10.1038/s41598-025-91361-w` | E1 | **(a)** | R1, **R4** | to be coded | Methods: "this study utilized the NERIS Type Explorer® testing tool, available on the 16Personalities website"; reliability figures sourced to `16personalities.com/infp-personality` |
+| **Koshiro et al. 2025**, JPA 89th, `10.4992/pacjpa.89.0_423` | not pre-judged | not pre-judged | to be coded | **C1, C2** | 「近年、『MBTI（16personalities）診断』（以下，MBTI）が話題となっている」; described as 「ユングのタイプ論に基づいた」 |
+| **Tshimula et al. 2026**, *Front Comput Neurosci*, `10.3389/fncom.2026.1800284` | **E4** | n/a | R6 | **C1, C3** | "periodic checks using the official 16 personalities test (a popular MBTI questionnaire)" |
+
+**Two of the three fall outside the main analysis** — Koshiro is a conference
+abstract and so outside `journal_article`; Tshimula administers nothing and so
+takes no instrument code. This is stated in Methods, not discovered in
+Discussion, and it is the reason §5 and §6 are coded on the whole corpus rather
+than on the E1 subset.
+
+## 8. The record carried over from Phase 1
+
+`10.36648/2471-9854.21.s3.91` — "Effect of Dominant Personality Traits on Team
+Roles" (2021). OpenAlex records it as an article with no venue; Crossref returns
+404 for the DOI; the landing page is *Clinical Psychiatry* (iMedPub).
+`data/boundary_notes.md` has the inspection.
+
+**Decision: it stays `unclassified` and is outside the main analysis, and it is
+coded in full anyway.** The main denominator is defined by venue evidence, and
+this record has none — it asserts journal publication while carrying nothing
+that certifies it. Coding it fully means the sensitivity arm that includes it
+(S2, §11) runs on real codes rather than on a hole, and one record decides
+nothing either way.
+
+## 9. Two coders, kappa, adjudication
+
+Each work is coded independently by **c1 = `claude-sonnet-5`** and
+**c2 = `claude-opus-5`**, each receiving this protocol and the full text only,
+with the other's output withheld.
+
+Kappa is computed and reported separately for: the E code, the instrument code
+(on works both coders placed in E1), and each R and C flag. Disagreements, and
+anything either coder flags as uncertain, are adjudicated by the author against
+the full text, with the ruling recorded.
+
+**What that kappa can mean.** Both coders are tiers of one vendor's model line,
+so agreement measures the stability of one lineage's reading, not the
+convergence of independent judgments. It is an upper-bound-leaning estimate and
+is not comparable to a kappa between human raters. This is the same caveat
+recorded in the ninth study of this series and it is stated in the manuscript,
+not only here. The load-bearing evidence for reproducibility is that every code
+carries a located verbatim quote, so a reader can check the coding against the
+same text.
+
+Output: `data/classification.csv`, one row per work, carrying both coders'
+codes, the adjudicated code, the quotes, and the sub-labels.
+
+## 10. Planned reporting — fixed before the counts exist
+
+**Two measures are reported in the abstract in every case, whatever the
+numbers.**
+
+- **M1 — instrument attribution.** Among E1 works in the main analysis: the
+  share coded (a), (b), (c), with Wilson 95% confidence intervals, and the
+  denominators (E1 works; `journal_article` works; the OpenAlex and Europe PMC
+  frames).
+- **M2 — citation and conflation.** Across all works: the share carrying R4, and
+  the share carrying any of C1-C3, with the same interval treatment.
+
+Neither may be dropped, and neither may be moved to a supplement, whichever way
+the numbers fall. What the result pattern decides is only **which one the
+abstract leads with and how strongly M1 is worded**:
+
+Let `n1` be the number of E1 works in the main analysis, `p_a` the share coded
+(a), and `L_a` the lower bound of its Wilson 95% interval.
+
+| Pattern | Condition | Abstract leads with | Wording of the headline claim |
+|---|---|---|---|
+| **P1** | `L_a ≥ 0.10` | M1 | "X% (95% CI …) administered an instrument that is not the MBTI" |
+| **P2** | `p_a ≥ 0.10 > L_a` | M1 | Same figure, stated as imprecise: "X%, though the interval is wide (95% CI …)". The word *substantial* is not used. |
+| **P3** | `p_a < 0.10` and (c) is the largest instrument category | M1, framed on (c) | "X% of papers reporting MBTI results do not identify the instrument they administered" — a reporting failure, not a substitution one |
+| **P4** | `p_a < 0.10` and (b) is the largest | M2 | Attribution in administration is mostly accurate; the claim moves to citation practice and conflation, and the (a) cases are reported as a case series |
+| **P5** | `n1 < 20` | M2 | No headline rate from M1. M1 is reported descriptively with its interval and explicitly called imprecise |
+
+Fixed regardless of pattern:
+
+- The three calibration records are described in Discussion, and the fact that
+  two of them fall outside the main analysis is stated in Methods.
+- Open-access-only is described as a declared sampling frame; every figure is a
+  lower bound, and the direction of the bias is stated.
+- Europe PMC contributed no work that OpenAlex did not already contain, so it is
+  reported as independent confirmation of the frame, not as a second frame.
+- The unobtainable-full-text count is reported next to every proportion.
+- The claim "the 16Personalities test is not the MBTI" is background, sourced to
+  the vendor's own statement, and is never presented as this study's finding.
+
+## 11. Sensitivity analyses, fixed here
+
+Fixed now so that running one later cannot be a way of finding a better number.
+All are reported whether or not they change the conclusion.
+
+| # | Arm |
+|---|---|
+| **S1** | Include `conference` and `conference_abstract` in the denominator |
+| **S2** | Include the `unclassified` record (§8) |
+| **S3** | Count `c-vendor-cited-only` works as (a) — the PLAN's original boundary rule (§4.1) |
+| **S4** | OpenAlex-only versus both sources |
+| **S5** | The widening word-form variant `"Type Explorer"`, which adds one work to the intersection in OpenAlex and none in Europe PMC |
+
+## 12. Changes after coding began
+
+None yet. Entries take the form: date, what changed, why, and whether any coding
+output had been seen at the time.

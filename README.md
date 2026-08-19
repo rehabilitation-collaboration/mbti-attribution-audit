@@ -25,22 +25,43 @@ find, unasked: **what was actually administered.**
 - **Frame.** Open-access full text only. This is a declared sampling frame, not
   a workaround: figures are stated as lower bounds and the direction of the bias
   is reported.
-- **Classification (planned).** Each work is coded as (a) administered
-  16Personalities, (b) administered a published MBTI form, or (c) instrument not
-  identifiable. Coding rules are written before coding begins; two independent
-  coders, kappa reported, disagreements adjudicated.
-- **Secondary measure (planned).** Papers citing the vendor's own web pages as
-  psychometric evidence.
+- **Classification (planned).** Works are first coded by where their type data
+  came from, because a good deal of the corpus administered nothing to anybody:
+  classifiers trained on scraped labels, language models answering the
+  questionnaire, studies *of* the instrument rather than *with* it. Works whose
+  authors did administer something are then coded (a) the 16Personalities test,
+  (b) a published MBTI form, or (c) not identifiable. Two independent coders,
+  kappa reported, disagreements adjudicated.
+- **Secondary measures (planned).** What the vendor's site is cited *as* — the
+  instrument, the theory, population norms, reliability evidence, a scraping
+  target, or a passing mention — and whether the work states outright that the
+  vendor's test and the MBTI are the same instrument.
+- **Rules before results.** `data/coding_protocol.md` fixes the codes, the
+  boundary cases, the sensitivity analyses, and what the manuscript claims under
+  each result pattern. It was written before any work was classified, and it
+  requires both measures to be reported whichever way the numbers fall.
 
 ## Layout
 
 ```
 src/build_corpus.py          corpus construction; re-measures every reported count
 data/corpus.csv              retrieved records, both sources, nothing dropped
-data/query_log.json          queries, counts, window sensitivity, validation
+data/query_log.json          queries, counts, window and word-form sensitivity, validation
+data/coding_protocol.md      how each work is coded, and what is claimed for each result
 data/boundary_notes.md       records the classifier could not place, inspected by hand
 provenance/                  where each primary source came from, and its hash
 ```
+
+### What is frozen, and what is not
+
+`corpus.csv` fixes the *set of works*. Re-running the build a day after the
+freeze left all 108 works, every DOI, every duplicate grouping and every venue
+class untouched. What moved were three columns describing where a copy could be
+read: one `venue`, four `oa_url` values, and one `is_oa` flag — a thesis that
+had stopped being reachable overnight. Those columns are inputs to full-text
+retrieval, not to any reported count, and they are a snapshot of the retrieval
+date rather than a fixed value. The repository history is the record of each
+move.
 
 Primary sources themselves are not redistributed: they include a third-party
 thesis in full and captures of a commercial website. `provenance/` records the
