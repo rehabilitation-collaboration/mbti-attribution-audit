@@ -79,6 +79,12 @@ So the instrument codes in §3 are reached through a gate.
 | **E3** non-human respondents | An instrument was administered, but to a language model or other artificial agent. |
 | **E4** no type data | The work reports no type data: reviews, position pieces, translation and validation studies of the instrument itself, instrument or software design papers. |
 
+**E2 requires the work to hold type data**, not to cite a result computed from
+it. A position piece that reprints another study's published type distribution,
+with attribution, and argues from the percentages is E4: it possesses no type
+labels, only a finding about them. E2 is for a dataset, scraped profiles, or
+another study's records that this work analyses.
+
 **Evidence** is the work's own account of how it obtained its data — Methods,
 Participants, Data Collection, or the equivalent. Where a work says nothing
 about provenance but reports type frequencies for named participants, it is E1
@@ -154,6 +160,15 @@ reported alongside it.
 | `c-authormade` | Items the authors wrote themselves, described as based on the MBTI. |
 | `c-vendor-cited-only` | Nothing in Methods, but a vendor URL appears in the reference list. See §4.1. |
 | `c-translated` | A translated MBTI-type questionnaire with no licence or source stated. |
+| `c-named-unsourced` | An instrument named in Methods that carries no form, publisher, version, citation or URL anywhere in the work. |
+
+**The list is not exhaustive and a sub-label is not required.** Where a work's
+description fits none of them, the sub-label is left empty and the shape is
+recorded in free text. Sub-labels do not affect the main code, so nothing in M1
+turns on this; forcing every (c) work into a fixed set of boxes would invent
+precision the texts do not carry. Where a description is ambiguous between two
+sub-labels in its own language — Ukrainian "адаптований" can mean translated,
+author-modified, or merely unnamed — leave it empty rather than picking one.
 
 ### 3.6 When the retrieved text is a conference abstract
 
@@ -232,6 +247,7 @@ one work can do several, and several do.
 | **R4** psychometrics | evidence of reliability or validity |
 | **R5** data source | where labels or profiles were scraped from or matched to |
 | **R6** mention only | named in passing; no claim in the work rests on it |
+| **R7** object of study | what the work analyses or measures attitudes toward — its subject, not its source |
 
 **A flag attaches to the citing work's own use of the vendor.** Where a work
 only reports that a study *it* cites administered the vendor's test or scraped
@@ -240,10 +256,38 @@ not to this one. Reviews and surveys are where this bites — a review that neve
 touches a respondent can otherwise accumulate R1 and R5 from its own
 bibliography, which would put other people's practice into this work's row.
 
+**R7 exists because R6 was doing residual duty for works about the vendor.** A
+discourse analysis whose corpus is the vendor's website copy, a survey measuring
+attitudes toward the vendor's test, an ethnography of a community that took it:
+in each the vendor is the entire subject while no claim of the work is *sourced*
+to it, so R1-R5 all fail and R6's "no claim in the work rests on it" reads as
+false. R7 records the shape. It has no bearing on R4 and so does not touch M2.
+
 **R4 is the secondary measure the PLAN names** — the vendor's own webpage cited
-as psychometric evidence. The other five are recorded because the audit found
+as psychometric evidence. The other flags are recorded because the audit found
 the same citation habit wearing different clothes, and separating them costs one
 column while collapsing them would let a reader assume a single practice.
+
+**R4 requires a psychometric claim sourced to the vendor** — a coefficient, a
+sample size, a reported reliability or validity figure that the work takes from
+the vendor. A bare adjective ("a validated instrument", "a reliable test") with
+no figure drawn from the vendor anywhere in the work is a claim of standing, and
+§6's C3 already records it; it does not set R4. The calibration record is the
+model: Bai 2025 sources alphas of 0.75-0.87 from an analysis of 10,000
+respondents to a vendor page. This is the narrower of the two available readings
+and it is chosen deliberately, because R4 is the measure the manuscript reports
+and the wider reading would inflate it on a judgement call.
+
+**Bundled citations are not apportioned.** Where one citation bundle at the end
+of a paragraph covers several claims and the vendor is one of the bundled
+sources, flag every role the paragraph's claims require and record the bundling
+in free text. Splitting a bundle between two flags by guesswork manufactures a
+distinction the citation does not make.
+
+**A reference-list entry with no in-text anchor is R6.** §4.1 already treats the
+identical shape conservatively at the instrument step, and evidence cannot be
+weak enough to withhold an instrument code while strong enough to carry a
+substantive role.
 
 Every flag requires a located sentence or reference entry, recorded verbatim
 with its section.
@@ -258,8 +302,55 @@ the MBTI as one instrument, or gives one the other's provenance or standing.
 |---|---|
 | **C1** identity | The two are named as a single instrument. |
 | **C2** provenance | The vendor's test is given a lineage the vendor itself disclaims — Jung, Myers and Briggs, or the published MBTI. |
-| **C3** authority | The vendor's test is called official, standard, validated, or professional. |
-| **C0** none | No conflation, or the work states the distinction. |
+| **C3** authority | The vendor's test is claimed to have the standing of a published instrument — official, standard, validated, professional, accurate, or the equivalent. |
+| **C0** none | No statement in the work meets C1, C2 or C3. |
+
+**What the flags are about.** Like §5, this step covers **the vendor's test, its
+site, and its proprietary content** — the Assertive/Turbulent axis, the
+Analyst/Diplomat/Sentinel/Explorer groupings, the branded type names. None of
+these exists in any published MBTI form, so a work that calls them "the MBTI
+dimensions" or "the MBTI Model" has attributed the vendor's material to the
+published instrument even if it never names the test. Reading §6 narrowly, on
+the test alone, would drop exactly those works — the ones careless enough to
+merge the content but careful enough not to name the source. **S7 (§11) reports
+the narrow count alongside**, because the wide reading is the one that raises
+the rate.
+
+**C3 is about standing, not uptake.** The four adjectives in the row are
+examples, not a closed list: "accurate", "reliable", "scientifically validated"
+make the same claim. Claims about how many people use it — "popular", "widely
+used", "internationally used", "well known" — are claims about uptake and do
+**not** set C3. That line is where the flag stops, and it is drawn on the
+narrower side.
+
+**C2 requires a derivation predicate.** "Based on Jung's theory", "developed by
+Myers and Briggs", "derived from the MBTI", "a variant in the MBTI family" — an
+assertion of descent. Writing "MBTI" out as "Myers-Briggs Type Indicator" is not
+one: on the literal reading, every C1 work that expands the acronym would also
+be C2 and the two flags would stop being independent. §7 settles it — Tshimula
+is expected C1 and C3 and *not* C2, while calling the vendor's test "a popular
+MBTI questionnaire".
+
+**A flag may rest on more than one sentence, and each link must be quoted.** A
+work that names the two as one instrument in Methods and gives the MBTI a
+Jungian lineage in the Introduction has made the lineage claim about the vendor's
+test, by its own identification. §7's Koshiro row already works this way. The
+evidence rule is correspondingly stricter than a single-sentence rule would be:
+record the verbatim for **every link in the chain**, not for the conclusion.
+
+**Flags are set per statement, not per work.** A work that explains the vendor
+adds an axis the MBTI lacks, and two sentences later calls it the MBTI, sets C1.
+The conflating sentence is in the published record and is not undone by a
+correct one elsewhere. But such a work is not the same as one that never noticed
+the distinction, so **`states_distinction`** records that it drew it, with the
+verbatim, and the two are reported separately.
+
+**`third_party_conflation`** records a work that calls some *other* look-alike
+instrument — Humanmetrics, Truity, and their kind — "the MBTI". This is the same
+misattribution against a different vendor, and C0-C3 cannot hold it. It is
+recorded and described, **never rated**: the corpus is built from
+16Personalities word forms, so works conflating other look-alikes enter it only
+by accident and no proportion computed over them would have a denominator.
 
 Verbatim evidence is required and is recorded with the sentence.
 
@@ -335,15 +426,21 @@ resolved by the author rather than by an agreement statistic.
 | `c1_e`, `c2_e`, `e_final` | E code per coder, then adjudicated |
 | `c1_instrument`, `c2_instrument`, `instrument_final` | (a)/(b)/(c); blank when not E1 |
 | `instrument_sublabel` | §3.4 |
-| `r1_c1`…`r6_c2`, `r1_final`…`r6_final` | one boolean per flag per coder, then final |
+| `r1_c1`…`r7_c2`, `r1_final`…`r7_final` | one boolean per flag per coder, then final |
 | `c0_c1`…`c3_c2`, `c0_final`…`c3_final` | same for conflation flags |
+| `states_distinction_c1`, `states_distinction_c2`, `states_distinction_final` | §6 |
+| `third_party_conflation_c1`, `third_party_conflation_c2` | §6; recorded, never rated |
 | `text_is_abstract` | §3.6, with evidence in the note column |
 | `quote_instrument`, `quote_r4`, `quote_conflation` | located verbatim + section |
 | `adjudicated`, `note` | whether the author ruled, and the reasoning |
 
-Kappa is computed per code from this file (`src/score_agreement.py`, to be
-written) — separately for E, for the instrument code on works both coders placed
-in E1, and for each R and C flag.
+Kappa is computed per code from this file (`src/score_agreement.py`) —
+separately for E, for the instrument code on works both coders placed in E1, and
+for each R and C flag. It is **not** computed where the coders used one category
+between them: a flag neither ever set has expected agreement of 1 and no
+coefficient, and reporting 1.0 there would manufacture a reliability figure out
+of an unused column. Those rows carry the observed agreement and say the
+coefficient does not exist.
 
 ## 10. Planned reporting — fixed before the counts exist
 
@@ -397,6 +494,7 @@ All are reported whether or not they change the conclusion.
 | **S4** | OpenAlex-only versus both sources |
 | **S5** | The widening word-form variant `"Type Explorer"`, which adds one work to the intersection in OpenAlex and none in Europe PMC |
 | **S6** | Exclude records whose retrieved text is a conference abstract (`text_is_abstract`, §3.6) |
+| **S7** | Conflation flags on the narrow reading — the vendor's *test* only, excluding works that attribute the vendor's proprietary content to the MBTI without naming the test (§6) |
 
 ## 12. Changes after coding began
 
@@ -425,3 +523,47 @@ calibration table already asserted. The added sentence is the one the author
 chose from three options and it changes no expected code. c1's coding of that
 record was discarded and recoded against the amended protocol; the calibration
 record for Bai 2025 is untouched, both coders having agreed on it.
+
+**2026-08-19 — §2, §3.4, §5, §6, §9 and §11, twelve questions the corpus asked
+and this protocol could not answer. All 61 works had been coded twice and the
+kappas were known; no R or C proportion had been computed, and none has been
+computed since.** Both coders finished, agreement was scored, and 31 of the 35
+works with a split code came back reporting that the item in dispute is not
+decided by anything written here. The reports collapse to twelve questions:
+whether a conflation flag may rest on more than one sentence; whether C3's
+adjectives are a closed list; whether the flags reach the vendor's proprietary
+content or only its test; what to do when a work both conflates and states the
+distinction; where to put the vendor when it is the object of study rather than
+a source; whether the (c) sub-labels are exhaustive; whether writing "MBTI" out
+in full is a provenance claim; whether a reference-list-only citation can carry
+a substantive role; whether reprinting another study's aggregate frequencies is
+E2 or E4; whether a bare validity adjective sets R4; how a bundled citation is
+apportioned; and how to record a third party's look-alike test called "the
+MBTI".
+
+This is the explanation of the low kappa on the conflation flags — C2 at 0.52 is
+not two coders reading one sentence differently, it is two coders applying a
+rule that was never written against the shape in front of them. §5 and §6 had
+been written for the shapes the calibration records have.
+
+The amendments answer all twelve. Where §7's calibration table already implied
+an answer it was taken (Q1 chains, Q7 derivation predicates). Where it did not,
+the reading that *weakens* the headline was taken: R4 requires a figure and not
+an adjective (Q10, which sets M2's numerator), C3 excludes claims about
+popularity (Q2), and the one amendment that raises a rate — extending the
+conflation flags to the vendor's proprietary content (Q3) — carries S7 reporting
+the narrow count beside it. Where a shape cannot be measured on this corpus at
+all it is recorded and refused a rate (Q12).
+
+**What this cost, and why it was paid.** The R and C flags on all 61 works were
+discarded and coded again by both coders against the amended rules, 122 runs. A
+coder that never saw a rule cannot have applied it, and a quote located under
+one rule is not evidence under another, so patching the existing flags would
+have meant settling twelve general questions thirty-one times over, once per
+work, with no rule a reader could check. **The E gate and the instrument code
+were kept** — no question touches §3, and the instrument code agreed on all 34
+works both coders placed in E1. The single E disagreement (Q9) is settled by the
+rule now in §2 rather than by re-coding.
+
+The proposals produced for the 35 split codes were **not applied**. They exist
+in the run record; the amended rules replace them.
