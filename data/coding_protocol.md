@@ -233,6 +233,13 @@ one work can do several, and several do.
 | **R5** data source | where labels or profiles were scraped from or matched to |
 | **R6** mention only | named in passing; no claim in the work rests on it |
 
+**A flag attaches to the citing work's own use of the vendor.** Where a work
+only reports that a study *it* cites administered the vendor's test or scraped
+its site, the citation is **R6**: the administration belongs to the cited study,
+not to this one. Reviews and surveys are where this bites — a review that never
+touches a respondent can otherwise accumulate R1 and R5 from its own
+bibliography, which would put other people's practice into this work's row.
+
 **R4 is the secondary measure the PLAN names** — the vendor's own webpage cited
 as psychometric evidence. The other five are recorded because the audit found
 the same citation habit wearing different clothes, and separating them costs one
@@ -404,3 +411,17 @@ full text was retrieved — 61 of the 99". This corrects an inconsistency betwee
 sections rather than changing a rule — the flags were never codable on a text
 nobody could read — and it is recorded here because the wording decides the
 denominator of M2 (§10), which the manuscript reports.
+
+**2026-08-19 — §5, whose use an R flag records. Two works had been coded when
+this was written, both calibration records; no proportion had been computed and
+no work outside §7 had been read.** §5 did not say whether a work that reports
+another study's use of the vendor carries that use as its own flag. Both coders
+met the question on Tshimula 2026 — a review whose three vendor mentions all
+describe studies it cites — and split: c1 read the mentions as R1 and R5 and
+flagged the case uncertain, c2 read them as R6 on the grounds that R1
+presupposes an administration this work never performed. §7 had already fixed
+R6 as the expected code for that record, so §5 now states in words what the
+calibration table already asserted. The added sentence is the one the author
+chose from three options and it changes no expected code. c1's coding of that
+record was discarded and recoded against the amended protocol; the calibration
+record for Bai 2025 is untouched, both coders having agreed on it.
