@@ -28,7 +28,7 @@ One row per distinct work — `dup_group` in `data/corpus.csv`, **99 works** fro
 118 retrieved records. A work is one unit however many times it was retrieved:
 from both sources, as several deposited versions, or as a preprint and then as
 the article it became. (The count read 108 until 2026-08-19, when grouping keyed
-on the DOI and so split eight works across nineteen records; `boundary_notes.md`
+on the DOI and so split eight works across eighteen records; `boundary_notes.md`
 lists them.)
 
 **Main analysis: the 58 works with `venue_class == "journal_article"`.** The
@@ -125,6 +125,11 @@ survey". The work calls it the MBTI; what respondents completed is the vendor's
 test; that is (a), and the mismatch is the object of this study, not an obstacle
 to coding it.
 
+⚠️ **This exemplar is itself a conference abstract** printed in a journal's
+supplement (`10.1016/j.jand.2025.06.390`), which its metadata does not say. It is
+kept as the worked example because the sentence is unusually clear and because a
+coder who meets it learns both lessons at once — see §3.6.
+
 ### 3.3 Triggers for (b)
 
 Any of: `Form M`, `Form G`, `Form Q`, `MBTI Step I`, `MBTI Step II`, a statement
@@ -149,6 +154,27 @@ reported alongside it.
 | `c-authormade` | Items the authors wrote themselves, described as based on the MBTI. |
 | `c-vendor-cited-only` | Nothing in Methods, but a vendor URL appears in the reference list. See §4.1. |
 | `c-translated` | A translated MBTI-type questionnaire with no licence or source stated. |
+
+### 3.6 When the retrieved text is a conference abstract
+
+`venue_class` comes from metadata, and metadata can be wrong about what kind of
+document it describes. At least one record here is filed in a journal and is in
+fact an abstract in that journal's conference supplement, indistinguishable from
+an article by title, venue or type.
+
+Coders set **`text_is_abstract`** with the evidence whenever the retrieved text
+is an abstract rather than an article: dated session headings, continuing-
+education wording ("attendees will be able to…"), a word count of a few hundred,
+or several unrelated presentations bundled in one file.
+
+**The venue class is not changed.** Moving a record after reading it is exactly
+the boundary shift §10 forbids. Instead, S6 (§11) reports the main analysis with
+these records excluded, so the effect is measured rather than assumed.
+
+Related, and a coding rule in its own right: **one retrieved file can hold
+several works.** Code only the target work's own section. A neighbouring
+abstract's sentences are not evidence about this work — including for the R and
+C flags, where a stray mention would otherwise be counted.
 
 ## 4. Boundary rules
 
@@ -287,8 +313,28 @@ not only here. The load-bearing evidence for reproducibility is that every code
 carries a located verbatim quote, so a reader can check the coding against the
 same text.
 
-Output: `data/classification.csv`, one row per work, carrying both coders'
-codes, the adjudicated code, the quotes, and the sub-labels.
+**Who adjudicates.** The author — 瑞樹 — rules on every disagreement, reading the
+located quote against the full text. An agent may *propose* a ruling; it does not
+make one. This mirrors the ninth study, where every coverage difference was
+resolved by the author rather than by an agreement statistic.
+
+**Output: `data/classification.csv`**, one row per work:
+
+| Column | Contents |
+|---|---|
+| `key`, `doi`, `title`, `work_venue_class` | carried from `fulltext_log.csv` |
+| `c1_e`, `c2_e`, `e_final` | E code per coder, then adjudicated |
+| `c1_instrument`, `c2_instrument`, `instrument_final` | (a)/(b)/(c); blank when not E1 |
+| `instrument_sublabel` | §3.4 |
+| `r1_c1`…`r6_c2`, `r1_final`…`r6_final` | one boolean per flag per coder, then final |
+| `c0_c1`…`c3_c2`, `c0_final`…`c3_final` | same for conflation flags |
+| `text_is_abstract` | §3.6, with evidence in the note column |
+| `quote_instrument`, `quote_r4`, `quote_conflation` | located verbatim + section |
+| `adjudicated`, `note` | whether the author ruled, and the reasoning |
+
+Kappa is computed per code from this file (`src/score_agreement.py`, to be
+written) — separately for E, for the instrument code on works both coders placed
+in E1, and for each R and C flag.
 
 ## 10. Planned reporting — fixed before the counts exist
 
@@ -341,6 +387,7 @@ All are reported whether or not they change the conclusion.
 | **S3** | Count `c-vendor-cited-only` works as (a) — the PLAN's original boundary rule (§4.1) |
 | **S4** | OpenAlex-only versus both sources |
 | **S5** | The widening word-form variant `"Type Explorer"`, which adds one work to the intersection in OpenAlex and none in Europe PMC |
+| **S6** | Exclude records whose retrieved text is a conference abstract (`text_is_abstract`, §3.6) |
 
 ## 12. Changes after coding began
 

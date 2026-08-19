@@ -92,9 +92,10 @@ def norm_title(value: str | None) -> str:
         return ""
     text = html.unescape(value).lower()
     text = re.sub(r"\((pre)?print\)|\(version \d+\)|\bv\d+\b", " ", text)
-    # Not [^a-z0-9]: that empties a Cyrillic, Japanese or Greek title, and an
-    # empty key matches nothing, so those works could never be recognised as
-    # duplicates of each other. A quarter of this corpus is not in English.
+    # Not [^a-z0-9]: that empties a title written wholly in a non-Latin script,
+    # and an empty key matches nothing, so such a work could never be recognised
+    # as a duplicate of its own other version. Two of this corpus's 99 titles
+    # are emptied by the old rule; 27 merely carry a non-ASCII character.
     return re.sub(r"[\W_]+", " ", text, flags=re.UNICODE).strip()
 
 

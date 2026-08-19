@@ -90,7 +90,7 @@ whether the index behind the query is accurate for the terms that do match.
 Until 2026-08-19 records were grouped into works by DOI where one existed, and
 by normalised title otherwise. That is wrong for this corpus. Zenodo and OSF
 mint a DOI per deposited version, and a preprint carries a different DOI from
-the article it becomes, so eight works were being counted as nineteen records
+the article it becomes, so eight works were being counted as eighteen records
 and the distinct-work count read 108 where it is **99**. Full-text retrieval
 exposed it: the same article came back twice under two keys.
 
@@ -134,12 +134,48 @@ Portal for Open Science) and "ПСИХОЛОГІЧНІ ТИПИ ЯК ІНСТР�
 sciences series). They stay separate.
 
 They matched because the title normaliser stripped everything outside
-`[a-z0-9]`, which empties a Cyrillic, Japanese or Greek title entirely — and two
-empty keys are equal. The same fault ran the other way and mattered more: a
-non-Latin work could never be recognised as a duplicate of its own other
-version, because an empty key carries no information to match on. Roughly a
-quarter of this corpus is not in English. Normalisation is now Unicode-aware.
+`[a-z0-9]`, which empties a title written entirely in a non-Latin script — and
+two empty keys are equal. The same fault ran the other way: such a work could
+never be recognised as a duplicate of its own other version, because an empty
+key carries no information to match on.
+
+**Measured, so the size of the fault is not overstated.** Applying the old
+normaliser to all 99 titles empties exactly **two** (the Bulgarian and Ukrainian
+titles above), so the works actually at risk were 2%, not the 27% of titles that
+merely contain a non-ASCII character — a Turkish or Czech title keeps enough
+Latin letters to survive. Normalisation is now Unicode-aware regardless.
 
 Titles are also stored as the work states them rather than as the API encodes
 them: two carried a literal `&amp;` ("Personality Type &amp; Fruit and Vegetable
 Consumption", "Bleed in Dungeons &amp; Dragons").
+
+
+## A record whose metadata says journal, and whose text is a conference abstract
+
+**"Exploring Associations Between Personality Type & Fruit and Vegetable
+Consumption"** (2025, `10.1016/j.jand.2025.06.390`) carries `venue_class =
+journal_article`: OpenAlex records it in the *Journal of the Academy of
+Nutrition and Dietetics*, which is a journal. Its retrieved text is not an
+article. It opens "TUESDAY, OCTOBER 14, 2025", bundles several unrelated
+presentations in one PDF, and states its objective as "reviewing the abstract
+content, attendees will be able to describe…" — the continuing-education wording
+of a conference abstract supplement.
+
+This matters in two ways, and both are handled in `coding_protocol.md` rather
+than by editing the corpus:
+
+1. **Consistency.** Koshiro 2025 is excluded from the main analysis because its
+   metadata says `conference_abstract`. This record is the same kind of document
+   and its metadata does not say so, so venue metadata alone cannot enforce the
+   peer-reviewed boundary. §3.6 now has coders record the evidence when a
+   retrieved text is an abstract, and S6 varies the boundary on that evidence.
+2. **Contamination.** One retrieved file can hold several works' text. The
+   word-form and MBTI checks in `fetch_fulltext.py` run over the whole file, so
+   in principle a neighbouring abstract could satisfy them for a record that
+   does not mention the vendor at all. Here it does not — the matching sentences
+   are inside the target abstract — but the risk is real and coders are told to
+   read only the target work's own section.
+
+Nothing is deleted. The record keeps `journal_article` because that is what its
+metadata says, and moving it after seeing it would be exactly the boundary-shift
+the protocol forbids.
