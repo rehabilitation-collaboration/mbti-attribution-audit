@@ -48,6 +48,7 @@ find, unasked: **what was actually administered.**
 ```
 src/build_corpus.py          corpus construction; re-measures every reported count
 src/fetch_fulltext.py        open-access retrieval, one document per work
+tests/                       regression tests for the normalisation and grouping rules
 data/corpus.csv              retrieved records, both sources, nothing dropped
 data/query_log.json          queries, counts, window and word-form sensitivity, validation
 data/coding_protocol.md      how each work is coded, and what is claimed for each result
@@ -76,8 +77,16 @@ verify the same files. See `provenance/sources-provenance.md`.
 
 ```
 pip install -r requirements.txt
-python src/build_corpus.py
+python src/build_corpus.py     # corpus and query log; re-measures every count
+python src/fetch_fulltext.py   # one document per work into fulltext/ (git-ignored)
+pytest                         # regression tests
 ```
 
-The script fails if any of the three records the corpus is known to require
-goes missing, so a broken query cannot pass silently.
+`build_corpus.py` fails if any of the three records the corpus is known to
+require goes missing, so a broken query cannot pass silently.
+
+The tests hold faults that actually occurred rather than hypothetical ones: a
+title normaliser that emptied every non-Latin title, and a grouping rule that
+counted a work once per DOI and so split Zenodo versions and preprint/article
+pairs. Both were found after the corpus had been published, and both moved a
+reported count. Each test fails if its fault is reintroduced.
