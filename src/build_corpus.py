@@ -9,8 +9,11 @@ Two sources are queried with a single shared definition:
 The window is fixed at 2015: widening it to 2011 adds two intersecting works
 (108 -> 110) while the denominator grows by a quarter (3,104 -> 3,890), which is
 inside the pre-set rule of keeping 2015 when the gain is two or three works or
-fewer. Both figures are re-measured on every run and land in query_log.json, so
-the decision can be re-checked rather than taken on trust.
+fewer. The word forms are likewise fixed: "Type Explorer" on its own is generic
+enough to match thousands of unrelated works while adding at most one work to
+the intersection, so it sits outside the shared definition and is carried as a
+widening variant. Both decisions are re-measured on every run and land in
+query_log.json, so they can be re-checked rather than taken on trust.
 
 Outputs
     data/corpus.csv     one row per retrieved record, both sources, with a
@@ -37,9 +40,6 @@ TO_DATE = "2026-12-31"
 
 # OpenAlex accepts quoted phrases in .search filters; unquoted multi-word terms
 # are treated as loose token queries and explode (16 personalities -> 200,102).
-# "Type Explorer" alone is not used: it returns 2,423 works on its own and adds
-# exactly one work to the intersection, so it is carried as a widening variant
-# to be checked by eye rather than folded into the primary definition.
 OA_DENOMINATOR = 'title_and_abstract.search:MBTI OR "Myers-Briggs" OR "Myers Briggs"'
 OA_VARIANTS = (
     'fulltext.search:16personalities OR "16 Personalities" '
@@ -48,13 +48,19 @@ OA_VARIANTS = (
 OA_VARIANTS_WIDE = OA_VARIANTS + ' OR "Type Explorer"'
 OA_WINDOW = f"from_publication_date:{FROM_DATE}"
 
-# Europe PMC's full-text index handles spaced phrases correctly, so the whole
-# word-form set is used there.
+# Europe PMC is queried with the same four word forms, so one definition spans
+# both sources rather than each source carrying its own. "Type Explorer" on its
+# own sits outside that definition and is carried as a widening variant on both
+# sides: it is a generic phrase that matches 2,423 works in OpenAlex while
+# adding one work to the intersection there, and adds none here. Those figures
+# are re-measured into variant_sensitivity on every run, so the exclusion can be
+# re-checked rather than taken on trust.
 EPMC_DENOMINATOR = '(TITLE_ABS:"MBTI" OR TITLE_ABS:"Myers-Briggs" OR TITLE_ABS:"Myers Briggs")'
 EPMC_VARIANTS = (
     '("16personalities" OR "16 Personalities" OR "16personalities.com" '
-    'OR "NERIS Type Explorer" OR "Type Explorer")'
+    'OR "NERIS Type Explorer")'
 )
+EPMC_VARIANTS_WIDE = EPMC_VARIANTS[:-1] + ' OR "Type Explorer")'
 EPMC_WINDOW = f"(FIRST_PDATE:[{FROM_DATE} TO {TO_DATE}])"
 
 # Known-correct records that must survive the pipeline. If one of these goes
@@ -261,6 +267,22 @@ def main() -> None:
         window_sensitivity["intersection_from_2011"] - window_sensitivity["intersection_from_2015"]
     )
 
+    # Leaving "Type Explorer" out of the shared definition is the other standing
+    # decision, so it is measured the same way rather than argued for in prose.
+    variant_sensitivity = {
+        "openalex_primary": window_sensitivity["intersection_from_2015"],
+        "openalex_with_type_explorer": count_openalex(
+            f"{OA_DENOMINATOR},{OA_VARIANTS_WIDE},{OA_WINDOW}"
+        ),
+        "openalex_type_explorer_alone": count_openalex(
+            f'fulltext.search:"Type Explorer",{OA_WINDOW}'
+        ),
+        "europepmc_primary": len(epmc_records),
+        "europepmc_with_type_explorer": count_europepmc(
+            f"{EPMC_DENOMINATOR} AND {EPMC_VARIANTS_WIDE} AND {EPMC_WINDOW}"
+        ),
+    }
+
     unique = frame.drop_duplicates("dup_group")
     log = {
         "retrieved_on": date.today().isoformat(),
@@ -269,6 +291,7 @@ def main() -> None:
         "europepmc": {"query": epmc_query, "records": len(epmc_records)},
         "denominators": denominators,
         "window_sensitivity": window_sensitivity,
+        "variant_sensitivity": variant_sensitivity,
         "rows": len(frame),
         "unique_works": int(frame["dup_group"].nunique()),
         # Two counts because they differ: a work retrieved from both sources

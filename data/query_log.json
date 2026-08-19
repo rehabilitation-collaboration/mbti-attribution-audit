@@ -1,5 +1,5 @@
 {
-  "retrieved_on": "2026-08-18",
+  "retrieved_on": "2026-08-19",
   "window": {
     "from": "2015-01-01",
     "to": "2026-12-31"
@@ -9,18 +9,25 @@
     "records": 108
   },
   "europepmc": {
-    "query": "(TITLE_ABS:\"MBTI\" OR TITLE_ABS:\"Myers-Briggs\" OR TITLE_ABS:\"Myers Briggs\") AND (\"16personalities\" OR \"16 Personalities\" OR \"16personalities.com\" OR \"NERIS Type Explorer\" OR \"Type Explorer\") AND (FIRST_PDATE:[2015-01-01 TO 2026-12-31])",
+    "query": "(TITLE_ABS:\"MBTI\" OR TITLE_ABS:\"Myers-Briggs\" OR TITLE_ABS:\"Myers Briggs\") AND (\"16personalities\" OR \"16 Personalities\" OR \"16personalities.com\" OR \"NERIS Type Explorer\") AND (FIRST_PDATE:[2015-01-01 TO 2026-12-31])",
     "records": 10
   },
   "denominators": {
-    "openalex_from_2015": 3104,
+    "openalex_from_2015": 3105,
     "europepmc_from_2015": 166
   },
   "window_sensitivity": {
     "intersection_from_2015": 108,
     "intersection_from_2011": 110,
-    "denominator_from_2011": 3890,
+    "denominator_from_2011": 3893,
     "intersection_gained_by_2011": 2
+  },
+  "variant_sensitivity": {
+    "openalex_primary": 108,
+    "openalex_with_type_explorer": 109,
+    "openalex_type_explorer_alone": 1967,
+    "europepmc_primary": 10,
+    "europepmc_with_type_explorer": 10
   },
   "rows": 118,
   "unique_works": 108,
