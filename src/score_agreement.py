@@ -36,8 +36,10 @@ ROOT = Path(__file__).resolve().parent.parent
 CLASSIFICATION = ROOT / "data" / "classification.csv"
 OUT = ROOT / "data" / "agreement.csv"
 
-R_FLAGS = ("r1", "r2", "r3", "r4", "r5", "r6")
+R_FLAGS = ("r1", "r2", "r3", "r4", "r5", "r6", "r7")
 C_FLAGS = ("c0", "c1", "c2", "c3")
+NARROW_FLAGS = ("narrow_c1", "narrow_c2", "narrow_c3")
+EXTRA_FLAGS = ("states_distinction", "text_is_abstract")
 
 CAVEAT = (
     "Both coders are tiers of one vendor's model line (c1 claude-sonnet-5, "
@@ -105,10 +107,9 @@ def main() -> None:
             }
         )
 
-    for flag in R_FLAGS + C_FLAGS:
-        rows.append(score(frame, flag.upper(), f"{flag}_c1", f"{flag}_c2"))
-
-    rows.append(score(frame, "text_is_abstract", "text_is_abstract_c1", "text_is_abstract_c2"))
+    for flag in R_FLAGS + C_FLAGS + NARROW_FLAGS + EXTRA_FLAGS:
+        label = flag.upper() if len(flag) == 2 else flag
+        rows.append(score(frame, label, f"{flag}_c1", f"{flag}_c2"))
 
     table = pd.DataFrame(rows)
     table.to_csv(OUT, index=False)
