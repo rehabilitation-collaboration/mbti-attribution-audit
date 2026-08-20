@@ -359,6 +359,57 @@ def test_a_ruling_on_an_unknown_item_is_rejected():
         apply_rulings(row_for(), {"r9": (True, "typo in the item name")})
 
 
+def test_every_item_the_sheet_offers_a_ruling_on_has_somewhere_to_land():
+    """The failure this exists to prevent: a documented ruling that crashes the rebuild.
+
+    The adjudication sheet lists the names the author may rule on. Two of them
+    are published under a bare column name rather than `<item>_final` — §9's
+    table names the settled sub-label and abstract test without a suffix — and a
+    ruling on either raised SchemaError while the lookup assumed the suffix.
+    """
+    from build_classification import BOOLEAN_ITEMS, apply_rulings
+
+    offered = (
+        ["e", "instrument", "instrument_sublabel", "text_is_abstract", "states_distinction"]
+        + [f"r{i}" for i in range(1, 8)]
+        + [f"c{i}" for i in range(4)]
+        + [f"narrow_c{i}" for i in range(1, 4)]
+    )
+    for item in offered:
+        value = False if item in BOOLEAN_ITEMS else "c-translated"
+        apply_rulings(row_for(), {item: (value, "the author read the text")})
+
+
+def test_a_ruling_on_the_sublabel_lands_in_its_published_column():
+    from build_classification import apply_rulings
+
+    g = {
+        c: gate(c, instrument="c", instrument_sublabel=sub)
+        for c, sub in (("c1", "c-translated"), ("c2", "c-authormade"))
+    }
+    row = row_for(gate_docs=g)
+    assert "instrument_sublabel" in row["contested"]
+
+    ruled = apply_rulings(row, {"instrument_sublabel": ("c-translated", "a rendering, not a rewrite")})
+    assert ruled["instrument_sublabel"] == "c-translated"
+    assert "instrument_sublabel" not in ruled["contested"]
+
+
+def test_a_ruling_on_the_abstract_test_lands_in_its_published_column():
+    from build_classification import apply_rulings
+
+    g = {
+        "c1": gate("c1"),
+        "c2": gate("c2", text_is_abstract=True, text_is_abstract_evidence="one page — Proceedings"),
+    }
+    row = row_for(gate_docs=g)
+    assert "text_is_abstract" in row["contested"]
+
+    ruled = apply_rulings(row, {"text_is_abstract": (False, "the retrieved file is the full article")})
+    assert ruled["text_is_abstract"] is False
+    assert ruled["needs_adjudication"] is False
+
+
 def test_boolean_rulings_are_parsed_and_bad_ones_rejected():
     from build_classification import parse_ruling
 

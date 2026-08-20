@@ -229,6 +229,16 @@ BOOLEAN_ITEMS = set(R_FLAGS) | set(C_FLAGS) | {
     f"narrow_{f}" for f in NARROW_FLAGS
 } | {"states_distinction", "text_is_abstract"}
 
+# Most items carry each coder's reading beside an adjudicated `<item>_final`.
+# Two do not: §9's published table names the settled value of the sub-label and
+# of the abstract test without a suffix, so a ruling on either lands there.
+BARE_FINAL = {"instrument_sublabel", "text_is_abstract"}
+
+
+def final_column(item: str) -> str:
+    """The column a ruling on this item writes to."""
+    return item if item in BARE_FINAL else f"{item}_final"
+
 
 def parse_ruling(item: str, ruling: str):
     """Read a ruling as the type its column holds."""
@@ -281,7 +291,7 @@ def apply_rulings(row: dict, rulings: dict[str, tuple[object, str]]) -> dict:
     contested = [c for c in str(row["contested"]).split(",") if c]
     notes = []
     for item, (value, reasoning) in sorted(rulings.items()):
-        column = f"{item}_final"
+        column = final_column(item)
         if column not in row:
             raise SchemaError(f"{row['key']}: no column for a ruling on {item!r}")
         overruled = item not in contested and row[column] != "" and row[column] != value
