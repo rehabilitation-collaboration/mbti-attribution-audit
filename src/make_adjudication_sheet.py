@@ -11,9 +11,12 @@ asked. The uncertain notes are shown in full, because a coder that says the
 protocol does not decide a case is describing a gap in the protocol, and that is
 worth more to the author than the code it produced.
 
-Codings come from two passes — the gate pass holds E, instrument and
-`text_is_abstract`; the flag pass holds R, C, narrow C and `states_distinction`
-— so each item is read from whichever pass produced it.
+Codings come from three passes — the gate pass holds E, instrument and
+`text_is_abstract`; the flag pass holds the R flags; the conflation pass holds
+the C flags, the narrow C flags and `states_distinction` — so each item is read
+from whichever pass settled it. The flag pass's own conflation codings predate
+the 2026-08-20 amendments and are not shown: displaying a reading the protocol
+has replaced, beside one it has not, would put two rules in one column.
 
 Output
     coding_raw/adjudication.md   git-ignored: the coders' raw notes quote more
@@ -90,7 +93,7 @@ sonnet/opus; `c1`/`c2` as an *item* means conflation of identity/provenance
 """
 
 
-def coder_value(gate: dict, flag: dict, item: str):
+def coder_value(gate: dict, flag: dict, conf: dict, item: str):
     """What this coder said about one contested item, with its quote."""
     if item == "e":
         return gate["e_code"], gate["e_quote"]
@@ -101,13 +104,13 @@ def coder_value(gate: dict, flag: dict, item: str):
     if item == "text_is_abstract":
         return gate["text_is_abstract"], gate["text_is_abstract_evidence"]
     if item == "states_distinction":
-        return flag["states_distinction"], flag["states_distinction_quote"]
+        return conf["states_distinction"], conf["states_distinction_quote"]
     if item.startswith("narrow_"):
         bare = item.removeprefix("narrow_")
-        return flag["conflation_narrow"][bare], flag["conflation_quotes"].get(bare)
+        return conf["conflation_narrow"][bare], conf["conflation_quotes"].get(bare)
     if item.startswith("r"):
         return flag["roles"][item], flag["role_quotes"].get(item)
-    return flag["conflation"][item], flag["conflation_quotes"].get(item)
+    return conf["conflation"][item], conf["conflation_quotes"].get(item)
 
 
 def show(value) -> str:
@@ -118,7 +121,13 @@ def show(value) -> str:
     return str(value)
 
 
-def render(index: int, row: pd.Series, gate: dict[str, dict], flag: dict[str, dict]) -> str:
+def render(
+    index: int,
+    row: pd.Series,
+    gate: dict[str, dict],
+    flag: dict[str, dict],
+    conf: dict[str, dict],
+) -> str:
     contested = [c for c in str(row["contested"]).split(",") if c] if pd.notna(row["contested"]) else []
     uncertain = str(row["uncertain_by"]).split(",") if pd.notna(row["uncertain_by"]) else []
     uncertain = [u for u in uncertain if u]
@@ -134,8 +143,8 @@ def render(index: int, row: pd.Series, gate: dict[str, dict], flag: dict[str, di
     if contested:
         lines += ["### Split codes", ""]
         for item in contested:
-            v1, q1 = coder_value(gate["c1"], flag["c1"], item)
-            v2, q2 = coder_value(gate["c2"], flag["c2"], item)
+            v1, q1 = coder_value(gate["c1"], flag["c1"], conf["c1"], item)
+            v2, q2 = coder_value(gate["c2"], flag["c2"], conf["c2"], item)
             lines += [
                 f"**`{item}`** — {LABELS.get(item, item)}",
                 "",
@@ -148,17 +157,18 @@ def render(index: int, row: pd.Series, gate: dict[str, dict], flag: dict[str, di
     else:
         lines += ["### No split codes — both coders agreed on every item", ""]
 
+    by_pass = {"gate": gate, "flags": flag, "conflation": conf}
     for who in uncertain:
         coder, _, which = who.partition(":")
-        doc = (gate if which == "gate" else flag)[coder]
+        doc = by_pass[which][coder]
         note = doc["uncertain_note"] or "(flagged uncertain with no note)"
         lines += [f"### {coder} flagged this uncertain in the {which} pass", "", note, ""]
 
     free = [
-        f"- {c}/{which}: {doc['free_text']}"
+        f"- {c}/{which}: {docs[c]['free_text']}"
         for c in ("c1", "c2")
-        for which, doc in (("gate", gate[c]), ("flags", flag[c]))
-        if doc["free_text"]
+        for which, docs in by_pass.items()
+        if docs[c]["free_text"]
     ]
     if free:
         lines += ["### Coders' notes", "", *free, ""]
@@ -192,7 +202,13 @@ def main() -> None:
             c: json.loads((RAW / f"flags_{c}" / f"{row['key']}.json").read_text(encoding="utf-8"))
             for c in ("c1", "c2")
         }
-        body.append(render(i, row, gate, flag))
+        conf = {
+            c: json.loads(
+                (RAW / f"conflation_{c}" / f"{row['key']}.json").read_text(encoding="utf-8")
+            )
+            for c in ("c1", "c2")
+        }
+        body.append(render(i, row, gate, flag, conf))
 
     OUT.write_text("\n".join(header) + "\n".join(body), encoding="utf-8")
     print(f"wrote {OUT.relative_to(ROOT)} — {len(pending)} works, {OUT.stat().st_size:,} bytes")

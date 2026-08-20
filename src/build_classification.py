@@ -5,12 +5,17 @@ independently — c1 by `claude-sonnet-5`, c2 by `claude-opus-5` — against
 `data/coding_protocol.md`, each coder seeing the protocol and one full text and
 nothing else.
 
-The codings arrive in two passes, and this script reads both. The **gate pass**
-(`coding_raw/<coder>/`) carries the E code, the instrument code and
+The codings arrive in three passes, and this script reads all three. The **gate
+pass** (`coding_raw/<coder>/`) carries the E code, the instrument code and
 `text_is_abstract`. The **flag pass** (`coding_raw/flags_<coder>/`) carries the R
-and C flags, re-coded after §12's amendments; a coder that never saw a rule
-cannot have applied it, so the flags were read again rather than patched. No
-amendment touches §3, so the gate pass stands as it is.
+flags, re-coded after §12's first set of amendments. The **conflation pass**
+(`coding_raw/conflation_<coder>/`) carries the C flags, the narrow C flags and
+`states_distinction`, re-coded after the second set, made on 2026-08-20.
+
+Each pass is read only for what it settles. The flag pass also holds conflation
+codings, made under the rules the second amendment replaced; they stay on disk as
+the reading they were and are not read here. A coder that never saw a rule cannot
+have applied it, and no amendment has ever touched §3, so the gate pass stands.
 
 Where the coders agree, the agreed value is written to the `*_final` column and
 the row is not adjudicated: there is nothing for the author to rule on. Where
@@ -84,11 +89,9 @@ GATE_KEYS = {
     "free_text",
 }
 
-FLAG_KEYS = {
+CONFLATION_KEYS = {
     "key",
     "coder",
-    "roles",
-    "role_quotes",
     "conflation",
     "conflation_quotes",
     "conflation_narrow",
@@ -100,6 +103,8 @@ FLAG_KEYS = {
     "uncertain_note",
     "free_text",
 }
+
+FLAG_KEYS = CONFLATION_KEYS | {"roles", "role_quotes"}
 
 
 class SchemaError(ValueError):
@@ -173,50 +178,76 @@ def validate_flags(doc: dict, key: str, coder: str) -> None:
     the omission it is.
     """
     where = _check_identity(doc, key, coder, FLAG_KEYS)
+    _check_boolean_map(doc, where, "roles", R_FLAGS)
+    _check_quotes(doc, where, "role_quotes", "roles", R_FLAGS)
+    _check_conflation_fields(doc, where)
 
-    for field, flags in (
-        ("roles", R_FLAGS),
-        ("conflation", C_FLAGS),
-        ("conflation_narrow", NARROW_FLAGS),
-    ):
-        got = doc[field]
-        if not isinstance(got, dict) or set(got) != set(flags):
-            raise SchemaError(f"{where}: {field} must set exactly {list(flags)}")
-        if not all(isinstance(v, bool) for v in got.values()):
-            raise SchemaError(f"{where}: {field} values must be booleans")
+
+def _check_boolean_map(doc: dict, where: str, field: str, flags: tuple[str, ...]) -> None:
+    got = doc[field]
+    if not isinstance(got, dict) or set(got) != set(flags):
+        raise SchemaError(f"{where}: {field} must set exactly {list(flags)}")
+    if not all(isinstance(v, bool) for v in got.values()):
+        raise SchemaError(f"{where}: {field} values must be booleans")
+
+
+def _check_quotes(doc: dict, where: str, field: str, source: str, flags: tuple[str, ...]) -> None:
+    for flag in flags:
+        if flag == "c0" or not doc[source][flag]:
+            continue
+        if not normalise_quote(doc[field].get(flag)):
+            raise SchemaError(f"{where}: {flag} set without a quote in {field}")
+
+
+def _check_conflation_fields(doc: dict, where: str) -> None:
+    """The checks the conflation fields carry, in whichever pass produced them."""
+    for field, flags in (("conflation", C_FLAGS), ("conflation_narrow", NARROW_FLAGS)):
+        _check_boolean_map(doc, where, field, flags)
 
     conf = doc["conflation"]
     if conf["c0"] == any(conf[f] for f in ("c1", "c2", "c3")):
         raise SchemaError(f"{where}: c0 must be true exactly when C1-C3 are all false")
 
-    # The narrow reading is a subset of the wide one: a statement that names the
-    # vendor's test is also a statement about the vendor.
+    # The narrow reading is a subset of the wide one: a work that never names the
+    # vendor cannot conflate more under the narrow arm than under the wide one.
     for flag in NARROW_FLAGS:
         if doc["conflation_narrow"][flag] and not conf[flag]:
             raise SchemaError(f"{where}: narrow {flag} set while wide {flag} is not")
 
-    for field, source, flags in (
-        ("role_quotes", "roles", R_FLAGS),
-        ("conflation_quotes", "conflation", C_FLAGS),
-    ):
-        for flag in flags:
-            if flag == "c0" or not doc[source][flag]:
-                continue
-            if not normalise_quote(doc[field].get(flag)):
-                raise SchemaError(f"{where}: {flag} set without a quote in {field}")
+    _check_quotes(doc, where, "conflation_quotes", "conflation", C_FLAGS)
 
     for field in ("states_distinction", "third_party_conflation"):
         if doc[field] and not normalise_quote(doc[f"{field}_quote"]):
             raise SchemaError(f"{where}: {field} set without a quote")
 
 
-def load(key: str, coder: str, *, flags: bool) -> dict:
-    directory = RAW / (f"flags_{coder}" if flags else coder)
-    path = directory / f"{key}.json"
+def validate_conflation(doc: dict, key: str, coder: str) -> None:
+    """Reject a conflation coding that carries roles it was told not to code.
+
+    A stray `roles` map would be silently dropped, which would hide a reading a
+    coder actually made rather than record it — the same failure a missing flag
+    would be, in the other direction.
+    """
+    where = _check_identity(doc, key, coder, CONFLATION_KEYS)
+    if stray := {"roles", "role_quotes"} & set(doc):
+        raise SchemaError(f"{where}: the conflation pass must not carry {sorted(stray)}")
+    _check_conflation_fields(doc, where)
+
+
+PASSES = {
+    "gate": (lambda coder: coder, validate_gate),
+    "flags": (lambda coder: f"flags_{coder}", validate_flags),
+    "conflation": (lambda coder: f"conflation_{coder}", validate_conflation),
+}
+
+
+def load(key: str, coder: str, pass_: str) -> dict:
+    directory, validate = PASSES[pass_]
+    path = RAW / directory(coder) / f"{key}.json"
     if not path.exists():
-        raise FileNotFoundError(f"no {'flag' if flags else 'gate'} coding for {coder}/{key}")
+        raise FileNotFoundError(f"no {pass_} coding for {coder}/{key}")
     doc = json.loads(path.read_text(encoding="utf-8"))
-    (validate_flags if flags else validate_gate)(doc, key, coder)
+    validate(doc, key, coder)
     return doc
 
 
@@ -308,9 +339,16 @@ def apply_rulings(row: dict, rulings: dict[str, tuple[object, str]]) -> dict:
     return row
 
 
-def build_row(key: str, meta: pd.Series, gate: dict[str, dict], flag: dict[str, dict]) -> dict:
+def build_row(
+    key: str,
+    meta: pd.Series,
+    gate: dict[str, dict],
+    flag: dict[str, dict],
+    conf: dict[str, dict],
+) -> dict:
     g1, g2 = gate["c1"], gate["c2"]
     f1, f2 = flag["c1"], flag["c2"]
+    k1, k2 = conf["c1"], conf["c2"]
     contested: list[str] = []
 
     row: dict[str, object] = {
@@ -358,35 +396,35 @@ def build_row(key: str, meta: pd.Series, gate: dict[str, dict], flag: dict[str, 
             contested.append(flag_name)
 
     for flag_name in C_FLAGS:
-        row[f"{flag_name}_c1"] = f1["conflation"][flag_name]
-        row[f"{flag_name}_c2"] = f2["conflation"][flag_name]
-        final = agree(f1["conflation"][flag_name], f2["conflation"][flag_name])
+        row[f"{flag_name}_c1"] = k1["conflation"][flag_name]
+        row[f"{flag_name}_c2"] = k2["conflation"][flag_name]
+        final = agree(k1["conflation"][flag_name], k2["conflation"][flag_name])
         row[f"{flag_name}_final"] = "" if final is None else final
         if final is None:
             contested.append(flag_name)
 
     for flag_name in NARROW_FLAGS:
         col = f"narrow_{flag_name}"
-        row[f"{col}_c1"] = f1["conflation_narrow"][flag_name]
-        row[f"{col}_c2"] = f2["conflation_narrow"][flag_name]
-        final = agree(f1["conflation_narrow"][flag_name], f2["conflation_narrow"][flag_name])
+        row[f"{col}_c1"] = k1["conflation_narrow"][flag_name]
+        row[f"{col}_c2"] = k2["conflation_narrow"][flag_name]
+        final = agree(k1["conflation_narrow"][flag_name], k2["conflation_narrow"][flag_name])
         row[f"{col}_final"] = "" if final is None else final
         if final is None:
             contested.append(col)
 
     for field in ("states_distinction",):
-        row[f"{field}_c1"] = f1[field]
-        row[f"{field}_c2"] = f2[field]
-        final = agree(f1[field], f2[field])
+        row[f"{field}_c1"] = k1[field]
+        row[f"{field}_c2"] = k2[field]
+        final = agree(k1[field], k2[field])
         row[f"{field}_final"] = "" if final is None else final
         if final is None:
             contested.append(field)
 
     # Recorded, never rated (§6): no final column, no contested entry.
-    row["third_party_conflation_c1"] = f1["third_party_conflation"]
-    row["third_party_conflation_c2"] = f2["third_party_conflation"]
+    row["third_party_conflation_c1"] = k1["third_party_conflation"]
+    row["third_party_conflation_c2"] = k2["third_party_conflation"]
     row["third_party_conflation_quote"] = " || ".join(
-        q for f in (f1, f2) if (q := normalise_quote(f["third_party_conflation_quote"]))
+        q for k in (k1, k2) if (q := normalise_quote(k["third_party_conflation_quote"]))
     )
 
     abstract_final = agree(g1["text_is_abstract"], g2["text_is_abstract"])
@@ -402,28 +440,31 @@ def build_row(key: str, meta: pd.Series, gate: dict[str, dict], flag: dict[str, 
     row["quote_conflation"] = " || ".join(
         q
         for f in ("c1", "c2", "c3")
-        if row[f"{f}_final"] is True and (q := normalise_quote(f1["conflation_quotes"].get(f)))
+        if row[f"{f}_final"] is True and (q := normalise_quote(k1["conflation_quotes"].get(f)))
     )
     row["quote_states_distinction"] = (
-        normalise_quote(f1["states_distinction_quote"])
+        normalise_quote(k1["states_distinction_quote"])
         if row["states_distinction_final"] is True
         else ""
     )
 
+    def passes(coder: str):
+        return ("gate", gate[coder]), ("flags", flag[coder]), ("conflation", conf[coder])
+
     uncertain = sorted(
-        {f"{c}:{pass_}" for c in CODERS for pass_, d in (("gate", gate[c]), ("flags", flag[c])) if d["uncertain"]}
+        {f"{c}:{p}" for c in CODERS for p, d in passes(c) if d["uncertain"]}
     )
     row["uncertain_by"] = ",".join(uncertain)
     row["uncertain_note"] = " || ".join(
-        f"{c}/{pass_}: {d['uncertain_note']}"
+        f"{c}/{p}: {d['uncertain_note']}"
         for c in CODERS
-        for pass_, d in (("gate", gate[c]), ("flags", flag[c]))
+        for p, d in passes(c)
         if d["uncertain"] and d["uncertain_note"]
     )
     row["free_text"] = " || ".join(
-        f"{c}/{pass_}: {d['free_text']}"
+        f"{c}/{p}: {d['free_text']}"
         for c in CODERS
-        for pass_, d in (("gate", gate[c]), ("flags", flag[c]))
+        for p, d in passes(c)
         if d["free_text"]
     )
     row["contested"] = ",".join(contested)
@@ -441,12 +482,15 @@ def main() -> None:
     rows, missing = [], []
     for key in keys:
         try:
-            gate = {c: load(key, c, flags=False) for c in CODERS}
-            flag = {c: load(key, c, flags=True) for c in CODERS}
+            gate = {c: load(key, c, "gate") for c in CODERS}
+            flag = {c: load(key, c, "flags") for c in CODERS}
+            conf = {c: load(key, c, "conflation") for c in CODERS}
         except FileNotFoundError as exc:
             missing.append(str(exc))
             continue
-        rows.append(apply_rulings(build_row(key, log.loc[key], gate, flag), rulings.get(key, {})))
+        rows.append(
+            apply_rulings(build_row(key, log.loc[key], gate, flag, conf), rulings.get(key, {}))
+        )
 
     unknown = set(rulings) - set(keys)
     if unknown:
@@ -456,6 +500,13 @@ def main() -> None:
         print(f"not yet coded ({len(missing)}):")
         for m in missing:
             print(f"  {m}")
+
+    if not rows:
+        # Mid-pass this is the normal state, and writing would replace a good
+        # file with an empty one — the loss would look like a successful run.
+        raise SchemaError(
+            f"no work could be assembled from all three passes; {OUT.name} left as it was"
+        )
 
     frame = pd.DataFrame(rows)
     frame.to_csv(OUT, index=False)

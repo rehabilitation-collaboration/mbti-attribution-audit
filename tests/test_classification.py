@@ -20,6 +20,7 @@ from build_classification import (
     SchemaError,
     build_row,
     normalise_quote,
+    validate_conflation,
     validate_flags,
     validate_gate,
 )
@@ -46,12 +47,10 @@ def gate(coder: str = "c1", **overrides) -> dict:
     return doc
 
 
-def flags(coder: str = "c1", **overrides) -> dict:
+def conflation(coder: str = "c1", **overrides) -> dict:
     doc = {
         "key": "w1",
         "coder": coder,
-        "roles": {f"r{i}": False for i in range(1, 8)} | {"r1": True},
-        "role_quotes": {"r1": "the NERIS Type Explorer — Methods"},
         "conflation": {"c0": True, "c1": False, "c2": False, "c3": False},
         "conflation_quotes": {},
         "conflation_narrow": {"c1": False, "c2": False, "c3": False},
@@ -67,15 +66,26 @@ def flags(coder: str = "c1", **overrides) -> dict:
     return doc
 
 
+def flags(coder: str = "c1", **overrides) -> dict:
+    """The second pass, which carries the roles and the conflation reading it replaced."""
+    doc = conflation(coder) | {
+        "roles": {f"r{i}": False for i in range(1, 8)} | {"r1": True},
+        "role_quotes": {"r1": "the NERIS Type Explorer — Methods"},
+    }
+    doc.update(overrides)
+    return doc
+
+
 META = pd.Series(
     {"doi": "10.1/x", "title": "A work", "work_venue_class": "journal_article"}, name="w1"
 )
 
 
-def row_for(gate_docs=None, flag_docs=None) -> dict:
+def row_for(gate_docs=None, flag_docs=None, conf_docs=None) -> dict:
     gate_docs = gate_docs or {c: gate(c) for c in ("c1", "c2")}
     flag_docs = flag_docs or {c: flags(c) for c in ("c1", "c2")}
-    return build_row("w1", META, gate_docs, flag_docs)
+    conf_docs = conf_docs or {c: conflation(c) for c in ("c1", "c2")}
+    return build_row("w1", META, gate_docs, flag_docs, conf_docs)
 
 
 # --- quote shapes ---------------------------------------------------------
@@ -194,6 +204,34 @@ def test_third_party_conflation_without_a_quote_is_rejected():
         validate_flags(flags(third_party_conflation=True), "w1", "c1")
 
 
+# --- conflation schema, the third pass ------------------------------------
+
+
+def test_valid_conflation_passes():
+    validate_conflation(conflation(), "w1", "c1")
+
+
+def test_the_conflation_pass_carries_the_same_checks():
+    doc = conflation()
+    doc["conflation_narrow"]["c3"] = True
+    with pytest.raises(SchemaError, match="narrow c3 set while wide c3 is not"):
+        validate_conflation(doc, "w1", "c1")
+
+
+def test_roles_in_the_conflation_pass_are_rejected_not_ignored():
+    """A coder told not to code roles who codes them anyway must not be silently dropped."""
+    doc = conflation() | {"roles": {f"r{i}": False for i in range(1, 8)}}
+    with pytest.raises(SchemaError, match="must not carry"):
+        validate_conflation(doc, "w1", "c1")
+
+
+def test_a_conflation_file_missing_a_field_is_rejected():
+    doc = conflation()
+    del doc["states_distinction"]
+    with pytest.raises(SchemaError, match="missing keys"):
+        validate_conflation(doc, "w1", "c1")
+
+
 # --- assembly -------------------------------------------------------------
 
 
@@ -235,25 +273,55 @@ def test_r7_disagreement_is_contested():
 
 
 def test_narrow_and_wide_are_scored_separately():
-    wide_only = copy.deepcopy(flags("c1"))
+    wide_only = copy.deepcopy(conflation("c1"))
     wide_only["conflation"] = {"c0": False, "c1": True, "c2": False, "c3": False}
     wide_only["conflation_quotes"] = {"c1": "the MBTI dimensions — Table 2"}
     both = copy.deepcopy(wide_only)
     both["coder"] = "c2"
     both["conflation_narrow"]["c1"] = True
-    row = row_for(flag_docs={"c1": wide_only, "c2": both})
+    row = row_for(conf_docs={"c1": wide_only, "c2": both})
     assert row["c1_final"] is True
     assert row["narrow_c1_final"] == ""
     assert row["contested"] == "narrow_c1"
 
 
 def test_third_party_conflation_is_recorded_but_never_contested():
-    c2 = flags("c2", third_party_conflation=True, third_party_conflation_quote="Humanmetrics — §3.3")
-    row = row_for(flag_docs={"c1": flags("c1"), "c2": c2})
+    c2 = conflation(
+        "c2", third_party_conflation=True, third_party_conflation_quote="Humanmetrics — §3.3"
+    )
+    row = row_for(conf_docs={"c1": conflation("c1"), "c2": c2})
     assert row["third_party_conflation_c2"] is True
     assert "third_party_conflation" not in row["contested"]
     assert "third_party_conflation_final" not in row
     assert row["needs_adjudication"] is False
+
+
+def test_the_conflation_pass_supplies_the_c_flags_and_the_flag_pass_does_not():
+    """The failure this exists to prevent: reading a C flag the amendments replaced.
+
+    The second pass still holds conflation codings, made under the rules
+    2026-08-20 replaced. They stay on disk as the reading they were; the row must
+    come from the third pass.
+    """
+    stale = copy.deepcopy(flags("c1"))
+    stale["conflation"] = {"c0": False, "c1": True, "c2": True, "c3": False}
+    stale["conflation_quotes"] = {"c1": "under the old rule", "c2": "under the old rule"}
+
+    row = row_for(flag_docs={"c1": stale, "c2": copy.deepcopy(stale) | {"coder": "c2"}})
+    assert row["c1_final"] is False
+    assert row["c2_final"] is False
+    assert row["c0_final"] is True
+
+
+def test_uncertainty_in_the_conflation_pass_forces_a_ruling():
+    k = {
+        "c1": conflation("c1"),
+        "c2": conflation("c2", uncertain=True, uncertain_note="§6 chain undecided"),
+    }
+    row = row_for(conf_docs=k)
+    assert row["contested"] == ""
+    assert row["needs_adjudication"] is True
+    assert "c2/conflation: §6 chain undecided" in row["uncertain_note"]
 
 
 def test_empty_sublabels_are_not_a_disagreement():

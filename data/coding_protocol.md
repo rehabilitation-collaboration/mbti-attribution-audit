@@ -310,11 +310,31 @@ site, and its proprietary content** — the Assertive/Turbulent axis, the
 Analyst/Diplomat/Sentinel/Explorer groupings, the branded type names. None of
 these exists in any published MBTI form, so a work that calls them "the MBTI
 dimensions" or "the MBTI Model" has attributed the vendor's material to the
-published instrument even if it never names the test. Reading §6 narrowly, on
+published instrument even if it never names the vendor. Reading §6 narrowly, on
 the test alone, would drop exactly those works — the ones careless enough to
-merge the content but careful enough not to name the source. **S7 (§11) reports
+merge the content but careful enough not to name the vendor. **S7 (§11) reports
 the narrow count alongside**, because the wide reading is the one that raises
 the rate.
+
+**The three kinds of proprietary content are a closed list, and the
+identification must come from the text.** Unlike §3.4's sub-labels and C3's
+adjectives, both of which are open, this enumeration is exhaustive: the
+Assertive/Turbulent axis, the four role groupings, the branded type names, and
+nothing else. In particular the vendor's aspect labels for the dichotomies the
+MBTI *does* have — Mind, Energy, Nature, Tactics — are a relabelling of existing
+content rather than content the MBTI lacks, and they are **outside** the flags.
+A coder may not certify from knowledge of the vendor's site that an unattributed
+phrase is the vendor's: the per-link verbatim rule cannot supply that
+identification and a reader cannot check it, which is the property §9 rests
+reproducibility on. Works that present the aspect labels as the MBTI's are
+**recorded in free text** and described in Discussion, without a rate.
+
+**What counts as naming the vendor** — for the narrow reading and for §11's S7 —
+is the vendor's **test or site**, identified in running prose, in a footnote, in
+a reference entry, or by a bare URL. Naming is assessed **per work**: a work that
+names the vendor anywhere is not one of the works S7 exists to exclude. This is
+§11's own wording, which excludes works rather than statements; it does not
+change which statements carry a flag, only which works the narrow arm keeps.
 
 **C3 is about standing, not uptake.** The four adjectives in the row are
 examples, not a closed list: "accurate", "reliable", "scientifically validated"
@@ -337,6 +357,23 @@ Jungian lineage in the Introduction has made the lineage claim about the vendor'
 test, by its own identification. §7's Koshiro row already works this way. The
 evidence rule is correspondingly stricter than a single-sentence rule would be:
 record the verbatim for **every link in the chain**, not for the conclusion.
+
+**A content-level identification carries only its own content.** §7's Koshiro row
+identifies the two at the **instrument** level — the vendor's test and the MBTI
+named as one thing — and a later claim about "the MBTI" then attaches to the
+vendor. Where a work's only identification is at the **content** level, the chain
+reaches no further than the content it identified. A work that presents the
+branded type names as the MBTI's, and elsewhere gives the MBTI a Jungian lineage,
+sets **C1 alone**: the lineage claim was never asserted of anything the work has
+identified with the vendor. Such a work sets C2 or C3 only where the derivation
+or standing predicate is asserted of that content itself. On the wider reading
+C2 and C3 would follow from C1 almost automatically, which is the independence
+the acronym rule above refuses.
+
+**Identity is not established by anaphora.** One definite description — "the
+test" — used first for the vendor's test and then, without re-anchoring, for the
+MBTI does not name the two as a single instrument. The chain rule propagates a
+claim once identity is established; it does not establish identity.
 
 **Flags are set per statement, not per work.** A work that explains the vendor
 adds an axis the MBTI lacks, and two sentences later calls it the MBTI, sets C1.
@@ -494,7 +531,7 @@ All are reported whether or not they change the conclusion.
 | **S4** | OpenAlex-only versus both sources |
 | **S5** | The widening word-form variant `"Type Explorer"`, which adds one work to the intersection in OpenAlex and none in Europe PMC |
 | **S6** | Exclude records whose retrieved text is a conference abstract (`text_is_abstract`, §3.6) |
-| **S7** | Conflation flags on the narrow reading — the vendor's *test* only, excluding works that attribute the vendor's proprietary content to the MBTI without naming the test (§6) |
+| **S7** | Conflation flags on the narrow reading — works that **name the vendor's test or site**, excluding works that attribute the vendor's proprietary content to the MBTI without naming the vendor at all. Naming is per work and counts prose, a footnote, a reference entry or a bare URL (§6) |
 
 ## 12. Changes after coding began
 
@@ -567,3 +604,60 @@ rule now in §2 rather than by re-coding.
 
 The proposals produced for the 35 split codes were **not applied**. They exist
 in the run record; the amended rules replace them.
+
+**2026-08-20 — §6 and §11, three questions the amended rules still did not
+answer. The 27 remaining split codes had been through a proposal round and the
+kappas were known; no R or C proportion had been computed, no instrument
+distribution had been computed, and neither has been since.** The 27 works
+carrying a split code were sent to proposers under §9, one agent per work, each
+seeing the protocol, one full text and the two codings. **22 of the 27 reported
+that the item in dispute is still not decided.** The reports collapse to seven
+questions, of which **five are downstream of Q3** — the amendment that widened
+the conflation flags to the vendor's proprietary content, and the only one that
+raised a rate. Q3 was adopted without stating its mechanics, and the corpus
+asked for them. Three are answered here; the other four are ruled case by case
+under §9 rather than legislated, because each occurs once or twice and a rule
+written for a single work is a decision wearing a rule's clothes.
+
+- **How far a content-level identification carries.** §6's chain rule was
+  written for identification at the instrument level and said nothing about the
+  content-level identification Q3 introduced. It now reaches only the content it
+  identified: such a work sets C1 alone unless the derivation or standing
+  predicate is asserted of that content. The wider reading would have made C2
+  and C3 follow from C1 almost automatically — the independence Q7 refused for
+  acronym expansion. Identity by unmarked anaphora is excluded for the same
+  reason. **Lowers C2 and C3.**
+- **Whether the list of proprietary content is closed.** §6 enumerated three
+  kinds and never said whether the list was exhaustive; two coders split on the
+  vendor's aspect labels for the dichotomies the MBTI does have (Mind, Energy,
+  Nature, Tactics). The list is now closed and those labels are outside it, on
+  two grounds: they relabel existing content rather than adding content the MBTI
+  lacks, and identifying them as the vendor's requires knowledge from outside
+  the text, which no located verbatim can carry and no reader can check. The
+  shape is recorded in free text and described without a rate. **Lowers the C
+  counts.**
+- **What counts as naming the vendor — a defect, not a choice.** §11's S7 row
+  excluded works that merge the content "without naming the test"; §6 described
+  the same excluded set as works "careful enough not to name the source" and
+  listed the site alongside the test. Those are different sets, and three works
+  sit between them, naming the vendor only by a footnoted URL or a reference
+  entry. Both sections now read the same — the vendor's test or site, in prose, a
+  footnote, a reference entry or a bare URL — and naming is assessed per work,
+  which is §11's own wording. **This moves the sensitivity arm and not the
+  headline.**
+
+**What this cost.** The C flags, the narrow C flags and `states_distinction` were
+coded again on all 61 works by both coders, 122 runs, for the reason §12 already
+records: a coder that never saw a rule cannot have applied it. **The R flags were
+not re-coded** — none of the three amendments touches §5 — and neither were the E
+gate and the instrument code.
+
+**A stopping rule, fixed here before the next round rather than after seeing
+it.** Two rounds have now reported gaps at 89% and 81%. If a third round reports
+at a materially similar rate, that is evidence the remaining disputes are
+irreducible rather than under-specified. At that point amendment stops, the
+narrow reading becomes the main analysis and the wide one the sensitivity arm,
+the remainder is ruled case by case, and the amendment history is reported in
+Methods as a property of the instrument rather than as a defect that was fixed.
+Fixing this now is the same discipline as §11 fixing the sensitivity arms in
+advance: it cannot become a way of finding a better number later.

@@ -10,18 +10,20 @@ Only pairs with no output yet are written, so re-running this after a coding
 round leaves finished work alone. A run whose coding was deliberately discarded
 is picked up again by that same rule.
 
-Two passes exist. The default fills `coder_brief.md`, which codes a work on all
-four steps. `--flags` fills `coder_brief_flags.md`, which re-codes the R and C
-flags alone against the rules amended in §12; its output goes to a separate
-directory so that the first pass's codings are not overwritten by a pass that
-does not produce them.
+Three passes exist, each writing to its own directory so that no pass overwrites
+codings it does not itself produce. The default fills `coder_brief.md`, which
+codes a work on all four steps. `--flags` fills `coder_brief_flags.md`, which
+re-codes the R and C flags against §12's first set of amendments. `--conflation`
+fills `coder_brief_conflation.md`, which re-codes the C flags alone against the
+second set, made on 2026-08-20; the R flags from the second pass stand, since
+none of those amendments touches §5.
 
 Usage
-    python src/make_assignments.py [--flags]
+    python src/make_assignments.py [--flags | --conflation]
 
 Outputs
-    coding_raw/assignments[_flags]/<coder>/<key>.md   git-ignored, regenerable
-    stdout                                            the launch list
+    coding_raw/assignments[_flags|_conflation]/<coder>/<key>.md   git-ignored
+    stdout                                                        the launch list
 """
 
 from __future__ import annotations
@@ -46,6 +48,11 @@ PASSES = {
         "brief": ROOT / "data" / "coder_brief_flags.md",
         "assignments": RAW / "assignments_flags",
         "output": lambda coder: RAW / f"flags_{coder}",
+    },
+    "conflation": {
+        "brief": ROOT / "data" / "coder_brief_conflation.md",
+        "assignments": RAW / "assignments_conflation",
+        "output": lambda coder: RAW / f"conflation_{coder}",
     },
 }
 
@@ -77,7 +84,7 @@ def fill(body: str, coder: str, work: pd.Series, out_dir: Path) -> str:
 
 
 def main() -> None:
-    which = "flags" if "--flags" in sys.argv else "full"
+    which = next((p for p in PASSES if f"--{p}" in sys.argv), "full")
     spec = PASSES[which]
     body = brief_body(spec["brief"])
     log = pd.read_csv(LOG).set_index("key")
