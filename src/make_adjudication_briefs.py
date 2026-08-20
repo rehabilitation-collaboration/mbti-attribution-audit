@@ -16,6 +16,11 @@ Only works with a split code get a brief. Where the coders agreed and one merely
 flagged the case uncertain, there is nothing to arbitrate — that is a report of
 a gap in the protocol, and it goes to the author as itself.
 
+The brief sends the proposer to both coding passes. The R and C flags were coded
+again after §12's amendments and live in `coding_raw/flags_<coder>/`; a proposer
+sent only to the gate pass would be asked about a flag the file it was given does
+not contain.
+
 Outputs
     coding_raw/adjudication_briefs/<key>.md   git-ignored, regenerable
     stdout                                    the launch list
@@ -43,10 +48,19 @@ LABELS = {
     "r4": "flag R4, the vendor cited as evidence of reliability or validity (§5)",
     "r5": "flag R5, the vendor cited as where labels were scraped or matched (§5)",
     "r6": "flag R6, the vendor named in passing with no claim resting on it (§5)",
+    "r7": "flag R7, the vendor as the object of study rather than a source (§5)",
     "c0": "flag C0, no conflation statement (§6)",
     "c1": "flag C1, conflation of identity (§6)",
     "c2": "flag C2, conflation of provenance (§6)",
     "c3": "flag C3, conflation of authority (§6)",
+    "narrow_c1": "flag C1 under the narrow reading — the vendor's test only, "
+    "excluding its proprietary content; reported as sensitivity arm S7 (§6, §11)",
+    "narrow_c2": "flag C2 under the narrow reading — the vendor's test only, "
+    "excluding its proprietary content; reported as sensitivity arm S7 (§6, §11)",
+    "narrow_c3": "flag C3 under the narrow reading — the vendor's test only, "
+    "excluding its proprietary content; reported as sensitivity arm S7 (§6, §11)",
+    "states_distinction": "whether the work also states the distinction between "
+    "the vendor's test and the MBTI (§6)",
 }
 
 TEMPLATE = """Every relative path below is relative to `{root}`.
@@ -57,10 +71,18 @@ author makes the ruling; you propose one and give the evidence it rests on
 
 Read, in this order:
 
-1. `data/coding_protocol.md` — the coding protocol.
+1. `data/coding_protocol.md` — the coding protocol. §12 lists the rules amended
+   after coding began; the amendments are already written into §2, §3.4, §5, §6,
+   §9 and §11, and §12 says which shape each one was written for.
 2. `fulltext/{key}.txt` — the full text of the work. Read the whole file,
    including the reference list.
-3. `coding_raw/c1/{key}.json` and `coding_raw/c2/{key}.json` — the two codings.
+3. The two codings, which arrived in two passes:
+   - `coding_raw/c1/{key}.json`, `coding_raw/c2/{key}.json` — the **gate pass**:
+     the E code, the instrument code and `text_is_abstract`.
+   - `coding_raw/flags_c1/{key}.json`, `coding_raw/flags_c2/{key}.json` — the
+     **flag pass**: the R flags, the C flags, the narrow C flags and
+     `states_distinction`, re-coded against the amended rules. For those items
+     this pass is the coding; the gate pass does not contain them.
 
 The work:
 
