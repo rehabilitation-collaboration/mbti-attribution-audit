@@ -16,10 +16,12 @@ Only works with a split code get a brief. Where the coders agreed and one merely
 flagged the case uncertain, there is nothing to arbitrate — that is a report of
 a gap in the protocol, and it goes to the author as itself.
 
-The brief sends the proposer to both coding passes. The R and C flags were coded
-again after §12's amendments and live in `coding_raw/flags_<coder>/`; a proposer
-sent only to the gate pass would be asked about a flag the file it was given does
-not contain.
+The brief sends the proposer to all three coding passes and says which items each
+one settles. Getting that wrong is the failure this file has already had twice: a
+proposer sent only to the gate pass is asked about a flag its files do not
+contain, and a proposer sent to the flag pass for a C item is handed a reading
+the 2026-08-20 amendments replaced — worse than a missing file, because it looks
+like an answer.
 
 Outputs
     coding_raw/adjudication_briefs/<key>.md   git-ignored, regenerable
@@ -76,13 +78,18 @@ Read, in this order:
    §9 and §11, and §12 says which shape each one was written for.
 2. `fulltext/{key}.txt` — the full text of the work. Read the whole file,
    including the reference list.
-3. The two codings, which arrived in two passes:
+3. The two codings, which arrived in three passes. Each pass settles some items
+   and is read only for those:
    - `coding_raw/c1/{key}.json`, `coding_raw/c2/{key}.json` — the **gate pass**:
      the E code, the instrument code and `text_is_abstract`.
    - `coding_raw/flags_c1/{key}.json`, `coding_raw/flags_c2/{key}.json` — the
-     **flag pass**: the R flags, the C flags, the narrow C flags and
-     `states_distinction`, re-coded against the amended rules. For those items
-     this pass is the coding; the gate pass does not contain them.
+     **flag pass**: the **R flags**. 🔴 This file also holds conflation codings
+     made under rules the 2026-08-20 amendments replaced. **Do not read them for
+     a C item.** They stay on disk as the reading they were.
+   - `coding_raw/conflation_c1/{key}.json`, `coding_raw/conflation_c2/{key}.json`
+     — the **conflation pass**: the **C flags, the narrow C flags and
+     `states_distinction`**, coded against §6 and §11 as amended. For those items
+     this pass is the coding.
 
 The work:
 
