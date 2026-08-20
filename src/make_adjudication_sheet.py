@@ -74,6 +74,8 @@ key,item,ruling,reasoning
   `instrument_sublabel`, `r1`-`r7`, `c0`-`c3`, `narrow_c1`-`narrow_c3`,
   `states_distinction`, `text_is_abstract`.
 - `ruling` — `true`/`false` for a flag, the code itself for E and instrument.
+- `reasoning` — write it however you like. **Commas are fine and you do not need
+  quotes**: everything after the third comma is read as the reasoning.
 - A work flagged uncertain with no split code needs a row only if you are
   changing something; otherwise the flag is discharged by your having read it.
 

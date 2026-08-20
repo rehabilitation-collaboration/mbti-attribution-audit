@@ -47,6 +47,7 @@ Inputs beyond the codings
 
 from __future__ import annotations
 
+import csv
 import json
 from pathlib import Path
 
@@ -292,20 +293,36 @@ def load_rulings() -> dict[str, dict[str, tuple[object, str]]]:
     """
     if not RULINGS.exists():
         return {}
-    frame = pd.read_csv(RULINGS).fillna("")
-    required = {"key", "item", "ruling", "reasoning"}
-    if not required.issubset(frame.columns):
-        raise SchemaError(f"{RULINGS.name} needs columns {sorted(required)}")
+
+    rows = list(csv.reader(RULINGS.read_text(encoding="utf-8").splitlines()))
+    rows = [r for r in rows if any(field.strip() for field in r)]
+    if not rows:
+        return {}
+
+    header = [h.strip().lower() for h in rows[0]]
+    required = ["key", "item", "ruling", "reasoning"]
+    if header[:4] != required:
+        raise SchemaError(
+            f"{RULINGS.name}: the first line must be exactly "
+            f"'key,item,ruling,reasoning' — got {','.join(header) or '(empty)'}"
+        )
 
     rulings: dict[str, dict[str, tuple[object, str]]] = {}
-    for _, row in frame.iterrows():
-        key, item = str(row["key"]).strip(), str(row["item"]).strip()
+    for n, row in enumerate(rows[1:], start=2):
+        if len(row) < 4:
+            raise SchemaError(
+                f"{RULINGS.name} line {n}: needs four fields "
+                f"(key, item, ruling, reasoning), found {len(row)}: {','.join(row)!r}"
+            )
+        # Reasoning is prose and will contain commas. Anything after the third
+        # comma belongs to it, whether or not the author remembered to quote it —
+        # unquoted commas used to shift the columns and surface far downstream as
+        # a ruling on a work that does not exist.
+        key, item, ruling = (field.strip() for field in row[:3])
+        reasoning = ",".join(row[3:]).strip()
         if not key or not item:
             continue
-        rulings.setdefault(key, {})[item] = (
-            parse_ruling(item, row["ruling"]),
-            str(row["reasoning"]).strip(),
-        )
+        rulings.setdefault(key, {})[item] = (parse_ruling(item, ruling), reasoning)
     return rulings
 
 

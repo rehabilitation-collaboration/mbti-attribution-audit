@@ -478,6 +478,62 @@ def test_a_ruling_on_the_abstract_test_lands_in_its_published_column():
     assert ruled["needs_adjudication"] is False
 
 
+def test_a_comma_in_the_reasoning_does_not_shift_the_columns(tmp_path, monkeypatch):
+    """The failure this exists to prevent: prose eating the author's ruling.
+
+    Reasoning is hand-typed free text and will contain commas. Read as a plain
+    four-column CSV, the extra fields shifted the columns and the run died several
+    steps later complaining about a ruling on a work that does not exist — a
+    message that names neither the line nor the comma.
+    """
+    import build_classification as bc
+
+    path = tmp_path / "adjudications.csv"
+    path.write_text(
+        "key,item,ruling,reasoning\n"
+        "w1,r3,true,the note names Mind, Energy, Nature and Tactics, but cites nobody\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(bc, "RULINGS", path)
+
+    rulings = bc.load_rulings()
+    value, reasoning = rulings["w1"]["r3"]
+    assert value is True
+    assert reasoning == "the note names Mind, Energy, Nature and Tactics, but cites nobody"
+
+
+def test_a_quoted_reasoning_field_is_read_the_same_way(tmp_path, monkeypatch):
+    import build_classification as bc
+
+    path = tmp_path / "adjudications.csv"
+    path.write_text(
+        'key,item,ruling,reasoning\nw1,c2,false,"names the MBTI\'s standing, not the vendor\'s"\n',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(bc, "RULINGS", path)
+    assert bc.load_rulings()["w1"]["c2"][1] == "names the MBTI's standing, not the vendor's"
+
+
+def test_a_short_ruling_row_is_named_by_line_number(tmp_path, monkeypatch):
+    import build_classification as bc
+
+    path = tmp_path / "adjudications.csv"
+    path.write_text("key,item,ruling,reasoning\nw1,r3,true\n", encoding="utf-8")
+    monkeypatch.setattr(bc, "RULINGS", path)
+    with pytest.raises(SchemaError, match="line 2: needs four fields"):
+        bc.load_rulings()
+
+
+def test_a_wrong_ruling_header_says_what_it_wanted(tmp_path, monkeypatch):
+    import build_classification as bc
+
+    path = tmp_path / "adjudications.csv"
+    path.write_text("work,flag,value,why\nw1,r3,true,because\n", encoding="utf-8")
+    monkeypatch.setattr(bc, "RULINGS", path)
+    with pytest.raises(SchemaError, match="must be exactly"):
+        bc.load_rulings()
+
+
 def test_boolean_rulings_are_parsed_and_bad_ones_rejected():
     from build_classification import parse_ruling
 
