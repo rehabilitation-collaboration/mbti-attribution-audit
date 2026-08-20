@@ -76,6 +76,9 @@ key,item,ruling,reasoning
 - `ruling` — `true`/`false` for a flag, the code itself for E and instrument.
 - `reasoning` — write it however you like. **Commas are fine and you do not need
   quotes**: everything after the third comma is read as the reasoning.
+  🔴 **One ruling is one line.** Do not press Enter inside a reason: the file is
+  read line by line, so a reason split across two lines becomes two rows, and the
+  second one has too few fields to be a ruling.
 - A work flagged uncertain with no split code needs a row only if you are
   changing something; otherwise the flag is discharged by your having read it.
 

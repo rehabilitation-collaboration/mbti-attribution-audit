@@ -49,7 +49,9 @@ are advice, and `neither` means the proposer thinks both coders are wrong.
 
 To accept a row, copy it into `data/adjudications.csv` as
 `key,item,ruling,reasoning`. To reject one, write your own value instead, or
-leave the item out and rule it from `coding_raw/adjudication.md`.
+leave the item out and rule it from `coding_raw/adjudication.md`. Commas in a
+reason are fine and need no quotes, but 🔴 **one ruling is one line** — a reason
+broken across two lines is read as two rows, and the second is not a ruling.
 
 🔴 **Where a work carries a `protocol gap` note, the proposer is saying the
 protocol does not decide the item and its value is a reading, not a derivation.**
