@@ -1,0 +1,246 @@
+/* Plain page. The reading is the work; the page should not add any of its own. */
+
+body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+  color: #1a1a1a;
+  font: 16px/1.75 -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+}
+
+h1 { font-size: 21px; margin: 0 0 14px; }
+h2 { font-size: 17px; margin: 40px 0 2px; padding-top: 18px; border-top: 2px solid #333; }
+h3 { font-size: 15px; margin: 26px 0 6px; }
+
+code, input { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+a { color: #0b5fa5; }
+
+/* the explainer that has to work for someone who does not read the protocol */
+
+.intro { border: 1px solid #ddd; border-radius: 8px; padding: 4px 22px 22px; background: #fafafa; }
+.intro h2.plain {
+  font-size: 17px;
+  margin: 26px 0 8px;
+  padding: 0;
+  border: 0;
+  border-bottom: 2px solid #33415c;
+  padding-bottom: 4px;
+}
+.intro h3.plain { font-size: 14.5px; margin: 18px 0 4px; color: #33415c; }
+.intro p { margin: 8px 0; }
+.intro ul, .intro ol { margin: 8px 0; padding-left: 24px; }
+.intro li { margin: 3px 0; }
+.intro table { border-collapse: collapse; width: 100%; margin: 6px 0; font-size: 14.5px; }
+.intro td { border: 1px solid #ddd; padding: 5px 10px; vertical-align: top; }
+.intro td:first-child { width: 130px; white-space: nowrap; background: #f0f0ee; }
+.intro .small { font-size: 13.5px; color: #5c5c5c; }
+.intro .warn { color: #b3261e; }
+.intro b.hot { color: #b3261e; }
+
+.toc { margin: 28px 0 8px; font-size: 14.5px; }
+.toc b { display: block; margin: 14px 0 4px; }
+.toc ol { margin: 0; padding-left: 26px; }
+.toc li { margin: 1px 0; }
+
+.meta { font-size: 13.5px; color: #5c5c5c; margin: 2px 0 10px; }
+
+.gap {
+  border-left: 3px solid #b3261e;
+  background: #fdf3f2;
+  padding: 10px 14px;
+  margin: 10px 0;
+  white-space: pre-wrap;
+}
+.gap b { color: #b3261e; }
+
+/* one reading: who said what, and the button that takes it */
+
+.said {
+  border-left: 3px solid #ccc;
+  padding: 4px 0 4px 12px;
+  margin: 8px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.said .body { flex: 1; min-width: 0; }
+.said .who { font-weight: 700; font-size: 14px; display: block; margin-bottom: 4px; }
+.said .text { white-space: pre-wrap; }
+.said .lab {
+  font-size: 11.5px;
+  color: #8a8a8a;
+  letter-spacing: .04em;
+  margin-top: 6px;
+}
+.said .lab:first-of-type { margin-top: 0; }
+
+h3 .key {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: #8a8a8a;
+  margin-top: 1px;
+}
+.said.c1 { border-left-color: #0b5fa5; }
+.said.c1 .who { color: #0b5fa5; }
+.said.c2 { border-left-color: #8a4b00; }
+.said.c2 .who { color: #8a4b00; }
+.said.p { border-left-color: #33415c; background: #f7f8fb; }
+.said.p .who { color: #33415c; }
+
+.val { background: #f0f0ee; padding: 1px 6px; border-radius: 4px; }
+
+.ruling { margin: 10px 0 0 15px; }
+
+.ruling label { font-size: 13.5px; color: #5c5c5c; }
+
+.ruling > input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  margin-top: 2px;
+}
+
+.own {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #5c5c5c;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.own input {
+  padding: 4px 8px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+button {
+  font: inherit;
+  font-size: 12.5px;
+  white-space: nowrap;
+  padding: 4px 10px;
+  border: 1px solid #33415c;
+  border-radius: 4px;
+  background: #fff;
+  color: #33415c;
+  cursor: pointer;
+}
+button:hover { background: #33415c; color: #fff; }
+button.done { background: #1b6b3a; border-color: #1b6b3a; color: #fff; }
+button.wait { background: #b3261e; border-color: #b3261e; color: #fff; }
+
+.ruling > input.need, .own input.need {
+  border-color: #b3261e;
+  background: #fdf3f2;
+}
+
+.note { margin: 12px 0; }
+.note > b { font-size: 13.5px; color: #5c5c5c; }
+.note .text { white-space: pre-wrap; }
+
+details { margin: 10px 0; }
+details summary { cursor: pointer; color: #5c5c5c; font-size: 13.5px; }
+details .text { white-space: pre-wrap; margin: 8px 0; font-size: 14.5px; }
+
+/* the English the Japanese was made from, kept one click away */
+details.orig { margin: 5px 0 0; }
+details.orig summary { font-size: 12px; color: #9a9a9a; }
+.text.en, .text.ja {
+  color: #666;
+  font-size: 14px;
+  border-left: 2px solid #e0e0e0;
+  padding-left: 10px;
+  margin: 5px 0 0;
+}
+
+.watch {
+  font-size: 13px;
+  color: #b3261e;
+  background: #fdf3f2;
+  border-left: 3px solid #b3261e;
+  padding: 5px 10px;
+  margin: 4px 0 10px;
+}
+
+.item.settled { background: #f4faf6; border-radius: 8px; padding: 2px 12px 8px; }
+
+button.chosen { background: #1b6b3a; border-color: #1b6b3a; color: #fff; }
+button.chosen:hover { background: #1b6b3a; }
+
+.decided {
+  margin: 10px 0 0 15px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12.5px;
+  background: #1f2430;
+  color: #e8e8e8;
+  padding: 8px 12px;
+  border-radius: 5px;
+  word-break: break-all;
+}
+
+.after { margin: 8px 0 0 15px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.after .hint { font-size: 12px; color: #8a8a8a; }
+.item:not(.settled) .after .undo { display: none; }
+.item:not(.settled) .after .hint { display: none; }
+
+footer {
+  position: sticky;
+  bottom: 0;
+  background: rgba(253, 253, 252, 0.97);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid #ccc;
+  padding: 12px 0;
+  margin-top: 40px;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+footer .counts { font-size: 13.5px; color: #5c5c5c; }
+footer button { font-size: 13.5px; padding: 6px 12px; }
+footer button.primary { background: #33415c; color: #fff; }
+footer button:disabled { opacity: .4; cursor: default; }
+footer button:disabled:hover { background: #fff; color: #33415c; }
+footer button.primary:disabled:hover { background: #33415c; color: #fff; }
+
+.toast {
+  position: fixed;
+  bottom: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a1a;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s;
+  z-index: 20;
+}
+.toast.show { opacity: 1; }
+
+.mirror {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #33415c;
+  background: #f7f8fb;
+  border: 1px solid #e3e6ee;
+  border-radius: 5px;
+  padding: 7px 11px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.readonly { font-size: 13.5px; color: #5c5c5c; margin: 6px 0 0 }

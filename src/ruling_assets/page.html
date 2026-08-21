@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>裁定シート — MBTI attribution audit</title>
+<style>
+<!--CSS-->
+</style>
+</head>
+<body>
+
+<h1>裁定シート</h1>
+
+<div class="intro">
+
+<h2 class="plain">① この研究は何をしてるか</h2>
+
+<p>「MBTI で性格を調べました」と書いてある論文を <b><!--CORPUS--> 本</b>集めた。
+けど、実際に使われた道具は同じとは限らん。3 つに分かれる。</p>
+
+<ul>
+  <li><b>(a) 16Personalities</b> — 無料のウェブサイト。MBTI とは<b>別物</b></li>
+  <li><b>(b) 本物の MBTI</b> — 出版された検査用紙（Form M、Step I など）</li>
+  <li><b>(c) 書いてない</b> — 何を使ったか論文から特定できひん</li>
+</ul>
+
+<p>これを 1 本ずつ仕分けて、
+<b>「MBTI と名乗ってる論文のうち、実は MBTI やないものが何％あるか」</b>を数える論文を書く。
+これが第10弾。</p>
+
+<h2 class="plain">② いま何がどうなってるか</h2>
+
+<p>仕分けは <b>AI 2 体</b>にやらせた。<b>c1 = sonnet</b> と <b>c2 = opus</b>。
+互いの答えは見せてへん（見せたら一致して当たり前になるから）。
+1 本の論文につき <b>19 項目</b>を、それぞれ独立に判定させた。</p>
+
+<ul>
+  <li>2 体の答えが<b>合った項目</b> → そのまま確定。もう触らへん</li>
+  <li>2 体の答えが<b>割れた項目</b> → <b class="hot"><!--ITEMS--> 項目</b>。これが今回の仕事</li>
+  <li>AI が「規則がこの場合を決めてへん」と<b>手を挙げた作品</b> → <b><!--READONLY--> 本</b>。読むだけでええ</li>
+</ul>
+
+<h2 class="plain">③ なんで AI やなくて人間が決めるんか</h2>
+
+<p>この研究の規則（<code>coding_protocol.md</code> の <b>§9</b>）に、
+<b>「割れた分を決めるのは著者」</b>と<b>コーディングを始める前に</b>書いてある。</p>
+
+<p>理由は、AI が判定した結果の食い違いを AI が決めてしもたら、
+<b>「AI が出した答えを AI が正しいと言った」</b>だけになって、数字の意味が消えるから。
+AI にできるのは<b>「こう読むべきちゃうか」と提案するとこまで</b>。
+ここに出てる「提案」は、その提案やねん。<b>採用してもええし、却下してもええ。</b></p>
+
+<p>もうひとつ。<b>全体の集計はわざと見せてへん</b>（規則の §10）。
+「(a) が何％やった」を先に知ってから 1 件ずつの裁定に入ると、
+無意識にそっちへ寄せてしまうから。数字は全部決めた後に出す。</p>
+
+<h2 class="plain">④ 何をすればええか</h2>
+
+<ol>
+  <li><b>AI-1 の答え / AI-2 の答え / 3 体目の AI の提案</b> を読む。
+      その下に、そう判断した<b>根拠の英文（論文からの引用）</b>が付いてる</li>
+  <li>どれを採るか決める</li>
+  <li><b>理由を 1 行</b>書く（日本語でええ。後で英語にする）</li>
+  <li>採る読みの <b>［これに決める］</b> を押す → 記録用の 1 行がコピーされる</li>
+  <li>それを <code>data/adjudications.csv</code> に貼る</li>
+</ol>
+
+<p>3 つのどれも採らんときは、<b>［自分の値］</b>に打ってから押す。</p>
+
+<p>全部貼り終わったら、うちに「裁定終わった」と言うてくれたら集計まで回すわ。</p>
+
+<h2 class="plain">⑤ 読むときの注意</h2>
+
+<p class="warn">⚠️ <b>「c1 / c2」が 2 つの意味で出てくる</b>。ここだけややこしい。</p>
+<ul>
+  <li><b>AI の名前として</b> — c1 = sonnet、c2 = opus。画面では
+      <b>AI-1 / AI-2</b> と書いてある</li>
+  <li><b>項目の名前として</b> — c1 =「同一視」、c2 =「由来」（下の表）。
+      こっちは記録用の名前なので、見出しの<b>グレーの小さい字</b>と CSV に出る</li>
+</ul>
+<p>見出しの大きい字は<b>日本語の問い</b>やから、そっちで読めば混ざらへん。</p>
+
+<p class="warn">⚠️ <b>英文が 2 種類ある</b>。混同せんように。</p>
+<ul>
+  <li><b>「根拠にした英文」</b> — <b>論文そのものからの引用</b>。これが証拠。訳すと証拠でなくなるので原文のまま</li>
+  <li><b>「なぜそう読むか」</b> — <b>AI が書いた理屈</b>。論文の文ではない</li>
+</ul>
+
+<h2 class="plain">⑥ 19 項目が何を聞いてるか</h2>
+
+<p>割れてるのは一部だけやけど、全体像として置いとく。<b><a href="rules.html">→ 規則の原文つき全一覧はこっち</a></b>（うちの訳と規則の原文を並べてある。どれがうちの要約かも印つき）</p>
+
+<h3 class="plain">型データの出どころ（§2）— まずここで振り分ける</h3>
+<table>
+  <tr><td><code>E1</code></td><td>この研究のために、回答者が性格検査を受けた</td></tr>
+  <tr><td><code>E2</code></td><td>型ラベルは既存データ・スクレイプ・他の研究から。著者は何も実施してない</td></tr>
+  <tr><td><code>E3</code></td><td>検査は実施したが、相手は言語モデル等（人間やない）</td></tr>
+  <tr><td><code>E4</code></td><td>型データが無い（レビュー・意見文・翻訳研究・ソフト設計など）</td></tr>
+</table>
+<p class="small">★ <b>E1 の作品にだけ</b>「何を実施したか」の (a)/(b)/(c) が付く。</p>
+
+<h3 class="plain">何を実施したか（§3）</h3>
+<table>
+  <tr><td><code>(a)</code></td><td>16Personalities / NERIS Type Explorer を実施した</td></tr>
+  <tr><td><code>(b)</code></td><td>出版された MBTI 用紙を実施した</td></tr>
+  <tr><td><code>(c)</code></td><td>何を実施したか論文から特定できひん</td></tr>
+</table>
+
+<h3 class="plain">16Personalities の引用が何の役をしてるか（§5・複数該当あり）</h3>
+<table>
+  <tr><td><code>R1</code></td><td><b>「これを使って測りました」</b>と書いてる</td></tr>
+  <tr><td><code>R2</code></td><td><b>MBTI がどういう考え方のものか</b>を書くときの情報源にしてる（4 つの軸、タイプの説明）</td></tr>
+  <tr><td><code>R3</code></td><td><b>「〇〇型は何％いる」</b>みたいな割合や人数を、そこから持ってきてる</td></tr>
+  <tr><td><code>R4</code></td><td><b>「このテストは信用できる」の根拠</b>にしてる。★<b>16Personalities が出してる数値が要る</b>。「検証済みの検査です」の一言だけでは付けへん（それは C3 が拾う）</td></tr>
+  <tr><td><code>R5</code></td><td><b>分析したデータそのもの</b>（誰が何型か）を、そこから取ってきてる</td></tr>
+  <tr><td><code>R6</code></td><td><b>名前が出てくるだけ</b>で、この論文の主張は何一つそれに頼ってへん</td></tr>
+  <tr><td><code>R7</code></td><td><b>16Personalities 自体を研究してる</b>（道具として使ったんやなく、それが調べる対象）</td></tr>
+</table>
+
+<h3 class="plain">混同してるか（§6）</h3>
+<table>
+  <tr><td><code>C1</code></td><td><b>同一視</b> — 16Personalities と MBTI を<b>「同じ一つのテスト」</b>として書いてる</td></tr>
+  <tr><td><code>C2</code></td><td><b>由来</b> — 16Personalities は自分で「うちは MBTI ちゃう」と言うてるのに、この論文が「ユングの理論から作られた」「マイヤーズとブリッグスが開発した」「MBTI から派生した」みたいに<b>MBTI の血筋を引いてるように書いてる</b></td></tr>
+  <tr><td><code>C3</code></td><td><b>権威</b> — 16Personalities を<b>「ちゃんとした検査だ」</b>と書いてる（公式・標準・検証済み・専門的・正確・信頼できる）。★<b>「人気がある」「広く使われてる」は普及の話</b>なので該当せえへん。問うてるのは<b>その論文がそう書いたか</b>であって、16Personalities が実際どうかではない</td></tr>
+  <tr><td><code>C0</code></td><td>上の 3 つのどれにも当たる文が無い</td></tr>
+  <tr><td><code>narrow_C1<br>narrow_C2<br>narrow_C3</code></td><td><b>別の質問やない。</b>同じ判定を「16Personalities の名前かサイトを挙げてる作品だけ」に絞って測り直したもの。★<b>挙げてたら ↑ と同じ値、一度も挙げてなかったら False</b>。§6 は名前が出てへん作品も拾う設計で、そっちの方が率が上がるから、厳しく取った数字も並べて出す（感度分析 S7）</td></tr>
+  <tr><td><code>states_distinction</code></td><td>その論文が<b>「16Personalities と MBTI は別のものです」とも書いてる</b>か</td></tr>
+</table>
+
+</div>
+
+<!--TOC-->
+
+<!--BODY-->
+
+<footer>
+  <span class="counts">決定 <b id="n-done">0</b> / <b><!--ITEMS--></b> 項目
+    ・貼り先は <code>data/adjudications.csv</code></span>
+  <span>
+    <button id="copy-all" disabled>決定した全行をコピー</button>
+    <button id="save-all" class="primary" disabled>ファイルに保存</button>
+  </span>
+</footer>
+<div class="toast" id="toast"></div>
+
+</body>
+<script>
+<!--JS-->
+</script>
+</html>

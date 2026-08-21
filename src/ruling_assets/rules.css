@@ -1,0 +1,79 @@
+/* Extra styling for the rules page. It shares ruling.css and adds the parts
+   that only exist here: the code tables and the marks that separate the
+   protocol's words from ours. */
+
+.lead ul { margin: 8px 0; padding-left: 22px; }
+.lead li { margin: 4px 0; }
+
+.toc-inline {
+  margin: 12px 0 0;
+  padding-left: 22px;
+  font-size: 14px;
+  color: #5c5c5c;
+}
+
+h2 {
+  margin: 44px 0 4px;
+  font-size: 18px;
+}
+
+.note { font-size: 14px; color: #5c5c5c; margin: 0 0 8px; }
+
+.rule-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  background: #fff;
+}
+
+.rule-item > h3 { margin: 0 0 2px; font-size: 15.5px; }
+.rule-item > h3 code {
+  background: #f0f0ee;
+  padding: 1px 7px;
+  border-radius: 4px;
+  margin-right: 6px;
+  font-size: 14px;
+}
+
+.src { font-size: 12.5px; color: #8a8a8a; margin: 0 0 10px; }
+
+table.codes { border-collapse: collapse; width: 100%; margin: 8px 0; }
+table.codes td { border: 1px solid #e4e4e4; padding: 6px 10px; vertical-align: top; }
+table.codes td:first-child {
+  width: 130px;
+  white-space: nowrap;
+  background: #fafafa;
+}
+table.codes .en { color: #666; font-size: 13.5px; }
+table.codes .ja { margin-top: 3px; }
+
+.proviso {
+  border-left: 3px solid #ccc;
+  padding: 2px 0 2px 12px;
+  margin: 10px 0;
+  font-size: 14.5px;
+}
+
+.proviso.shared {
+  border-left-color: #33415c;
+  background: #f7f8fb;
+  padding: 10px 14px;
+  border-radius: 0 6px 6px 0;
+}
+
+.proviso .ja b { color: #b3261e; }
+.proviso .en { color: #666; font-size: 13.5px; }
+.proviso details { margin: 4px 0 0; }
+.proviso summary { font-size: 12px; color: #9a9a9a; }
+
+.ours {
+  border: 1px dashed #b3261e;
+  background: #fdf3f2;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin: 10px 0;
+  font-size: 14.5px;
+}
+
+.ours > b { color: #b3261e; }
