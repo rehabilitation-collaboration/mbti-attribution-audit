@@ -58,6 +58,7 @@ RAW = ROOT / "coding_raw"
 LOG = ROOT / "data" / "fulltext_log.csv"
 OUT = ROOT / "data" / "classification.csv"
 RULINGS = ROOT / "data" / "adjudications.csv"
+DISCHARGED = ROOT / "data" / "discharged.csv"
 
 CODERS = ("c1", "c2")
 E_CODES = {"E1", "E2", "E3", "E4"}
@@ -285,6 +286,40 @@ def parse_ruling(item: str, ruling: str):
     return text
 
 
+def load_discharged() -> dict[str, str]:
+    """Works the author has read and left exactly as the coders had them.
+
+    §9 hands every uncertainty to the author, and the adjudication sheet settles
+    what that costs: a work flagged uncertain with no split code needs a row only
+    if something is changing, and otherwise "the flag is discharged by your
+    having read it". Reading leaves no trace in the codings, so it is recorded
+    here. Without a file saying which works were read, "the author looked and
+    changed nothing" cannot be told apart from "nobody looked", and the second is
+    the state this study spent three coding passes trying not to be in.
+
+    A work with a split code is never discharged this way — that would let a
+    disagreement pass as settled without anyone settling it — so `apply_rulings`
+    ignores the entry and the row stays contested.
+    """
+    if not DISCHARGED.exists():
+        return {}
+    out = {}
+    with DISCHARGED.open(encoding="utf-8") as handle:
+        reader = csv.reader(handle)
+        header = next(reader, None)
+        if header != ["key", "reasoning"]:
+            raise SchemaError(
+                f"{DISCHARGED.name} must start with key,reasoning — got {header}"
+            )
+        for line, row in enumerate(reader, start=2):
+            if not row:
+                continue
+            if len(row) < 2:
+                raise SchemaError(f"{DISCHARGED.name} line {line}: needs key,reasoning")
+            out[row[0].strip()] = ",".join(row[1:]).strip()
+    return out
+
+
 def load_rulings() -> dict[str, dict[str, tuple[object, str]]]:
     """The author's rulings, keyed by work and then by contested item.
 
@@ -324,6 +359,22 @@ def load_rulings() -> dict[str, dict[str, tuple[object, str]]]:
             continue
         rulings.setdefault(key, {})[item] = (parse_ruling(item, ruling), reasoning)
     return rulings
+
+
+def discharge(row: dict, reasoning: str) -> dict:
+    """Record that the author read a work and left the coders' values alone.
+
+    Only an uncertainty can be discharged this way. A split code is a
+    disagreement between two readings and needs someone to choose between them;
+    letting a "read it" entry clear one would put an unsettled tie into the
+    counts as though it were settled.
+    """
+    if [c for c in str(row["contested"]).split(",") if c]:
+        return row
+    row["needs_adjudication"] = False
+    note = f"read by the author, unchanged: {reasoning}"
+    row["note"] = f"{row['note']} || {note}" if row["note"] else note
+    return row
 
 
 def apply_rulings(row: dict, rulings: dict[str, tuple[object, str]]) -> dict:
@@ -495,6 +546,7 @@ def main() -> None:
     log = pd.read_csv(LOG).set_index("key")
     keys = log.index[log["status"] == "ok"].tolist()
     rulings = load_rulings()
+    discharged = load_discharged()
 
     rows, missing = [], []
     for key in keys:
@@ -505,13 +557,20 @@ def main() -> None:
         except FileNotFoundError as exc:
             missing.append(str(exc))
             continue
-        rows.append(
-            apply_rulings(build_row(key, log.loc[key], gate, flag, conf), rulings.get(key, {}))
+        row = apply_rulings(
+            build_row(key, log.loc[key], gate, flag, conf), rulings.get(key, {})
         )
+        if key in discharged:
+            row = discharge(row, discharged[key])
+        rows.append(row)
 
     unknown = set(rulings) - set(keys)
     if unknown:
         raise SchemaError(f"{RULINGS.name} rules on works not in the corpus: {sorted(unknown)}")
+
+    astray = set(discharged) - set(keys)
+    if astray:
+        raise SchemaError(f"{DISCHARGED.name} names works not in the corpus: {sorted(astray)}")
 
     if missing:
         print(f"not yet coded ({len(missing)}):")

@@ -542,3 +542,78 @@ def test_boolean_rulings_are_parsed_and_bad_ones_rejected():
     assert parse_ruling("e", "E1") == "E1"
     with pytest.raises(SchemaError, match="must be true or false"):
         parse_ruling("r4", "maybe")
+
+
+# --- a work the author read and left alone ---------------------------------
+
+
+def test_reading_an_uncertain_work_discharges_it():
+    """§9's uncertainty is settled by the author having looked (adjudication sheet)."""
+    from build_classification import discharge
+
+    row = row_for(gate_docs={"c1": gate("c1", uncertain=True, uncertain_note="borderline"),
+                             "c2": gate("c2")})
+    assert row["needs_adjudication"] is True
+    read = discharge(row, "このままでよい")
+    assert read["needs_adjudication"] is False
+    assert "read by the author, unchanged: このままでよい" in read["note"]
+
+
+def test_a_split_code_is_never_discharged_by_reading():
+    """A disagreement needs someone to choose; reading it is not choosing."""
+    from build_classification import discharge
+
+    row = row_for(flag_docs={"c1": flags("c1"),
+                             "c2": flags("c2", roles={f"r{i}": False for i in range(1, 8)})})
+    assert row["contested"] == "r1"
+    read = discharge(row, "このままでよい")
+    assert read["needs_adjudication"] is True
+    assert read["contested"] == "r1"
+    assert "read by the author" not in (read["note"] or "")
+
+
+def test_discharging_keeps_an_earlier_ruling_note():
+    from build_classification import apply_rulings, discharge
+
+    row = row_for(gate_docs={"c1": gate("c1", uncertain=True, uncertain_note="borderline"),
+                             "c2": gate("c2")})
+    ruled = apply_rulings(row, {"r4": (True, "数値がある")})
+    read = discharge(ruled, "残りはこのままでよい")
+    assert "r4 -> True" in read["note"] and "数値がある" in read["note"]
+    assert "read by the author, unchanged: 残りはこのままでよい" in read["note"]
+
+
+def test_a_discharge_file_with_the_wrong_header_says_what_it_wanted(tmp_path, monkeypatch):
+    import build_classification as bc
+
+    path = tmp_path / "discharged.csv"
+    path.write_text("key,note\nw1,read\n", encoding="utf-8")
+    monkeypatch.setattr(bc, "DISCHARGED", path)
+    with pytest.raises(SchemaError, match="must start with key,reasoning"):
+        bc.load_discharged()
+
+
+def test_a_discharge_row_without_a_reason_is_rejected(tmp_path, monkeypatch):
+    import build_classification as bc
+
+    path = tmp_path / "discharged.csv"
+    path.write_text("key,reasoning\nw1\n", encoding="utf-8")
+    monkeypatch.setattr(bc, "DISCHARGED", path)
+    with pytest.raises(SchemaError, match="needs key,reasoning"):
+        bc.load_discharged()
+
+
+def test_a_comma_in_the_discharge_reason_is_kept(tmp_path, monkeypatch):
+    import build_classification as bc
+
+    path = tmp_path / "discharged.csv"
+    path.write_text("key,reasoning\nw1,読んだ、変更なし\n", encoding="utf-8")
+    monkeypatch.setattr(bc, "DISCHARGED", path)
+    assert bc.load_discharged() == {"w1": "読んだ、変更なし"}
+
+
+def test_no_discharge_file_is_not_an_error(tmp_path, monkeypatch):
+    import build_classification as bc
+
+    monkeypatch.setattr(bc, "DISCHARGED", tmp_path / "absent.csv")
+    assert bc.load_discharged() == {}
