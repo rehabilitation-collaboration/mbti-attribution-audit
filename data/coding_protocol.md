@@ -661,3 +661,49 @@ the remainder is ruled case by case, and the amendment history is reported in
 Methods as a property of the instrument rather than as a defect that was fixed.
 Fixing this now is the same discipline as §11 fixing the sensitivity arms in
 advance: it cannot become a way of finding a better number later.
+
+**2026-08-22 — §10 and §11, three mechanics the reporting rules leave unstated.
+Coding and every ruling were complete and the kappas were known; no proportion
+had been computed — not the instrument distribution, not an R or C rate, not
+`n1` — and none had been computed when these were written.** §10 fixed what is
+reported before the counts existed, which is the whole of its value, and three
+of its instructions turn out not to determine an answer. Each is settled here,
+before the first count, because after it none of them can be settled honestly.
+
+- **Which row of §10's table applies when two of them do.** P1-P4 give
+  conditions on `p_a` and `L_a`; P5 gives one on `n1`; nothing says which
+  governs a result satisfying both, and `n1 < 20` alongside `L_a ≥ 0.10` is an
+  ordinary outcome rather than a pathological one. **P5 governs.** Three
+  grounds, none of which needs the count. The instructions cannot be followed
+  together — P1 requires a headline rate and P5 forbids one — so the table is
+  coherent only if one row overrides. §12's practice where the protocol has not
+  decided is to take the reading that weakens the headline, and P5 is that
+  reading. And a small-sample precaution that gives way the moment the interval
+  is favourable is not a precaution.
+- **Which row applies when P3's and P4's conditions are both met.** Both begin
+  `p_a < 0.10` and separate on which instrument category is the largest; a tie
+  between (b) and (c) satisfies neither description and is an ordinary outcome
+  on a denominator this size. **P4 governs the tie.** It is the weakening
+  reading — P3 still leads the abstract with M1, where P4 moves the lead to M2 —
+  and it is also the more accurate one, since a (b) that equals (c) is not a
+  corpus in which the failure to identify the instrument predominates, which is
+  the thing P3's wording asserts. ((a) cannot be the largest category while
+  `p_a < 0.10`, so no third tie arises.)
+- **Which quantities are reported as proportions.** §10 fixes the measures and
+  §11 the arms, but the protocol asks elsewhere for things to be reported
+  without saying in what form: §3.4's sub-labels "alongside" the main code,
+  §6's `states_distinction` "separately", §6's `third_party_conflation` and the
+  vendor's aspect labels, both of which it records and expressly refuses to
+  rate, §1's two kinds of absence, §3.6's `text_is_abstract`. **The proportions
+  reported are those of §10's M1 and M2 and §11's arms, and no others**; every
+  other quantity the protocol asks for is reported as a count against a stated
+  denominator — the one exception being §1's `no_word_form` bound, whose rate §1
+  states itself. This adds no number to §10. It fixes that none can be added
+  later, which is what §10 is for.
+- **How S5 is computed, its added record having never been retrieved.** The
+  widening word-form variant takes the OpenAlex intersection from 108 records to
+  109 (`query_log.json`), and the added record is not among the 118 rows of
+  `corpus.csv`: it was never retrieved, so it carries no full text, no key and
+  no coding. The arm is therefore reported as a bound — one record, at most one
+  work, against a frame of 99 — with its uncoded status stated. The alternatives
+  were to invent a code for it or to drop the arm in silence.
