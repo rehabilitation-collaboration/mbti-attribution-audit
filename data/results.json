@@ -1,0 +1,636 @@
+{
+  "protocol": "data/coding_protocol.md §10 (planned reporting) and §11 (sensitivity arms)",
+  "frames": {
+    "retrieved_on": "2026-08-19",
+    "window": {
+      "from": "2015-01-01",
+      "to": "2026-12-31"
+    },
+    "openalex_from_2015": 3105,
+    "europepmc_from_2015": 166,
+    "note": "the frames move with the databases; every figure is reported with the retrieval date and the values come from query_log.json"
+  },
+  "main_analysis": {
+    "venue_classes": [
+      "journal_article"
+    ],
+    "works_in_frame": 58,
+    "works_retrieved": 42
+  },
+  "m1": {
+    "n1": 27,
+    "denominators": {
+      "e1_works_in_main_analysis": 27,
+      "works_in_main_analysis": 42,
+      "coded_works": 61
+    },
+    "distribution": {
+      "a": {
+        "k": 17,
+        "n": 27,
+        "p": 0.6296,
+        "ci_low": 0.4423,
+        "ci_high": 0.7847
+      },
+      "b": {
+        "k": 1,
+        "n": 27,
+        "p": 0.037,
+        "ci_low": 0.0066,
+        "ci_high": 0.1828
+      },
+      "c": {
+        "k": 9,
+        "n": 27,
+        "p": 0.3333,
+        "ci_low": 0.1864,
+        "ci_high": 0.5218
+      }
+    }
+  },
+  "m2": {
+    "n": 61,
+    "r4": {
+      "k": 2,
+      "n": 61,
+      "p": 0.0328,
+      "ci_low": 0.009,
+      "ci_high": 0.1119
+    },
+    "any_conflation": {
+      "k": 44,
+      "n": 61,
+      "p": 0.7213,
+      "ci_low": 0.5983,
+      "ci_high": 0.8181
+    },
+    "conflation_flags": [
+      "c1",
+      "c2",
+      "c3"
+    ]
+  },
+  "pattern": {
+    "pattern": "P1",
+    "reason": "L_a = 0.4423 >= 0.10",
+    "abstract_leads_with": "M1",
+    "headline_wording": "X% (95% CI ...) administered an instrument that is not the MBTI"
+  },
+  "sensitivity": {
+    "S1": {
+      "arm": "include conference and conference_abstract in the denominator",
+      "m1": {
+        "n1": 30,
+        "denominators": {
+          "e1_works_in_main_analysis": 30,
+          "works_in_main_analysis": 49,
+          "coded_works": 61
+        },
+        "distribution": {
+          "a": {
+            "k": 19,
+            "n": 30,
+            "p": 0.6333,
+            "ci_low": 0.4551,
+            "ci_high": 0.7813
+          },
+          "b": {
+            "k": 1,
+            "n": 30,
+            "p": 0.0333,
+            "ci_low": 0.0059,
+            "ci_high": 0.1667
+          },
+          "c": {
+            "k": 10,
+            "n": 30,
+            "p": 0.3333,
+            "ci_low": 0.1923,
+            "ci_high": 0.5122
+          }
+        }
+      },
+      "m2": {
+        "n": 61,
+        "r4": {
+          "k": 2,
+          "n": 61,
+          "p": 0.0328,
+          "ci_low": 0.009,
+          "ci_high": 0.1119
+        },
+        "any_conflation": {
+          "k": 44,
+          "n": 61,
+          "p": 0.7213,
+          "ci_low": 0.5983,
+          "ci_high": 0.8181
+        },
+        "conflation_flags": [
+          "c1",
+          "c2",
+          "c3"
+        ]
+      },
+      "note": "denominator re-counted from corpus.csv, not from query_log.json, whose venue_class_counts_all_rows was left behind by the 2026-08-19 duplicate fix: 58 journal_article, 13 conference, 1 conference_abstract among the 99 works"
+    },
+    "S2": {
+      "arm": "include the unclassified record (§8)",
+      "m1": {
+        "n1": 27,
+        "denominators": {
+          "e1_works_in_main_analysis": 27,
+          "works_in_main_analysis": 42,
+          "coded_works": 61
+        },
+        "distribution": {
+          "a": {
+            "k": 17,
+            "n": 27,
+            "p": 0.6296,
+            "ci_low": 0.4423,
+            "ci_high": 0.7847
+          },
+          "b": {
+            "k": 1,
+            "n": 27,
+            "p": 0.037,
+            "ci_low": 0.0066,
+            "ci_high": 0.1828
+          },
+          "c": {
+            "k": 9,
+            "n": 27,
+            "p": 0.3333,
+            "ci_low": 0.1864,
+            "ci_high": 0.5218
+          }
+        }
+      },
+      "m2": {
+        "n": 61,
+        "r4": {
+          "k": 2,
+          "n": 61,
+          "p": 0.0328,
+          "ci_low": 0.009,
+          "ci_high": 0.1119
+        },
+        "any_conflation": {
+          "k": 44,
+          "n": 61,
+          "p": 0.7213,
+          "ci_low": 0.5983,
+          "ci_high": 0.8181
+        },
+        "conflation_flags": [
+          "c1",
+          "c2",
+          "c3"
+        ]
+      },
+      "note": "vacuous as run: §8 planned to code the record in full, but its full text was never retrieved (status no_url in fulltext_log.csv), so §1 leaves it unobtainable and it carries no code to add"
+    },
+    "S3": {
+      "arm": "count c-vendor-cited-only works as (a) — the PLAN's original boundary rule (§4.1)",
+      "m1": {
+        "n1": 27,
+        "denominators": {
+          "e1_works_in_main_analysis": 27,
+          "works_in_main_analysis": 42,
+          "coded_works": 61
+        },
+        "distribution": {
+          "a": {
+            "k": 17,
+            "n": 27,
+            "p": 0.6296,
+            "ci_low": 0.4423,
+            "ci_high": 0.7847
+          },
+          "b": {
+            "k": 1,
+            "n": 27,
+            "p": 0.037,
+            "ci_low": 0.0066,
+            "ci_high": 0.1828
+          },
+          "c": {
+            "k": 9,
+            "n": 27,
+            "p": 0.3333,
+            "ci_low": 0.1864,
+            "ci_high": 0.5218
+          }
+        }
+      },
+      "m2": {
+        "n": 61,
+        "r4": {
+          "k": 2,
+          "n": 61,
+          "p": 0.0328,
+          "ci_low": 0.009,
+          "ci_high": 0.1119
+        },
+        "any_conflation": {
+          "k": 44,
+          "n": 61,
+          "p": 0.7213,
+          "ci_low": 0.5983,
+          "ci_high": 0.8181
+        },
+        "conflation_flags": [
+          "c1",
+          "c2",
+          "c3"
+        ]
+      },
+      "note": "1 coded work(s) re-read as (a), of which 0 sit in the main analysis — an arm that moves M1 by fewer works than it re-reads has found the shape outside the denominator, not failed to run"
+    },
+    "S4": {
+      "arm": "OpenAlex-only versus both sources",
+      "m1": {
+        "n1": 27,
+        "denominators": {
+          "e1_works_in_main_analysis": 27,
+          "works_in_main_analysis": 42,
+          "coded_works": 61
+        },
+        "distribution": {
+          "a": {
+            "k": 17,
+            "n": 27,
+            "p": 0.6296,
+            "ci_low": 0.4423,
+            "ci_high": 0.7847
+          },
+          "b": {
+            "k": 1,
+            "n": 27,
+            "p": 0.037,
+            "ci_low": 0.0066,
+            "ci_high": 0.1828
+          },
+          "c": {
+            "k": 9,
+            "n": 27,
+            "p": 0.3333,
+            "ci_low": 0.1864,
+            "ci_high": 0.5218
+          }
+        }
+      },
+      "m2": {
+        "n": 61,
+        "r4": {
+          "k": 2,
+          "n": 61,
+          "p": 0.0328,
+          "ci_low": 0.009,
+          "ci_high": 0.1119
+        },
+        "any_conflation": {
+          "k": 44,
+          "n": 61,
+          "p": 0.7213,
+          "ci_low": 0.5983,
+          "ci_high": 0.8181
+        },
+        "conflation_flags": [
+          "c1",
+          "c2",
+          "c3"
+        ]
+      },
+      "note": "61 of 61 coded works are in OpenAlex; Europe PMC contributed no work OpenAlex did not already hold, so §10 reports it as independent confirmation of the frame rather than as a second frame"
+    },
+    "S5": {
+      "arm": "the widening word-form variant \"Type Explorer\"",
+      "m1": null,
+      "m2": null,
+      "note": "reported as a bound, not a recount: the variant takes the OpenAlex intersection from 108 records to 109 and Europe PMC from 10 to 10. The added record is not among corpus.csv's 118 rows, so it was never retrieved and carries no code; the arm bounds the effect at one record, at most one work, against a frame of 99 (§12, 2026-08-22)"
+    },
+    "S6": {
+      "arm": "exclude records whose retrieved text is a conference abstract (§3.6)",
+      "m1": {
+        "n1": 26,
+        "denominators": {
+          "e1_works_in_main_analysis": 26,
+          "works_in_main_analysis": 41,
+          "coded_works": 57
+        },
+        "distribution": {
+          "a": {
+            "k": 16,
+            "n": 26,
+            "p": 0.6154,
+            "ci_low": 0.4253,
+            "ci_high": 0.7757
+          },
+          "b": {
+            "k": 1,
+            "n": 26,
+            "p": 0.0385,
+            "ci_low": 0.0068,
+            "ci_high": 0.1889
+          },
+          "c": {
+            "k": 9,
+            "n": 26,
+            "p": 0.3462,
+            "ci_low": 0.1941,
+            "ci_high": 0.5378
+          }
+        }
+      },
+      "m2": {
+        "n": 57,
+        "r4": {
+          "k": 2,
+          "n": 57,
+          "p": 0.0351,
+          "ci_low": 0.0097,
+          "ci_high": 0.1192
+        },
+        "any_conflation": {
+          "k": 42,
+          "n": 57,
+          "p": 0.7368,
+          "ci_low": 0.6102,
+          "ci_high": 0.8335
+        },
+        "conflation_flags": [
+          "c1",
+          "c2",
+          "c3"
+        ]
+      },
+      "note": "4 of 61 coded works excluded"
+    },
+    "S7": {
+      "arm": "conflation flags on the narrow reading — works that name the vendor's test or site",
+      "m1": {
+        "n1": 27,
+        "denominators": {
+          "e1_works_in_main_analysis": 27,
+          "works_in_main_analysis": 42,
+          "coded_works": 61
+        },
+        "distribution": {
+          "a": {
+            "k": 17,
+            "n": 27,
+            "p": 0.6296,
+            "ci_low": 0.4423,
+            "ci_high": 0.7847
+          },
+          "b": {
+            "k": 1,
+            "n": 27,
+            "p": 0.037,
+            "ci_low": 0.0066,
+            "ci_high": 0.1828
+          },
+          "c": {
+            "k": 9,
+            "n": 27,
+            "p": 0.3333,
+            "ci_low": 0.1864,
+            "ci_high": 0.5218
+          }
+        }
+      },
+      "m2": {
+        "n": 61,
+        "r4": {
+          "k": 2,
+          "n": 61,
+          "p": 0.0328,
+          "ci_low": 0.009,
+          "ci_high": 0.1119
+        },
+        "any_conflation": {
+          "k": 43,
+          "n": 61,
+          "p": 0.7049,
+          "ci_low": 0.5811,
+          "ci_high": 0.8044
+        },
+        "conflation_flags": [
+          "narrow_c1",
+          "narrow_c2",
+          "narrow_c3"
+        ]
+      },
+      "note": "M1 is untouched: the narrow reading is a rule about §6's flags. The stopping rule of §12 did not fire at the third round, so the wide reading remains the main analysis and this is the arm"
+    }
+  },
+  "calibration": {
+    "records": {
+      "Bai et al. 2025": {
+        "doi": "10.1038/s41598-025-91361-w",
+        "coded": true,
+        "venue_class": "journal_article",
+        "contributes_to_m1": true,
+        "coded_as": {
+          "e": "E1",
+          "instrument": "a",
+          "r": [
+            "r1",
+            "r4"
+          ],
+          "c": [
+            "c1",
+            "c2",
+            "c3"
+          ]
+        },
+        "expected_by_section_7": {
+          "e": {
+            "expected": "E1",
+            "actual": "E1",
+            "reproduced": true
+          },
+          "instrument": {
+            "expected": "a",
+            "actual": "a",
+            "reproduced": true
+          },
+          "r": {
+            "expected": [
+              "r1",
+              "r4"
+            ],
+            "actual": [
+              "r1",
+              "r4"
+            ],
+            "reproduced": true
+          }
+        },
+        "reproduced": true
+      },
+      "Koshiro et al. 2025": {
+        "doi": "10.4992/pacjpa.89.0_423",
+        "coded": true,
+        "venue_class": "conference_abstract",
+        "contributes_to_m1": false,
+        "coded_as": {
+          "e": "E4",
+          "instrument": "",
+          "r": [
+            "r7"
+          ],
+          "c": [
+            "c1",
+            "c2"
+          ]
+        },
+        "expected_by_section_7": {
+          "c": {
+            "expected": [
+              "c1",
+              "c2"
+            ],
+            "actual": [
+              "c1",
+              "c2"
+            ],
+            "reproduced": true
+          }
+        },
+        "reproduced": true
+      },
+      "Tshimula et al. 2026": {
+        "doi": "10.3389/fncom.2026.1800284",
+        "coded": true,
+        "venue_class": "journal_article",
+        "contributes_to_m1": false,
+        "coded_as": {
+          "e": "E4",
+          "instrument": "",
+          "r": [
+            "r6"
+          ],
+          "c": [
+            "c1",
+            "c3"
+          ]
+        },
+        "expected_by_section_7": {
+          "e": {
+            "expected": "E4",
+            "actual": "E4",
+            "reproduced": true
+          },
+          "instrument": {
+            "expected": "",
+            "actual": "",
+            "reproduced": true
+          },
+          "r": {
+            "expected": [
+              "r6"
+            ],
+            "actual": [
+              "r6"
+            ],
+            "reproduced": true
+          },
+          "c": {
+            "expected": [
+              "c1",
+              "c3"
+            ],
+            "actual": [
+              "c1",
+              "c3"
+            ],
+            "reproduced": true
+          }
+        },
+        "reproduced": true
+      }
+    },
+    "outside_main_analysis": 2,
+    "all_reproduced": true
+  },
+  "descriptive_counts_no_rate": {
+    "retrieval": {
+      "works": 99,
+      "coded": 61,
+      "unobtainable": {
+        "total": 35,
+        "by_reason": {
+          "fetch_failed": 17,
+          "no_url": 12,
+          "too_short": 6
+        }
+      },
+      "no_word_form": {
+        "count": 3,
+        "checkable_works": 64,
+        "note": "§1 reports this as an upper bound on how often the search index matched a text not containing the term; the rate is §1's own"
+      }
+    },
+    "venue_class_of_the_99_works": {
+      "journal_article": 58,
+      "conference": 13,
+      "repository": 10,
+      "preprint": 7,
+      "thesis": 6,
+      "book_chapter": 2,
+      "non_scholarly": 1,
+      "unclassified": 1,
+      "conference_abstract": 1
+    },
+    "venue_class_of_the_coded_works": {
+      "journal_article": 42,
+      "conference": 6,
+      "preprint": 6,
+      "repository": 3,
+      "book_chapter": 2,
+      "conference_abstract": 1,
+      "thesis": 1
+    },
+    "e_gate": {
+      "E1": 34,
+      "E2": 13,
+      "E4": 8,
+      "E3": 6
+    },
+    "instrument_sublabels_among_c": {
+      "c-unnamed": 4,
+      "c-authormade": 2,
+      "(none)": 2,
+      "c-translated": 1,
+      "c-online": 1,
+      "c-vendor-cited-only": 1
+    },
+    "role_flags": {
+      "R1": 28,
+      "R2": 21,
+      "R3": 3,
+      "R4": 2,
+      "R5": 4,
+      "R6": 8,
+      "R7": 6
+    },
+    "conflation_flags": {
+      "C0": 17,
+      "C1": 37,
+      "C2": 24,
+      "C3": 15,
+      "narrow_c1": 36,
+      "narrow_c2": 24,
+      "narrow_c3": 15
+    },
+    "states_distinction": 7,
+    "third_party_conflation": {
+      "count": 5,
+      "note": "§6 records this shape and refuses it a rate: the corpus is built from 16Personalities word forms, so a proportion over it would have no denominator"
+    },
+    "text_is_abstract": 4
+  }
+}
