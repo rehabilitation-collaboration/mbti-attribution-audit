@@ -1,1 +1,32 @@
 key,item,ruling,reasoning
+10_1609_aaai_v39i2_32125,states_distinction,True,the free-to-use 16personalities.com, a reliable alternative assessment tool.→これは明らかに別物として記載してる。
+10_17721_bsp_2021_1_13_10,r4,False,具体的な数値の記載はない。
+10_17721_bsp_2021_1_13_10,c3,True,NERIS TIがそれであり、クロンバックのα係数・因子の独立性・テスト再テスト信頼性について必要な水準を満たしていると書いてある
+10_17721_bsp_2021_1_13_10,narrow_c3,True,書いてあるから
+10_18653_v1_2023_findings_emnlp_84,r1,False,書いてないから
+10_21697_ucs_2023_31_1_03,r6,False,このテストはある程度の懐疑をもって受け止められるものの、回答を進めるにつれてしだいに説得力を増していくことが示されている。→全く意味がない文章
+10_2174_1874210601711010109,c2,True,Methods では、 「MBTIおよびユングの類型論的な性格アプローチに基づく無料オンライン質問票を使用した」 と書き、Results では実際に学生が使った質問票を 「無料性格診断（NERIS Analytics Limitedのウェブサイト）」 と特定している。 したがって自然な対応関係は、 MBTI/Jungに基づく無料オンライン質問票 ＝ 今回使用したNERISの無料性格診断
+10_2174_1874210601711010109,c3,True,well-known and reliable method と記載あり
+10_2174_1874210601711010109,narrow_c2,True,書いてある
+10_2174_1874210601711010109,narrow_c3,True,書いてある
+10_24412_cl_37519_2026_1_157_166,r6,False,Shuningdek, https://www.16personalities.com/free-personality-test havolasi orqali talabalarga o‘z tiplarini mustaqil aniqlashga imkon yaratiladi."と記載ある
+10_24412_cl_37519_2026_1_157_166,c2,True,書いてある
+10_24412_cl_37519_2026_1_157_166,narrow_c2,True,16personalities.com/free-personality-test 書いてある
+10_26425_1816_4277_2025_1_5_14,r2,True,混同してそう
+10_33063_ijrp_vi17_648,r2,False,言ってない
+10_3390_vetsci9080441,c2,True,言ってる
+10_3390_vetsci9080441,narrow_c2,True,書いている
+10_35511_978_963_334_499_6_papp_vary_ronky,r5,True,そう記載している
+10_59141_japendi_v6i11_8742,r2,True,そう記載している
+10_62381_acs_sdit2024_46,c3,True,ちゃんとしたものとして扱ってる
+10_62381_acs_sdit2024_46,narrow_c3,True,言っとる
+10_7759_cureus_30445,r3,False,言ってない
+10_7759_cureus_30445,c1,False,言ってない
+10_7759_cureus_30445,narrow_c1,False,書いてない
+10_30574_ijsra_2024_11_1_0297,r2,True,やってる
+10_30574_ijsra_2024_11_1_0297,r6,True,書いてるだけ
+10_32782_2519_884x_2025_57_8,instrument_sublabel,c-unnamed,Cや
+10_33423_jabe_v27i3_7640,e,E2,よそから
+10_56855_ijcse_v3i1_896,c2,True,書いてる
+10_56855_ijcse_v3i1_896,narrow_c2,True,書いてる
+https_openalex_org_w7132076821,instrument_sublabel,c-vendor-cited-only,そう記載してる
