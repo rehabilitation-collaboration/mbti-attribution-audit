@@ -1,0 +1,26 @@
+{
+  "source": "OpenAlex",
+  "retrieved_on": "2026-08-22",
+  "window": "from_publication_date:2015-01-01",
+  "searches": {
+    "mbti_x_misattribution": {
+      "asks": "Has anyone treated the misattribution of the MBTI as a subject?",
+      "filter": "title_and_abstract.search:(MBTI OR \"Myers-Briggs\" OR \"Myers Briggs\") AND (misattribution OR conflation OR misidentification)",
+      "count_all_years": 2,
+      "count_from_2015": 2
+    },
+    "vendor_word_forms": {
+      "asks": "How much work names the vendor's test in its title or abstract?",
+      "filter": "title_and_abstract.search:\"16Personalities\" OR \"16 Personalities\" OR \"NERIS Type Explorer\"",
+      "count_all_years": 64,
+      "count_from_2015": 55
+    },
+    "citation_accuracy_family": {
+      "asks": "How established is the family of questions this one belongs to?",
+      "filter": "title_and_abstract.search:\"citation accuracy\" OR \"quotation error\" OR \"citation integrity\"",
+      "count_all_years": 700,
+      "count_from_2015": 620
+    }
+  },
+  "note": "These searches are context for the Introduction's claim that the specific question is unasked. They feed no measure. Counts move with the database, so each is quoted in the manuscript with the retrieval date above."
+}
