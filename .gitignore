@@ -38,3 +38,12 @@ LITERATURE.md
 RESEARCH-*.md
 REVIEW-REPORT*.md
 GPT-REVIEW-*.md
+
+# The shared Vancouver-style reference checker writes here. Its DOI resolution is
+# sound but its field verdicts are computed on a template this manuscript's
+# author-date references do not follow, so its report reads as a list of
+# mismatches that are parser artifacts. Publishing it would mislead. The
+# applicable check is output/reference_verification_by_doi.md, from
+# src/verify_manuscript_refs.py, which is published.
+output/reference_verification.md
+output/reference_verification.json
