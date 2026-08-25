@@ -37,12 +37,26 @@ Verification log:
   On the same date the five vendor URLs were re-requested and returned HTTP 200
   with byte counts identical to the stored captures (16130 / 15805 / 14548 /
   1941 / 38087), so the live pages had not changed since retrieval.
-- 2026-08-25: `16personalities-our-framework_2026-08-25.pdf` added and hashed.
-  Recorded together with the finding that a byte-identical capture can still be
-  empty of content: `our-theory` passes its checksum and carries 628 characters
-  of text. A checksum certifies that a file has not changed, not that it says
-  anything, and the two vendor pages this study quotes are now held in a form
-  that carries the text.
+- 2026-08-25: `16personalities-our-framework_2026-08-25.pdf` and
+  `Bennett2011_PLoSMed_2026-08-25.pdf` added and hashed (**11/11 OK**).
+  On the same date **every archived file was measured for body-text length**, not
+  only for its checksum, because a checksum certifies that a file has not changed
+  and says nothing about whether it says anything. `16personalities-our-theory`
+  is the case that motivated the check: 38,087 bytes, a passing checksum, and
+  **626 characters** of extractable text (BeautifulSoup `get_text(' ',
+  strip=True)`; earlier records give 628 for the same file under a different
+  extraction, and the method is named here so the two can be told apart). Every
+  other file carries the content its record claims — the smallest genuine one is
+  the KCI one-page preview at 791 characters, which is what a one-page preview
+  should be. The two vendor pages this study quotes are now both held in a form
+  that carries their text.
+- 2026-08-25: **quotations checked, not just references.** Every quoted span of
+  20 characters or more in `manuscript.md` was matched against the archived text
+  it is attributed to (`src/verify_manuscript_quotes.py`, record published at
+  `output/quote_verification.md`). 11 matched an archived source, 5 are phrases
+  the manuscript mentions rather than quotes, and each of those 5 carries a
+  written reason. A span that matches nothing and carries no reason fails the
+  run.
 
 ## Files
 
@@ -54,6 +68,7 @@ Verification log:
 | `16p-llms_2026-08-17.txt` | `https://www.16personalities.com/llms.txt` | 2026-08-17 | `curl -s -L` |
 | `16personalities-our-theory_2026-08-17.html` | `https://www.16personalities.com/articles/our-theory` | 2026-08-17 | `curl -s -L` |
 | `16personalities-our-framework_2026-08-25.pdf` | `https://www.16personalities.com/articles/our-framework` | 2026-08-25 | browser print-to-PDF (see note) |
+| `Bennett2011_PLoSMed_2026-08-25.pdf` | `https://journals.plos.org/plosmedicine/article/file?id=10.1371/journal.pmed.1001069&type=printable` | 2026-08-25 | `curl -sSL` |
 | `LeeKim2024_KCI-preview-p1_2026-08-17.pdf` / `.txt` | `https://www.kci.go.kr/kciportal/ci/sereArticleSearch/artiPreView.kci?sereArticleSearchBean.artiId=ART003137485&v=2019` | 2026-08-17 | `curl -s -L` |
 | `LeeSeongbin2024_MA-thesis_GNU_2026-08-17.pdf` / `.txt` | see "Korean thesis" below | 2026-08-17 | cookie session |
 
@@ -85,6 +100,28 @@ downloads.
   re-running a command, so the checksum records this copy rather than certifying
   the live page; the URL and retrieval date are given so a reader can repeat the
   reading.
+- **`Bennett2011_PLoSMed_2026-08-25.pdf` is archived because this reference has
+  been got wrong here before.** An earlier draft cited Bennett et al. 2011 for
+  the opposite of its conclusion, and a reviewer caught it by reading the source.
+  A reference check cannot catch that — it confirms the DOI resolves to the work
+  named, not that the sentence in quotation marks appears in it — so the article
+  is held locally and `src/verify_manuscript_quotes.py` matches the quotation
+  against it mechanically on every run. The paper is CC BY, so unlike the other
+  captures here it could be redistributed; it is kept out of the repository only
+  for consistency with the `sources/` policy above.
+
+  The numeric claims the manuscript makes about it were checked against the same
+  file on 2026-08-25 and are reported here so that a reader who cannot run the
+  check can still see what was compared:
+
+  | Manuscript | Bennett et al. 2011, verbatim |
+  |---|---|
+  | a three-part review | "We conducted a three-part project" |
+  | fewer than 7% of 165 medical journals gave authors any guidance | "Fewer than 7% of medical journals (n = 165) provided guidance to authors on survey research" |
+  | the four published checklists it identified were unvalidated | "We identified four published checklists ... none of which were validated" |
+  | the 117 survey papers it examined | "117 recently published reports of self-administered surveys" |
+  | "there is limited guidance and no consensus regarding the optimal reporting of survey research" | same, in the abstract's Conclusions and again in the Discussion |
+
 - **`LeeKim2024_KCI-preview-p1_*` is the first page only** (cover, abstract and
   footnotes), not the full article. The publisher releases only a one-page
   preview through KCI.

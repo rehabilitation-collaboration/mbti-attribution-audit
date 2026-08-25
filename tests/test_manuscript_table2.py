@@ -131,3 +131,29 @@ def test_the_table_carries_no_rate():
     start = text.index("**Table 2.** Conflation flags")
     block = text[start : text.index("\n\n", text.index("| **Works**", start))]
     assert "%" not in block and "CI" not in block
+
+
+# --- quotations ------------------------------------------------------------
+
+
+def test_every_quotation_is_accounted_for():
+    """Run the quotation check, and refuse to pass when it had nothing to check.
+
+    `sources/` is not in version control, so on a fresh clone the checker finds
+    no archived text and every quotation "matches nothing". Letting that pass
+    silently would turn an absent corpus into a green test, which is the same
+    mistake as reading a checksum and calling the file non-empty. The test skips
+    loudly instead, and only asserts where there is something to assert.
+    """
+    import subprocess
+    import sys
+
+    if not (ROOT / "sources").is_dir():
+        pytest.skip("sources/ is not redistributed; the quotation check needs the archived texts")
+    run = subprocess.run(
+        [sys.executable, "src/verify_manuscript_quotes.py"],
+        cwd=ROOT, capture_output=True, text=True,
+    )
+    assert "not checked, file absent" not in run.stdout, run.stdout
+    assert "MISS" not in run.stdout, run.stdout
+    assert run.returncode == 0, run.stdout + run.stderr
