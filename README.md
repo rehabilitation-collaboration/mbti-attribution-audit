@@ -22,8 +22,12 @@ find, unasked: **what was actually administered.**
   16Personalities word forms. Queried from OpenAlex and Europe PMC under one
   shared definition (`src/build_corpus.py`); every count and the exact query is
   written to `data/query_log.json` on each run.
-- **Frame.** Open-access full text only. This is a declared sampling frame, not
-  a workaround: observed positive counts are stated as lower bounds, and the
+- **Frame and corpus.** The sampling frame is the 99 works the searches returned.
+  The analytic corpus of 61 is that frame conditioned on programmatic
+  retrievability — not on open access: no work's licence was checked, an openly
+  licensed paper can still refuse an automated request, and a document that was
+  retrieved need carry no open licence. The condition is declared, not a
+  workaround: observed positive counts are stated as lower bounds, and the
   direction of the bias in the proportions is stated to be unknown. Retrieval
   reached 64 of the 99 works and 44 of the 58 journal articles, of which 61 works
   and 42 journal articles entered coding; the difference is three retrieved texts
@@ -34,8 +38,11 @@ find, unasked: **what was actually administered.**
   came from, because a good deal of the corpus administered nothing to anybody:
   classifiers trained on scraped labels, language models answering the
   questionnaire, studies *of* the instrument rather than *with* it. Works whose
-  authors did administer something are then coded (a) the 16Personalities test,
-  (b) a published MBTI form, or (c) not identifiable. Two independent coders,
+  authors did administer something are then coded (a) a vendor-hosted test with no
+  published MBTI form identifiable from the work, (b) a published MBTI form, or
+  (c) not identifiable. Both vendor pages this study quotes were retrieved in
+  2026, so (a) carries no claim about the product's specification at any earlier
+  date. Two independent coders,
   kappa reported, disagreements adjudicated.
 - **Secondary measures (planned).** What the vendor's site is cited *as* — the
   instrument, the theory, population norms, reliability evidence, a scraping
@@ -50,7 +57,7 @@ find, unasked: **what was actually administered.**
 
 ```
 src/build_corpus.py          corpus construction; re-measures every reported count
-src/fetch_fulltext.py        open-access retrieval, one document per work
+src/fetch_fulltext.py        programmatic retrieval, one document per work
 tests/                       regression tests for the normalisation and grouping rules
 data/corpus.csv              retrieved records, both sources, nothing dropped
 data/query_log.json          queries, counts, window and word-form sensitivity, validation

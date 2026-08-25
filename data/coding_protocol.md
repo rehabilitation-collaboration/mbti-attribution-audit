@@ -49,7 +49,7 @@ retrieved texts carrying no vendor word form, two of them journal articles. Of
 the **fourteen** journal articles that could not be retrieved, **eight** are
 publishers refusing programmatic access (HTTP 403 or 404) and **two** failed at
 the TLS layer, which is a broken server rather than a refusal. Those refusals are
-recorded, not worked around, which is what makes the open-access frame a declared
+recorded, not worked around, which is what makes the retrievability condition a declared
 one.
 
 **Two kinds of absence are counted separately**, because they mean opposite
@@ -472,7 +472,7 @@ the full text, with the ruling recorded.
 so agreement measures the stability of one lineage's reading, not the
 convergence of independent judgments. It is an upper-bound-leaning estimate and
 is not comparable to a kappa between human raters. This is the same caveat
-recorded in the ninth study of this series and it is stated in the manuscript,
+recorded in an earlier study by the same author, uncited here because the point does not rest on it, and it is stated in the manuscript,
 not only here. The load-bearing evidence for reproducibility is that every code
 carries a located verbatim quote, so a reader can check the coding against the
 same text.
@@ -546,8 +546,11 @@ Fixed regardless of pattern:
   two of them fall outside the main analysis is stated in Methods.
 - Open-access-only is described as a declared sampling frame; every figure is a
   lower bound, and the direction of the bias is stated.
-  ⚠️ **"Every figure is a lower bound" is false and this instruction was departed
-  from; see §12 (2026-08-25).** The text is left exactly as written because §10's
+  ⚠️ **Both halves of that instruction were departed from; see §12 (2026-08-25).**
+  "Every figure is a lower bound" is false: it is true of the counts and false of
+  the rates. And the frame is not open-access — no work's licence was ever checked.
+  The sampling frame is the 99 works the searches returned, and programmatic
+  retrievability conditions the analytic corpus of 61, not the frame. The text is left exactly as written because §10's
   value is that it records what was promised before the counts existed, and
   editing it would destroy the only property that makes it evidence.
 - Europe PMC contributed no work that OpenAlex did not already contain, so it is
@@ -700,11 +703,11 @@ Methods as a property of the instrument rather than as a defect that was fixed.
 Fixing this now is the same discipline as §11 fixing the sensitivity arms in
 advance: it cannot become a way of finding a better number later.
 
-**2026-08-22 — §10 and §11, three mechanics the reporting rules leave unstated.
+**2026-08-22 — §10 and §11, four mechanics the reporting rules leave unstated.
 Coding and every ruling were complete and the kappas were known; no proportion
 had been computed — not the instrument distribution, not an R or C rate, not
 `n1` — and none had been computed when these were written.** §10 fixed what is
-reported before the counts existed, which is the whole of its value, and three
+reported before the counts existed, which is the whole of its value, and four
 of its instructions turn out not to determine an answer. Each is settled here,
 before the first count, because after it none of them can be settled honestly.
 
@@ -781,7 +784,10 @@ being wrong in the same direction.
   worked example says the mismatch "is the object of this study", but it says so
   while removing an obstacle to coding (a) — it never made a claim of MBTI
   administration a condition of the code, and three of the seventeen works coded
-  (a) in the main analysis state the distinction somewhere in their text. The
+  (a) in the main analysis carry the `states_distinction` field. ⚠️ **"State the
+  distinction" overstates what that field records and is corrected in the third
+  entry of this date**: it marks that a difference was noticed somewhere, and on
+  the reading that asks whether the work separated the instruments the count is two. The
   honest repair is to state M1 as what it measures, which §10's own wording of
   the P1 headline already does. The attribution question is then answered by
   columns that were coded twice, scored and adjudicated long before this was
@@ -819,8 +825,10 @@ evidence, so it is left standing and marked. Neither route is silent.
   correction this late. The parenthetical was wrong too: of the ten failures,
   eight returned HTTP 403 or 404 and two failed at the TLS layer, which is a
   broken server and not a refusal. That distinction is load-bearing, because the
-  sentence is the evidence for calling the open-access frame declared rather than
-  incidental. The repository README carried the same figures and is corrected
+  sentence is the evidence for calling the retrievability condition declared rather
+  than incidental. ⚠️ **This entry said "the open-access frame"; see the fourth
+  entry of 2026-08-25** — no licence was checked, and retrievability conditions the
+  analytic corpus rather than defining the frame. The repository README carried the same figures and is corrected
   with it. Nothing evidential is lost: these were descriptions of a data file
   published alongside and contradicting them.
 - **§1's "the audit's claim is about the peer-reviewed literature" is left
@@ -938,11 +946,61 @@ sections the retraction had not reached; the interval passages named
 exchangeability in one section and a stronger model in another, and now name
 i.i.d. Bernoulli throughout; the sensitivity figure printed S5's reason for having
 no estimate against S2 as well, and now reads each arm's reason from
-`results.json`; the departures table was missing five rows; and the sampling frame
+`results.json`; the departures table was missing the five entries the reviewer listed — the R6 calibration clarification, the post-hoc C2 correction, the `states_distinction` reinterpretation, C3's exclusion from the attribution reading, and (a)'s retreat — plus a sixth the reviewer did not raise, §10's P1 headline wording, which the quotation checker surfaced while the others were being written, taking the table from seven rows to thirteen; and the sampling frame
 of 99 works was being described as one of retrievable full text, when
 retrievability conditions the analytic corpus of 61 and not the frame.
 
 **One correction this log owes itself.** The manuscript said the protocol had been
 "amended six times", which counted three same-day entries as one. This log carries
-nine dated entries and the manuscript now says so, read from the log rather than
-from memory.
+ten dated entries as of 2026-08-26 and the manuscript says so, read from the log
+rather than from memory.
+
+**2026-08-26 — nothing in this protocol's rules, and six places where a correction
+made on 2026-08-25 had not been carried to the artefact beside it. Every count
+existed; the manuscript had been through a fourth review, this one internal and
+split across four readers with separate briefs. No count changed.**
+
+The reviewers were given different angles on purpose: the revision's internal
+consistency, a recomputation of every count the paper makes about itself, a
+hostile reading of the manuscript with nothing else supplied, and the code. Their
+findings barely overlapped — two items in common out of thirty — and a verifying
+reader then accepted nine, rejected five and narrowed two.
+
+The rejections are worth recording, because two of them defended a number against
+a plausible-looking correction. A reviewer recomputed the count of non-Latin-script
+and non-ASCII-letter titles as 17 and another route gives 15; **16 is right**, and
+it decomposes as 3 non-Latin-script works plus 13 whose titles carry a non-ASCII
+letter, matching the ten languages §1's sentence names. The Uzbek work reaches the
+count through characters Unicode classes as punctuation and Uzbek orthography
+treats as letters, which is why a literal machine test returns 15. A second
+reviewer proposed reverting an Abstract sentence to its pre-review form; that
+sentence had been prescribed verbatim by the previous round, and reverting it
+would have restarted a cycle this study has already run once, when a figure moved
+15 → 16 → 15 under opposing pressure from an internal and an external reader.
+
+**What this entry changes here.** §1 kept "the open-access frame" in a sentence
+that had otherwise been corrected in place. §12's 2026-08-22 entry miscounted its
+own bullets as three in two places, where the manuscript and the deviations log
+both correctly say four. The fourth entry of 2026-08-25 said the departures table
+"was missing five rows", which faithfully reported the reviewer's list of five and
+read as a count of rows added; six were added, and the sixth — §10's P1 headline
+wording — is named there now. An appeal to an earlier study of the same series,
+made twice in §9, cited nothing a reader of this protocol could reach.
+
+**What it changes in the artefacts this protocol governs.** `results.json` still
+asserted the defence withdrawn on 2026-08-25 — that the post-hoc block "carries
+counts against a stated denominator; no proportion, no interval" — and still
+published §10's P1 headline wording with no note that the manuscript departs from
+it. The repository's README described the frame as open-access full text and
+carried the pre-retreat reading of code (a). None of these moved a number; all of
+them stated, to a reader who opened the file rather than the paper, a claim the
+paper had retracted.
+
+**The pattern, stated because it has now recurred four times.** A correction gets
+made where it was noticed and not where it is mirrored: round 3 found two of them,
+this round found six more, and in both cases the manuscript's own test suite passed
+throughout. The suite's bans are a list seeded from the sentences a reviewer
+happened to quote, so they can only prove those sentences are gone. A negative
+control has been added alongside them — a string that must never appear, checked
+together with the proportion of the file the scanner still sees — so that a ban
+that has stopped looking fails loudly instead of passing.

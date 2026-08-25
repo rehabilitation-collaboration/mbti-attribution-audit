@@ -74,6 +74,14 @@ def test_every_cell_matches_the_computed_counts(computed, label, key):
 
 WORDS = {"one": 1, "two": 2, "three": 3, "fifteen": 15, "sixteen": 16, "seventeen": 17}
 
+# A permanent counter-example. The bans below are a list, and a list can only
+# prove that the sentences already on it are gone — three sentences this list
+# was written to catch were found later by readers, not by it. This string is
+# never in the manuscript, so if `unquoted()` ever stops returning scannable
+# prose (an unbalanced quote swallowing the file, a path change, an empty read)
+# the canary test fails and says so, instead of every ban passing vacuously.
+CANARY = "administered an instrument that is not the MBTI"
+
 QUOTED = re.compile(r'"[^"]*"|“[^”]*”')
 
 
@@ -151,11 +159,22 @@ def test_no_sentence_asserts_a_non_identity_this_study_did_not_establish():
     # wording they withdraw. Scanning those would ban the paper from saying what
     # it stopped saying.
     text = MANUSCRIPT.read_text(encoding="utf-8")
+    # The first five came from the third review's own quotations. The last two were
+    # found by a later reader, in sections that review had not quoted, and they are
+    # added because a known error should not be allowed back — not because the list
+    # is now complete. It cannot be: a ban-list only ever proves that the sentences
+    # on it are gone. What guards against the scanner itself going blind is the
+    # negative control below, which is a different problem from coverage.
     for banned in ("rather than the MBTI",
                    "an instrument that is not the MBTI",
                    "administered something else",
                    "instrument different from the one named",
-                   "is the misattribution"):
+                   "is the misattribution",
+                   # Sentence-initial: the assertive form. The paper's corrected
+                   # sentence opens "Whether the distinction was discoverable …
+                   # is not something this study examined", which must pass.
+                   "The distinction was discoverable",
+                   "why the substitution matters"):
         assert banned not in unquoted(text), (
             f"{banned!r} asserts a non-identity this study did not establish"
         )
@@ -240,3 +259,56 @@ def test_every_quotation_is_accounted_for():
     assert "not checked, file absent" not in run.stdout, run.stdout
     assert "MISS" not in run.stdout, run.stdout
     assert run.returncode == 0, run.stdout + run.stderr
+
+
+def test_the_scanner_the_bans_rely_on_is_not_returning_empty_prose():
+    """A negative control for the two ban tests above.
+
+    Both bans are `assert <string> not in unquoted(text)`. That assertion passes
+    for the right reason and also for several wrong ones: an unbalanced quotation
+    mark that makes `QUOTED` swallow the file, a manuscript that failed to load, a
+    path that moved. None of those would fail any existing test — the bans would
+    simply stop looking and report success, which is the shape of failure this
+    paper is about.
+
+    So: the scanner must still be returning most of the file, and it must still be
+    able to find the banned string when the string is actually there.
+    """
+    text = MANUSCRIPT.read_text(encoding="utf-8")
+    prose = unquoted(text)
+    assert len(prose) > 0.9 * len(text), (
+        f"unquoted() removed {100 * (1 - len(prose) / len(text)):.1f}% of the manuscript; "
+        "the quotation regex is swallowing prose and every ban below it is vacuous"
+    )
+    assert CANARY not in prose, "the canary is in the manuscript; it was never meant to be"
+    assert CANARY in unquoted(f"x {CANARY} y"), "unquoted() cannot see a banned string at all"
+
+
+def test_figure4_annotates_each_unestimated_arm_with_its_own_reason():
+    """S2 and S5 both yield no estimate, and they do so for different reasons.
+
+    Figure 4 used to print one hard-coded string for both, so S2 displayed S5's
+    explanation and contradicted Table 5. The annotation is now read from each
+    arm's own `note` in results.json, taking the text before the first colon.
+    That parse is only safe while the notes keep leading with a short clause, so
+    it is checked here rather than trusted.
+    """
+    results = json.loads(RESULTS.read_text(encoding="utf-8"))
+    arms = results["sensitivity"]
+    unestimated = {k: v for k, v in arms.items() if v["m1"] is None and v["m2"] is None}
+    assert set(unestimated) == {"S2", "S5"}, "which arms yield no estimate has changed"
+
+    leads = {}
+    for key, arm in unestimated.items():
+        note = arm.get("note", "")
+        assert note, f"{key} has no note, so the figure would annotate it with nothing"
+        lead = note.split(":", 1)[0]
+        assert 0 < len(lead) <= 60, (
+            f"{key}'s note does not lead with a short clause ({len(lead)} chars); "
+            "figure4() would render the whole note into the plot"
+        )
+        leads[key] = lead
+    assert leads["S2"] != leads["S5"], (
+        "both arms would be annotated identically — the defect this parse replaced"
+    )
+    assert "estimable" in leads["S2"] and "bound" in leads["S5"], leads

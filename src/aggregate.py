@@ -92,6 +92,10 @@ CALIBRATION = {
 }
 
 PATTERNS = {
+    # §10's promised wording, kept verbatim because the promise is the evidence.
+    # The manuscript departs from it — only 2026 vendor pages were ever retrieved, so
+    # non-identity at the date each coded paper was written is not established. The
+    # departure is carried in `pattern.headline_departed_from` below, not by editing this.
     "P1": ("M1", "X% (95% CI ...) administered an instrument that is not the MBTI"),
     "P2": ("M1", "the same figure stated as imprecise; the word 'substantial' is not used"),
     "P3": ("M1, framed on (c)", "X% do not identify the instrument they administered — a reporting failure, not a substitution one"),
@@ -308,7 +312,23 @@ def pattern(m1: dict) -> dict:
 
 def _pattern(name: str, reason: str) -> dict:
     leads_with, wording = PATTERNS[name]
-    return {"pattern": name, "reason": reason, "abstract_leads_with": leads_with, "headline_wording": wording}
+    return {
+        "pattern": name,
+        "reason": reason,
+        "abstract_leads_with": leads_with,
+        "headline_wording": wording,
+        # §10 promised the wording above before any count existed, so it is kept
+        # verbatim: editing a pre-commitment destroys the only property that makes
+        # it evidence. The manuscript does not make that claim. Both vendor pages
+        # were retrieved in 2026, so non-identity at the date each coded paper was
+        # written is not established, and P1's wording asserts it. A reader who
+        # opens this file rather than the paper needs to be told that here.
+        "headline_departed_from": name == "P1",
+        "headline_as_reported": (
+            "X% (model-based Wilson 95% interval ...) administered a vendor-hosted test "
+            "from which no published MBTI form was identifiable"
+        ) if name == "P1" else None,
+    }
 
 
 def sensitivity(coded: pd.DataFrame, instrument: pd.Series, sources: dict[str, tuple[str, ...]],
@@ -512,7 +532,11 @@ def post_hoc(coded: pd.DataFrame, instrument: pd.Series) -> dict:
     return {
         "planned": False,
         "added": "2026-08-25",
-        "form": "counts against a stated denominator; no proportion, no interval",
+        "form": "exploratory, post hoc descriptive proportions; no model-based interval",
+        "form_note": "an earlier value of this field read 'counts against a stated "
+                     "denominator; no proportion, no interval'. That defence was withdrawn on "
+                     "2026-08-25: 'sixteen of seventeen' is a proportion however it is printed. "
+                     "See the manuscript's departures table and the protocol at §12.",
         "why": "M1 measures what was administered, not whether the work attributed it "
                "correctly. The manuscript had read M1 as the second quantity; it is not. "
                "These columns carry the attribution and were settled before this was computed.",
@@ -639,7 +663,9 @@ def show(results: dict) -> None:
     p = results["pattern"]
     print(f"\n§10 pattern: {p['pattern']} — {p['reason']}")
     print(f"  abstract leads with {p['abstract_leads_with']}")
-    print(f"  headline: {p['headline_wording']}")
+    print(f"  headline as §10 promised it: {p['headline_wording']}")
+    if p.get("headline_departed_from"):
+        print(f"  DEPARTED FROM — as reported: {p['headline_as_reported']}")
 
     print("\n§11 sensitivity arms")
     for name, arm in results["sensitivity"].items():

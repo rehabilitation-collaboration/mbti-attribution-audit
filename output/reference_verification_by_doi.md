@@ -11,16 +11,17 @@ resolution is sound but its field verdicts read an initial as a title.
 |---|-----|---------|----------------------|---------|------|-------|-------|
 | 1 | `—` | **NO DOI** | — | — | — | — | not a DOI-bearing source; verify by hand against its own record |
 | 2 | `—` | **NO DOI** | — | — | — | — | not a DOI-bearing source; verify by hand against its own record |
-| 3 | `10.1371/journal.pmed.1001069` | **OK** | Bennett | 7 | 2011 | PLoS Medicine | — |
-| 4 | `10.1136/bmjopen-2023-076912` | **OK** | Hanegraaf | 10 | 2024 | BMJ Open | — |
-| 5 | `10.34218/ijm.11.9.2020.025` | **OK** | MAKWANA | 2 | 2020 | INTERNATIONAL JOURNAL OF MANAGEMENT | — |
-| 6 | `10.1371/journal.pone.0184727` | **OK** | Mogull | 1 | 2017 | PLOS ONE | — |
-| 7 | `10.1037/1065-9293.57.3.210` | **OK** | Pittenger | 1 | 2005 | Consulting Psychology Journal: Practice and Research | — |
-| 8 | `10.1111/pbi.12798` | **OK** | Sánchez | 2 | 2017 | Plant Biotechnology Journal | — |
-| 9 | `10.1098/rspa.2020.0538` | **OK** | Smith | 2 | 2020 | Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences | — |
-| 10 | `10.1007/s10654-018-0443-3` | **OK** | Stang | 3 | 2018 | European Journal of Epidemiology | — |
-| 11 | `10.1038/s41598-025-91361-w` | **OK** | Bai | 5 | 2025 | Scientific Reports | — |
-| 12 | `10.4992/pacjpa.89.0_423` | **OK** | Koshiro | 5 | 2025 | The Proceedings of the Annual Convention of the Japanese Psychological Association | — |
-| 13 | `10.3389/fncom.2026.1800284` | **OK** | Tshimula | 3 | 2026 | Frontiers in Computational Neuroscience | — |
+| 3 | `—` | **NO DOI** | — | — | — | — | not a DOI-bearing source; verify by hand against its own record |
+| 4 | `10.1371/journal.pmed.1001069` | **OK** | Bennett | 7 | 2011 | PLoS Medicine | — |
+| 5 | `10.1136/bmjopen-2023-076912` | **OK** | Hanegraaf | 10 | 2024 | BMJ Open | — |
+| 6 | `10.34218/ijm.11.9.2020.025` | **OK** | MAKWANA | 2 | 2020 | INTERNATIONAL JOURNAL OF MANAGEMENT | — |
+| 7 | `10.1371/journal.pone.0184727` | **OK** | Mogull | 1 | 2017 | PLOS ONE | — |
+| 8 | `10.1037/1065-9293.57.3.210` | **OK** | Pittenger | 1 | 2005 | Consulting Psychology Journal: Practice and Research | — |
+| 9 | `10.1111/pbi.12798` | **OK** | Sánchez | 2 | 2017 | Plant Biotechnology Journal | — |
+| 10 | `10.1098/rspa.2020.0538` | **OK** | Smith | 2 | 2020 | Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences | — |
+| 11 | `10.1007/s10654-018-0443-3` | **OK** | Stang | 3 | 2018 | European Journal of Epidemiology | — |
+| 12 | `10.1038/s41598-025-91361-w` | **OK** | Bai | 5 | 2025 | Scientific Reports | — |
+| 13 | `10.4992/pacjpa.89.0_423` | **OK** | Koshiro | 5 | 2025 | The Proceedings of the Annual Convention of the Japanese Psychological Association | — |
+| 14 | `10.3389/fncom.2026.1800284` | **OK** | Tshimula | 3 | 2026 | Frontiers in Computational Neuroscience | — |
 
-**Summary**: 11 OK · 0 need a look · 2 without a DOI · 0 unresolved.
+**Summary**: 11 OK · 0 need a look · 3 without a DOI · 0 unresolved.

@@ -74,7 +74,9 @@
     "pattern": "P1",
     "reason": "L_a = 0.4423 >= 0.10",
     "abstract_leads_with": "M1",
-    "headline_wording": "X% (95% CI ...) administered an instrument that is not the MBTI"
+    "headline_wording": "X% (95% CI ...) administered an instrument that is not the MBTI",
+    "headline_departed_from": true,
+    "headline_as_reported": "X% (model-based Wilson 95% interval ...) administered a vendor-hosted test from which no published MBTI form was identifiable"
   },
   "sensitivity": {
     "S1": {
@@ -591,7 +593,8 @@
   "post_hoc_counts_not_planned": {
     "planned": false,
     "added": "2026-08-25",
-    "form": "counts against a stated denominator; no proportion, no interval",
+    "form": "exploratory, post hoc descriptive proportions; no model-based interval",
+    "form_note": "an earlier value of this field read 'counts against a stated denominator; no proportion, no interval'. That defence was withdrawn on 2026-08-25: 'sixteen of seventeen' is a proportion however it is printed. See the manuscript's departures table and the protocol at §12.",
     "why": "M1 measures what was administered, not whether the work attributed it correctly. The manuscript had read M1 as the second quantity; it is not. These columns carry the attribution and were settled before this was computed.",
     "denominator": "E1 works in the main analysis, split by instrument code",
     "by_instrument_code": {
