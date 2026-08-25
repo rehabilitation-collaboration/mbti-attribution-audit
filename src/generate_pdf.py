@@ -55,7 +55,12 @@ h1 { font-size: 16pt; margin-top: 0; margin-bottom: 8pt; line-height: 1.3;
 h2 { font-size: 13pt; margin-top: 20pt; margin-bottom: 6pt;
      border-bottom: 1px solid #ccc; padding-bottom: 3pt;
      page-break-after: avoid; }
-h3 { font-size: 11.5pt; margin-top: 14pt; margin-bottom: 4pt;
+/* The body sets bold lead-ins on many paragraphs ("**The substitution.**"), so an
+   h3 only 0.5pt larger than body bold reads as one of them rather than as a
+   heading — an external reader took "Data and code" for a run-in lead-in. The
+   size gap and the space above are what separate the two. */
+h3 { font-size: 12.5pt; margin-top: 20pt; margin-bottom: 5pt;
+     font-style: italic;
      page-break-after: avoid; }
 p { margin: 6pt 0; text-align: justify; widows: 3; orphans: 3; }
 ol li, ul li { margin: 6pt 0; widows: 2; orphans: 2; }

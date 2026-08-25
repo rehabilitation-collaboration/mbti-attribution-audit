@@ -190,7 +190,7 @@ def figure2(d: dict) -> None:
     """Instrument attribution among the E1 works of the main analysis."""
     dist = d["m1"]["distribution"]
     rows = [
-        ("(a)  the vendor's test", "a"),
+        ("(a)  vendor-hosted; no MBTI form identifiable", "a"),
         ("(b)  a published MBTI form", "b"),
         ("(c)  not identifiable from the work", "c"),
     ]
@@ -205,7 +205,8 @@ def figure2(d: dict) -> None:
     recessive_x(ax, 0, 1.0, [0, 0.25, 0.5, 0.75, 1.0], ["0%", "25%", "50%", "75%", "100%"])
     ax.set_ylim(-0.6, len(rows) - 0.4)
     ax.set_yticks([])
-    ax.set_xlabel("Share of the 27 works in the main analysis that administered an instrument",
+    ax.set_xlabel("Share of the 27 works in the main analysis that administered an instrument, "
+                  "with model-based Wilson 95% intervals",
                   fontsize=8, labelpad=7)
     save(fig, "figure2_instrument")
 
@@ -258,11 +259,11 @@ def figure3(d: dict) -> None:
     ax_b.barh(-1.15, counts["states_distinction"], height=0.5, color=SERIES_1, zorder=2)
     ax_b.text(counts["states_distinction"] + 0.9, -1.15, str(counts["states_distinction"]),
               va="center", fontsize=8, color=INK_2)
-    ax_b.text(-1.2, -1.15, "states the distinction", ha="right", va="center",
+    ax_b.text(-1.2, -1.15, "noted some difference", ha="right", va="center",
               fontsize=8.5, color=INK_2, style="italic")
     ax_b.axhline(-0.62, color=GRID, linewidth=0.8, zorder=1)
     ax_b.set_ylim(-1.9, len(conf_names) - 0.4)
-    ax_b.set_title("B  Conflating statements", loc="left", fontsize=9,
+    ax_b.set_title("B  Pre-defined C flags", loc="left", fontsize=9,
                    color=INK, pad=8, fontweight="bold")
     ax_b.legend(handles=[Line2D([], [], color=SERIES_1, linewidth=6, label="wide reading (main analysis)"),
                          Line2D([], [], color=SERIES_2, linewidth=6, label="narrow reading (S7)")],
@@ -292,10 +293,10 @@ def figure4(d: dict) -> None:
         "S7": "S7  narrow conflation reading",
     }
     panels = [
-        ("A  M1 — administered the vendor's test", d["m1"]["distribution"]["a"],
+        ("A  M1 — administered a vendor-hosted test", d["m1"]["distribution"]["a"],
          lambda a: a["m1"]["distribution"]["a"] if a["m1"] and a["m1"]["distribution"] else None,
          lambda p: f"{p['k']}/{p['n']}"),
-        ("B  M2 — any conflating statement", d["m2"]["any_conflation"],
+        ("B  M2 — any pre-defined C1-C3 flag", d["m2"]["any_conflation"],
          lambda a: a["m2"]["any_conflation"] if a["m2"] else None,
          lambda p: f"{p['k']}/{p['n']}"),
     ]
@@ -305,15 +306,22 @@ def figure4(d: dict) -> None:
     # panel's row labels. Full width per panel is the fix; nothing is clipped.
     fig, axes = plt.subplots(2, 1, figsize=(7.4, 7.4), gridspec_kw={"hspace": 0.55})
     for ax, (title, base, pick, fmt) in zip(axes, panels):
-        rows = [("Main analysis", base)] + [(labels[k], pick(v)) for k, v in arms.items()]
+        rows = [("Main analysis", base, "")] + [
+            (labels[k], pick(v), v.get("note", "")) for k, v in arms.items()
+        ]
         ax.axvline(base["p"], color=RULE, linewidth=1.0, zorder=1)
-        for i, (label, p) in enumerate(rows):
+        for i, (label, p, note) in enumerate(rows):
             y = len(rows) - 1 - i
             weight = "bold" if i == 0 else "normal"
             ax.text(-0.06, y, label, ha="right", va="center", fontsize=8,
                     color=INK if i == 0 else INK_2, fontweight=weight)
             if p is None:
-                ax.text(0.03, y, "reported as a bound; the added record is uncoded",
+                # Two arms produce no estimate and they do so for different
+                # reasons: S2's input was never retrieved, S5 bounds an effect
+                # it cannot recount. results.json states each reason and leads
+                # with it, so the annotation is read from there. A hard-coded
+                # string here printed S5's reason against S2 as well.
+                ax.text(0.03, y, note.split(":", 1)[0],
                         ha="left", va="center", fontsize=7.2, color=MUTED, style="italic")
                 continue
             interval_row(ax, y, p, label_fmt="{p:.1%}")
@@ -322,7 +330,7 @@ def figure4(d: dict) -> None:
         ax.set_ylim(-0.6, len(rows) - 0.4)
         ax.set_yticks([])
         ax.set_title(title, loc="left", fontsize=9, color=INK, pad=8, fontweight="bold")
-        ax.set_xlabel("Share, with Wilson 95% CI", fontsize=8, labelpad=6)
+        ax.set_xlabel("Share, with model-based Wilson 95% interval", fontsize=8, labelpad=6)
     save(fig, "figure4_sensitivity")
 
 

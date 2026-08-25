@@ -29,7 +29,7 @@ ROWS = {
     "C3, claimed the standing of a published instrument": "c3_authority",
     "C1 or C2": "c1_or_c2",
     "Any of C1–C3": "any_conflation",
-    "C0, no conflating statement": "c0_no_conflating_statement",
+    "C0, none of C1–C3": "c0_no_conflating_statement",
     "`states_distinction`, noted some difference between the two": "states_distinction",
 }
 
@@ -37,7 +37,7 @@ ROWS = {
 def transcribed() -> dict[str, list[int]]:
     """The cells of Table 2, keyed by their row label, in column order (a), (b), (c)."""
     text = MANUSCRIPT.read_text(encoding="utf-8")
-    start = text.index("**Table 2.** Conflation flags")
+    start = text.index("**Table 2.** Pre-defined C flags")
     block = text[start : text.index("\n\n", text.index("| **Works**", start))]
     cells: dict[str, list[int]] = {}
     for line in block.splitlines():
@@ -74,6 +74,19 @@ def test_every_cell_matches_the_computed_counts(computed, label, key):
 
 WORDS = {"one": 1, "two": 2, "three": 3, "fifteen": 15, "sixteen": 16, "seventeen": 17}
 
+QUOTED = re.compile(r'"[^"]*"|“[^”]*”')
+
+
+def unquoted(text: str) -> str:
+    """The manuscript with every quoted span removed.
+
+    A retracted phrasing may still appear inside quotation marks — the departures
+    table quotes what the protocol promised, and the withdrawal passages quote
+    what they withdraw. Those are the paper reporting its own corrections, not
+    committing them again, so the bans below are checked against prose only.
+    """
+    return QUOTED.sub(" ", text)
+
 
 @pytest.mark.parametrize("section", ["abstract", "results", "discussion"])
 def test_the_prose_figure_matches_the_table(computed, section):
@@ -92,15 +105,17 @@ def test_the_prose_figure_matches_the_table(computed, section):
                     rf"or as descended from it",
         "results": rf"\*\*{a['c1_or_c2']} of the {a['works']} either did that or gave the "
                    rf"vendor's test the MBTI's provenance\*\*",
-        "discussion": r"\*\*(\w+) of seventeen is the misattribution",
+        "discussion": r"\*\*(\w+) of seventeen described the vendor-hosted test as the "
+                      r"MBTI or as descended from it",
     }
     match = re.search(patterns[section], text)
     assert match, f"the {section} no longer states the count in its expected wording"
     if section == "discussion":
         assert WORDS[match.group(1).lower()] == a["c1_or_c2"]
-    # The C3-only work must not be folded into the misattribution figure anywhere.
-    assert f"{a['any_conflation']} of the {a['works']} is the misattribution" not in text
-    assert f"{a['any_conflation']} of seventeen is the misattribution" not in text
+    # The C3-only work must not be folded into the attribution figure anywhere.
+    spelled = {v: k.capitalize() for k, v in WORDS.items()}[a["any_conflation"]]
+    assert f"{spelled} of seventeen described the vendor-hosted test" not in text
+    assert f"{a['any_conflation']} of the {a['works']} describing it as the MBTI" not in text
 
 
 def test_states_distinction_is_never_described_as_drawing_the_distinction(computed):
@@ -115,9 +130,55 @@ def test_states_distinction_is_never_described_as_drawing_the_distinction(comput
     text = MANUSCRIPT.read_text(encoding="utf-8")
     spelled = {1: "One", 2: "Two", 3: "Three"}[a["states_distinction"]]
     assert f"{spelled} carry the protocol's `states_distinction` field" in text
-    for banned in ("drew the distinction", "stated the distinction", "drew it correctly"):
+    for banned in ("drew the distinction", "stated the distinction", "state the distinction",
+                   "states the distinction", "drew it correctly"):
         assert banned not in text, f"{banned!r} overstates what the field records"
     assert "the count is two, not three" in text
+
+
+def test_no_sentence_asserts_a_non_identity_this_study_did_not_establish():
+    """Both vendor pages were retrieved in 2026, so (a) reaches no further than that.
+
+    An (a) code records that a vendor-hosted test was administered and that no
+    published MBTI form is identifiable from the work. Whether the product was
+    distinct from the MBTI on the date any coded paper was written is not
+    established here. The Discussion says so; a third round of external review
+    found five sentences elsewhere that said the opposite, each of them left
+    behind when the limit was written into one section only. This pins them shut.
+    """
+    # Quoted spans are exempt: the departures table quotes §10's promise in order
+    # to report the departure from it, and the withdrawal passages quote the
+    # wording they withdraw. Scanning those would ban the paper from saying what
+    # it stopped saying.
+    text = MANUSCRIPT.read_text(encoding="utf-8")
+    for banned in ("rather than the MBTI",
+                   "an instrument that is not the MBTI",
+                   "administered something else",
+                   "instrument different from the one named",
+                   "is the misattribution"):
+        assert banned not in unquoted(text), (
+            f"{banned!r} asserts a non-identity this study did not establish"
+        )
+    # And the limit itself must still be stated, or the bans above pass vacuously
+    # on a manuscript that simply stopped mentioning the question.
+    assert "no published MBTI form identifiable from the work" in text
+    assert "the only evidence offered is dated 2026" in text
+
+
+def test_the_union_of_the_c_flags_is_never_called_a_conflation_rate():
+    """C3 alone is a claim of standing, and this study judges no claim of standing.
+
+    C1 and C2 are conflations of the two instruments; C3 is not. The union of the
+    three is a flag count, so naming it "a conflating statement" reads a verdict
+    into a work the coding never reached — the same over-reading the study audits.
+    """
+    prose = unquoted(MANUSCRIPT.read_text(encoding="utf-8"))
+    for banned in ("(a conflating statement)",
+                   "no conflating statement",
+                   "carried a conflating statement",
+                   "reproduced the conflation in prose"):
+        assert banned not in prose, f"{banned!r} calls the C1-C3 union a conflation"
+    assert "any pre-defined C1–C3 flag" in prose
 
 
 def test_every_file_the_manuscript_points_at_is_published():
@@ -140,10 +201,17 @@ def test_every_file_the_manuscript_points_at_is_published():
     assert not re.search(r"`(PLAN|PLAN-DEVIATIONS)\.md`", text), "cites an unpublished file"
 
 
-def test_the_table_carries_no_rate():
-    """§12 fixed that nothing outside M1, M2 and the arms gets a proportion."""
+def test_the_table_prints_no_percentage_and_no_interval():
+    """The block is exploratory, so it carries no model-based interval.
+
+    The defence that it "carries counts and no rate" was withdrawn — "sixteen of
+    seventeen" is a proportion however it is printed — and the block is now
+    described as exploratory, post hoc descriptive proportions. What must stay
+    true of the table itself is that no percentage and no interval is printed
+    beside a figure the protocol never planned.
+    """
     text = MANUSCRIPT.read_text(encoding="utf-8")
-    start = text.index("**Table 2.** Conflation flags")
+    start = text.index("**Table 2.** Pre-defined C flags")
     block = text[start : text.index("\n\n", text.index("| **Works**", start))]
     assert "%" not in block and "CI" not in block
 

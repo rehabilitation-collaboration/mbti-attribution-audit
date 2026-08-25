@@ -533,6 +533,13 @@ Let `n1` be the number of E1 works in the main analysis, `p_a` the share coded
 | **P4** | `p_a < 0.10` and (b) is the largest | M2 | Attribution in administration is mostly accurate; the claim moves to citation practice and conflation, and the (a) cases are reported as a case series |
 | **P5** | `n1 < 20` | M2 | No headline rate from M1. M1 is reported descriptively with its interval and explicitly called imprecise |
 
+⚠️ **P1's headline wording was departed from; see §12 (2026-08-25, fourth entry).**
+The branch is still P1 and the share is still the one M1 reports, but the words
+"an instrument that is not the MBTI" assert a non-identity at the date each coded
+paper was written, and only 2026 vendor pages were ever retrieved. The manuscript
+reports "a vendor-hosted test from which no published MBTI form was identifiable".
+The row is left exactly as written, for the reason given below.
+
 Fixed regardless of pattern:
 
 - The three calibration records are described in Discussion, and the fact that
@@ -892,3 +899,50 @@ to the manuscript alone and are recorded there. Two reach this document.
   for C1 alone and 16 of 17 for any of the three, reported as three separate
   lines. **This lowers the headline of the exploratory block**, and it corrects an
   earlier amendment of this same date that raised it.
+
+**2026-08-25 (fourth entry) — §10's P1 headline wording, and four readings the
+manuscript had carried further than the evidence. Every count existed; the
+manuscript had been through a third external review. No count changed.** The
+reviewer again read only the typeset manuscript and returned seven findings. Two
+are central and they share one shape: a limit written into one section had not
+been carried into the others.
+
+- **The 2026 dating of the vendor's pages bounds what an (a) code can be said to
+  show, and only the Discussion said so.** Both vendor pages quoted in this study
+  were retrieved in 2026. Nothing here establishes that the product offered in,
+  say, 2016 was a different instrument from the MBTI, and five sentences in the
+  Abstract, Results and Discussion said or implied that it was. What an (a) code
+  records is that a vendor-hosted test was administered and that no published MBTI
+  form is identifiable from the work. **§10's P1 row promises the stronger claim**
+  — "X% (95% CI …) administered an instrument that is not the MBTI" — and the
+  manuscript departs from it and reports the weaker one. The row is marked in §10
+  and left exactly as written, for the reason the "lower bound" instruction was
+  left standing: §10 is evidence only of what was promised before the counts
+  existed, and editing it destroys that. **No code moved. The branch is still P1
+  and the share is still 17 of 27.**
+- **C3 was excluded from the attribution reading in the exploratory block but
+  still pooled under M2.** The third entry of this date established that a C3-only
+  work makes a claim about standing that this study has no fact to weigh against.
+  M2 nonetheless reported 44 of 61 as "a conflating statement". C1 and C2 are
+  conflations of the two instruments; C3 is not, so the union of the three is a
+  flag count and not a rate of conflation. **§10's M2 bullet already reads "the
+  share carrying any of C1-C3" and needed no change**, and §6 already drew C3
+  separately for this reason; the error was the manuscript's pooling of them. M2
+  is reported as the share carrying any pre-defined C1-C3 flag, with the three
+  read separately — 37 identity, 24 provenance, 15 standing. **44 of 61 is
+  unchanged.**
+
+The remaining five findings are manuscript corrections and are recorded here only
+so that the log is the complete account: four retracted phrasings had survived in
+sections the retraction had not reached; the interval passages named
+exchangeability in one section and a stronger model in another, and now name
+i.i.d. Bernoulli throughout; the sensitivity figure printed S5's reason for having
+no estimate against S2 as well, and now reads each arm's reason from
+`results.json`; the departures table was missing five rows; and the sampling frame
+of 99 works was being described as one of retrievable full text, when
+retrievability conditions the analytic corpus of 61 and not the frame.
+
+**One correction this log owes itself.** The manuscript said the protocol had been
+"amended six times", which counted three same-day entries as one. This log carries
+nine dated entries and the manuscript now says so, read from the log rather than
+from memory.
