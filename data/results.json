@@ -572,6 +572,12 @@
         "count": 3,
         "checkable_works": 64,
         "note": "§1 reports this as an upper bound on how often the search index matched a text not containing the term; the rate is §1's own"
+      },
+      "journal_articles": {
+        "in_frame": 58,
+        "coded": 42,
+        "no_word_form": 2,
+        "unobtainable": 14
       }
     },
     "venue_class_of_the_99_works": {

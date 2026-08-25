@@ -405,6 +405,13 @@ def descriptive(coded: pd.DataFrame, log: pd.DataFrame, venue_counts: dict[str, 
     unobtainable = {k: int(v) for k, v in statuses.items() if k not in {"ok", "no_word_form"}}
     is_c = coded["instrument_final"] == "c"
 
+    # The main-analysis frame separately, because "not coded" and "not retrieved"
+    # differ there too and the flow figure annotates that step.
+    journal = log[log["work_venue_class"] == "journal_article"]
+    journal_statuses = journal["status"].value_counts().to_dict()
+    journal_unobtainable = {k: int(v) for k, v in journal_statuses.items()
+                            if k not in {"ok", "no_word_form"}}
+
     return {
         "retrieval": {
             "works": len(log),
@@ -415,6 +422,12 @@ def descriptive(coded: pd.DataFrame, log: pd.DataFrame, venue_counts: dict[str, 
                 "checkable_works": int(statuses.get("ok", 0)) + int(statuses.get("no_word_form", 0)),
                 "note": "§1 reports this as an upper bound on how often the search index "
                         "matched a text not containing the term; the rate is §1's own",
+            },
+            "journal_articles": {
+                "in_frame": len(journal),
+                "coded": int(journal_statuses.get("ok", 0)),
+                "no_word_form": int(journal_statuses.get("no_word_form", 0)),
+                "unobtainable": sum(journal_unobtainable.values()),
             },
         },
         "venue_class_of_the_99_works": venue_counts,

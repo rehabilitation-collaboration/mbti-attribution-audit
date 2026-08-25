@@ -117,6 +117,7 @@ def figure1(d: dict, q: dict) -> None:
     """Flow from the two frames to the main analysis, with reasons for attrition."""
     retrieval = d["descriptive_counts_no_rate"]["retrieval"]
     unobtainable = retrieval["unobtainable"]
+    journal = retrieval["journal_articles"]
     frames, main = d["frames"], d["main_analysis"]
     records = q["openalex"]["records"] + q["europepmc"]["records"]
 
@@ -133,10 +134,10 @@ def figure1(d: dict, q: dict) -> None:
          f"{records - retrieval['works']} records merged into\nthe work they belong to"),
         (f"Classified as journal articles\nn = {main['works_in_frame']}",
          f"{other_venues} works in other venue classes —\ncoded and reported, but outside\nthe main denominator"),
-        (f"Full text retrieved\nn = {main['works_retrieved']}",
-         f"{main['works_in_frame'] - main['works_retrieved']} journal articles not retrieved\n"
+        (f"Full text coded\nn = {main['works_retrieved']}",
+         f"{journal['unobtainable']} journal articles not retrieved\n"
          f"({unobtainable['total']} across the whole corpus:\n{reasons}),\n"
-         f"plus {retrieval['no_word_form']['count']} retrieved with no vendor word form"),
+         f"plus {journal['no_word_form']} retrieved with no vendor word form"),
         (f"Administered an instrument (E1)\nMAIN ANALYSIS   n₁ = {d['m1']['n1']}",
          f"{main['works_retrieved'] - d['m1']['n1']} works reported no type data, used\n"
          "existing type labels, or administered\nto a language model"),
