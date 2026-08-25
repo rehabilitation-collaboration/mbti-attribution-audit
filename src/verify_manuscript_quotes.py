@@ -60,6 +60,14 @@ NOT_A_SOURCE_QUOTATION = {
         "the manuscript naming a state of affairs, not quoting a document",
     "the range of underlying rates compatible with these counts":
         "the manuscript quoting its own earlier draft, in the passage that withdraws it",
+    "Sixteen of seventeen":
+        "the manuscript quoting a figure from its own Discussion in order to withdraw it; "
+        "the phrase is a fraction, not a source",
+    "was fixed in advance":
+        "a phrase mentioned in the Departures section as the claim being qualified, "
+        "not quoted from the protocol",
+    "vendor-hosted, and no published MBTI form identifiable from the work":
+        "the manuscript stating how its own code should be read, not quoting a document",
 }
 
 # Nothing is verified "by hand" here. A quotation from a document this study does

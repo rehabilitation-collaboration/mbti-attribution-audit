@@ -329,17 +329,29 @@ def sensitivity(coded: pd.DataFrame, instrument: pd.Series, sources: dict[str, t
     }
 
     unclassified = coded[coded["work_venue_class"] == "unclassified"]
-    arms["S2"] = {
-        "arm": "include the unclassified record (§8)",
-        **measures(coded, MAIN_VENUES + ("unclassified",), instrument, C_FLAGS),
-        "note": (
-            "vacuous as run: §8 planned to code the record in full, but its full text was "
-            "never retrieved (status no_url in fulltext_log.csv), so §1 leaves it "
-            "unobtainable and it carries no code to add"
-            if unclassified.empty
-            else f"{len(unclassified)} unclassified work(s) added"
-        ),
-    }
+    # S2 only *ran* if the record it adds carries a code. It does not: §8 undertook
+    # to code the venue-less work in full, and its full text was never retrieved.
+    # Reporting the arm at the main-analysis values said "including it changed
+    # nothing", which asserts a result the arm never produced — and the figure drew
+    # it beside the arms that did run, with a point and an interval. An arm whose
+    # input was never obtained is not estimable, and is now reported as such.
+    arms["S2"] = (
+        {
+            "arm": "include the unclassified record (§8)",
+            "m1": None,
+            "m2": None,
+            "note": "not estimable: §8 planned to code the record in full, but its full "
+                    "text was never retrieved (status no_url in fulltext_log.csv), so §1 "
+                    "leaves it unobtainable and it carries no code to add. The arm has no "
+                    "result — not a result equal to the main analysis",
+        }
+        if unclassified.empty
+        else {
+            "arm": "include the unclassified record (§8)",
+            **measures(coded, MAIN_VENUES + ("unclassified",), instrument, C_FLAGS),
+            "note": f"{len(unclassified)} unclassified work(s) added",
+        }
+    )
 
     vendor_only = (instrument == "c") & (coded["instrument_sublabel"] == "c-vendor-cited-only")
     arms["S3"] = {

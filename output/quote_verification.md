@@ -15,16 +15,22 @@ Every quoted span of 20 characters or more in `manuscript.md`, checked against t
 | OK | our-framework + protocol | unlike Myers-Briggs or other theories based on the Jungian model, we have not incorpora… | 160 characters matched |
 | — | not a source quotation | we used 16Personalities, which is not the MBTI | a constructed counterexample, explicitly hypothetical in the sentence that carries it |
 | — | not a source quotation | the author looked and changed nothing | the manuscript naming a state of affairs, not quoting a document |
+| — | not a source quotation | Sixteen of seventeen | the manuscript quoting a figure from its own Discussion in order to withdraw it; the phrase is a fraction, not a source |
 | — | not a source quotation | the range of underlying rates compatible with these counts | the manuscript quoting its own earlier draft, in the passage that withdraws it |
+| — | not a source quotation | was fixed in advance | a phrase mentioned in the Departures section as the claim being qualified, not quoted from the protocol |
+| OK | protocol | Every figure is a lower bound | 29 characters matched |
+| OK | protocol | the peer-reviewed literature | 28 characters matched |
+| OK | protocol | a validated instrument | 22 characters matched |
 | OK | coded-work | grounded in the Big Five framework | 34 characters matched |
 | OK | coded-work | results in the familiar MBTI format | 35 characters matched |
 | OK | coded-work | the theoretical basis of the two platforms is not the same | 58 characters matched |
 | OK | coded-work | 16 types identical to the Myers-Briggs test | 43 characters matched |
 | OK | protocol + coded-work | a popular MBTI questionnaire | 28 characters matched |
 | OK | for-ai | Last updated: June 11, 2026 | 27 characters matched |
+| — | not a source quotation | vendor-hosted, and no published MBTI form identifiable from the work | the manuscript stating how its own code should be read, not quoting a document |
 | OK | bennett-2011 | there is limited guidance and no consensus regarding the optimal reporting of survey re… | 93 characters matched |
 | OK | scopus-source-list | Discontinued by Scopus | 22 characters matched |
 | OK | protocol | every figure is a lower bound | 29 characters matched |
 
-19 spans: 14 found in an archived source, 0 verified by hand against an external source, 5 not source quotations, 0 unaccounted for.
+25 spans: 17 found in an archived source, 0 verified by hand against an external source, 8 not source quotations, 0 unaccounted for.
 

@@ -136,60 +136,9 @@
     },
     "S2": {
       "arm": "include the unclassified record (§8)",
-      "m1": {
-        "n1": 27,
-        "denominators": {
-          "e1_works_in_main_analysis": 27,
-          "works_in_main_analysis": 42,
-          "coded_works": 61
-        },
-        "distribution": {
-          "a": {
-            "k": 17,
-            "n": 27,
-            "p": 0.6296,
-            "ci_low": 0.4423,
-            "ci_high": 0.7847
-          },
-          "b": {
-            "k": 1,
-            "n": 27,
-            "p": 0.037,
-            "ci_low": 0.0066,
-            "ci_high": 0.1828
-          },
-          "c": {
-            "k": 9,
-            "n": 27,
-            "p": 0.3333,
-            "ci_low": 0.1864,
-            "ci_high": 0.5218
-          }
-        }
-      },
-      "m2": {
-        "n": 61,
-        "r4": {
-          "k": 2,
-          "n": 61,
-          "p": 0.0328,
-          "ci_low": 0.009,
-          "ci_high": 0.1119
-        },
-        "any_conflation": {
-          "k": 44,
-          "n": 61,
-          "p": 0.7213,
-          "ci_low": 0.5983,
-          "ci_high": 0.8181
-        },
-        "conflation_flags": [
-          "c1",
-          "c2",
-          "c3"
-        ]
-      },
-      "note": "vacuous as run: §8 planned to code the record in full, but its full text was never retrieved (status no_url in fulltext_log.csv), so §1 leaves it unobtainable and it carries no code to add"
+      "m1": null,
+      "m2": null,
+      "note": "not estimable: §8 planned to code the record in full, but its full text was never retrieved (status no_url in fulltext_log.csv), so §1 leaves it unobtainable and it carries no code to add. The arm has no result — not a result equal to the main analysis"
     },
     "S3": {
       "arm": "count c-vendor-cited-only works as (a) — the PLAN's original boundary rule (§4.1)",

@@ -853,3 +853,42 @@ evidence, so it is left standing and marked. Neither route is silent.
   correction to a table that did not sum, made against columns coded, scored and
   adjudicated in August, and it is reported with the same unplanned label as the
   rest of the block.
+
+**2026-08-25 (third entry) — §11's S2, and two claims the manuscript made about
+this protocol that it should not have. Every count existed; the manuscript had
+been through a second external review.** The reviewer read only the typeset
+manuscript, as before, and returned six substantive findings. Four are corrections
+to the manuscript alone and are recorded there. Two reach this document.
+
+- **S2 did not run, and reporting it at the main-analysis values said otherwise.**
+  §8 undertook to code the venue-less record in full so that the arm would run on
+  real codes. Its full text was never retrieved. `aggregate.py` nonetheless
+  computed the arm over a denominator the record does not join, returned the main
+  analysis, and the manuscript printed "unchanged" while the figure drew a point
+  and an interval beside the arms that ran. **An arm whose input was never
+  obtained has no result, which is not the same as a result equal to the main
+  analysis.** S2 now returns no measures and is reported as not estimable. The
+  error is statable without reference to any count — the record carries no code,
+  so nothing was added to anything — which is what §0 requires this late.
+- **The claim that only M1, M2 and the arms carry a proportion was not kept, and
+  the manuscript's defence of the 2026-08-25 cross-tabulation rested on it.** The
+  first entry of this date argued that the block was acceptable because it
+  reports "counts against a stated denominator and no rate". The reviewer pointed
+  out that the manuscript writes "sixteen of seventeen", which is a proportion
+  however it is printed, and that a rule evaded by declining to divide is not a
+  rule. **The defence is withdrawn.** The block is described in the manuscript as
+  an exploratory, post hoc set of descriptive proportions, reported without
+  intervals, and it is counted as a **departure from §12's closed list** rather
+  than as an amendment to it. The manuscript now carries a table of every
+  departure, which is where a reader should go rather than to this log.
+- **A related correction the reviewer forced, which changes a reported number.**
+  The first entry of this date reported that "16 of the 17 works coded (a) carry
+  at least one conflating statement" and the manuscript read that figure as the
+  misattribution count. It is not. The seventeenth work carries C3 alone — a claim
+  about the vendor's test's *standing*, not about its identity or its descent —
+  and this study establishes no fact about the test's validity against which such
+  a claim could be called false. §6 drew C3 as a separate flag for exactly this
+  reason. The misattribution reading is now **15 of 17** (C1 or C2), with 13 of 17
+  for C1 alone and 16 of 17 for any of the three, reported as three separate
+  lines. **This lowers the headline of the exploratory block**, and it corrects an
+  earlier amendment of this same date that raised it.

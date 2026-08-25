@@ -30,7 +30,7 @@ ROWS = {
     "C1 or C2": "c1_or_c2",
     "Any of C1–C3": "any_conflation",
     "C0, no conflating statement": "c0_no_conflating_statement",
-    "`states_distinction`, drew the distinction": "states_distinction",
+    "`states_distinction`, noted some difference between the two": "states_distinction",
 }
 
 
@@ -88,28 +88,36 @@ def test_the_prose_figure_matches_the_table(computed, section):
     a = computed["by_instrument_code"]["a"]
     text = MANUSCRIPT.read_text(encoding="utf-8")
     patterns = {
-        "abstract": rf"{a['any_conflation']} of the {a['works']} described the vendor's test "
-                    rf"in terms its operator disclaims",
-        "results": r"(\w+) of the (\w+) works that administered the vendor's test carried at "
-                   r"least one conflating statement, and (\w+) of those identified it",
-        "discussion": rf"of the {a['works']} works that administered the vendor's test, "
-                      rf"{a['any_conflation']} described it in terms the vendor disclaims — "
-                      rf"{a['c1_or_c2']} of them",
+        "abstract": rf"{a['c1_or_c2']} of the {a['works']} describing it as the MBTI "
+                    rf"or as descended from it",
+        "results": rf"\*\*{a['c1_or_c2']} of the {a['works']} either did that or gave the "
+                   rf"vendor's test the MBTI's provenance\*\*",
+        "discussion": r"\*\*(\w+) of seventeen is the misattribution",
     }
     match = re.search(patterns[section], text)
     assert match, f"the {section} no longer states the count in its expected wording"
-    if section == "results":
-        assert [WORDS[g.lower()] for g in match.groups()] == [
-            a["any_conflation"], a["works"], a["c1_or_c2"]
-        ]
+    if section == "discussion":
+        assert WORDS[match.group(1).lower()] == a["c1_or_c2"]
+    # The C3-only work must not be folded into the misattribution figure anywhere.
+    assert f"{a['any_conflation']} of the {a['works']} is the misattribution" not in text
+    assert f"{a['any_conflation']} of seventeen is the misattribution" not in text
 
 
-def test_the_states_distinction_count_is_stated_consistently(computed):
+def test_states_distinction_is_never_described_as_drawing_the_distinction(computed):
+    """The field records that a work noted a difference, not that it got it right.
+
+    One of the three works it flags writes "16 types identical to the Myers-Briggs
+    test" and carries C1. Reporting the field under the name "drew the
+    distinction" made the manuscript contradict its own next paragraph, so the
+    label is gone and must not come back.
+    """
     a = computed["by_instrument_code"]["a"]
     text = MANUSCRIPT.read_text(encoding="utf-8")
-    assert f"{a['states_distinction']} stated the distinction" in text
-    assert f"{a['states_distinction']} marked the distinction somewhere in the text" in text
-    assert f"{a['states_distinction']} of the {a['works']} works coded (a) state the distinction" in text
+    spelled = {1: "One", 2: "Two", 3: "Three"}[a["states_distinction"]]
+    assert f"{spelled} carry the protocol's `states_distinction` field" in text
+    for banned in ("drew the distinction", "stated the distinction", "drew it correctly"):
+        assert banned not in text, f"{banned!r} overstates what the field records"
+    assert "the count is two, not three" in text
 
 
 def test_every_file_the_manuscript_points_at_is_published():
