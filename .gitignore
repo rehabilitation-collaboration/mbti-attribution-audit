@@ -37,7 +37,9 @@ PLAN-DEVIATIONS.md
 LITERATURE.md
 RESEARCH-*.md
 REVIEW-REPORT*.md
-GPT-REVIEW-*.md
+# The external-review text and the brief that goes in with it: working
+# documents, held beside PLAN.md rather than published.
+GPT-*.md
 
 # The shared Vancouver-style reference checker writes here. Its DOI resolution is
 # sound but its field verdicts are computed on a template this manuscript's
