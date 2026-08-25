@@ -26,7 +26,9 @@ RESULTS = ROOT / "data" / "results.json"
 ROWS = {
     "C1, named as one instrument": "c1_identity",
     "C2, given the MBTI's provenance": "c2_provenance",
+    "C3, claimed the standing of a published instrument": "c3_authority",
     "C1 or C2": "c1_or_c2",
+    "Any of C1–C3": "any_conflation",
     "C0, no conflating statement": "c0_no_conflating_statement",
     "`states_distinction`, drew the distinction": "states_distinction",
 }
@@ -70,7 +72,7 @@ def test_every_cell_matches_the_computed_counts(computed, label, key):
     assert transcribed()[label] == [codes[c][key] for c in ("a", "b", "c")]
 
 
-WORDS = {"one": 1, "two": 2, "three": 3, "fifteen": 15, "seventeen": 17}
+WORDS = {"one": 1, "two": 2, "three": 3, "fifteen": 15, "sixteen": 16, "seventeen": 17}
 
 
 @pytest.mark.parametrize("section", ["abstract", "results", "discussion"])
@@ -86,22 +88,27 @@ def test_the_prose_figure_matches_the_table(computed, section):
     a = computed["by_instrument_code"]["a"]
     text = MANUSCRIPT.read_text(encoding="utf-8")
     patterns = {
-        "abstract": rf"{a['c1_or_c2']} of the {a['works']} also identified the vendor's test",
-        "results": r"(\w+) of the (\w+) works that administered the vendor's test also identified",
+        "abstract": rf"{a['any_conflation']} of the {a['works']} described the vendor's test "
+                    rf"in terms its operator disclaims",
+        "results": r"(\w+) of the (\w+) works that administered the vendor's test carried at "
+                   r"least one conflating statement, and (\w+) of those identified it",
         "discussion": rf"of the {a['works']} works that administered the vendor's test, "
-                      rf"{a['c1_or_c2']} also called it the MBTI",
+                      rf"{a['any_conflation']} described it in terms the vendor disclaims — "
+                      rf"{a['c1_or_c2']} of them",
     }
     match = re.search(patterns[section], text)
     assert match, f"the {section} no longer states the count in its expected wording"
     if section == "results":
-        assert [WORDS[g.lower()] for g in match.groups()] == [a["c1_or_c2"], a["works"]]
+        assert [WORDS[g.lower()] for g in match.groups()] == [
+            a["any_conflation"], a["works"], a["c1_or_c2"]
+        ]
 
 
 def test_the_states_distinction_count_is_stated_consistently(computed):
     a = computed["by_instrument_code"]["a"]
     text = MANUSCRIPT.read_text(encoding="utf-8")
     assert f"{a['states_distinction']} stated the distinction" in text
-    assert f"{a['states_distinction']} marked the distinction" in text
+    assert f"{a['states_distinction']} marked the distinction somewhere in the text" in text
     assert f"{a['states_distinction']} of the {a['works']} works coded (a) state the distinction" in text
 
 

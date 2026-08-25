@@ -318,7 +318,9 @@ def test_post_hoc_splits_the_conflation_flags_by_instrument_code():
         "works": 4,
         "c1_identity": 2,
         "c2_provenance": 2,
+        "c3_authority": 0,
         "c1_or_c2": 3,
+        "any_conflation": 3,
         "c0_no_conflating_statement": 1,
         "states_distinction": 0,
     }
@@ -338,6 +340,27 @@ def test_post_hoc_counts_only_e1_works_inside_the_main_analysis():
     block = post_hoc(rows, rows["instrument_final"])["by_instrument_code"]
     assert block["a"]["works"] == 1
     assert block["a"]["c1_identity"] == 1
+
+
+def test_post_hoc_refuses_a_column_that_does_not_close():
+    """The guard that would have caught the bug this block shipped with.
+
+    Table 2 was first drawn with C1, C2 and C0 and no C3 row, so the (a) column
+    accounted for 16 of its 17 works: C0 is defined against C1-C3, and the
+    seventeenth work carried C3 alone. Nothing failed, because nothing was
+    checking that the flagged and unflagged counts partition the works.
+    """
+    rows = frame(work("orphan", instrument_final="a", c0_final=False, c3_final=True))
+    assert post_hoc(rows, rows["instrument_final"])["by_instrument_code"]["a"] == {
+        "works": 1, "c1_identity": 0, "c2_provenance": 0, "c3_authority": 1,
+        "c1_or_c2": 0, "any_conflation": 1, "c0_no_conflating_statement": 0,
+        "states_distinction": 0,
+    }
+    # A work carrying neither C0 nor any C flag cannot exist under the protocol,
+    # and if the coding ever produced one the block must refuse to report it.
+    broken = frame(work("impossible", instrument_final="a", c0_final=False))
+    with pytest.raises(ResultsError, match="do not partition"):
+        post_hoc(broken, broken["instrument_final"])
 
 
 def test_post_hoc_declares_itself_unplanned_and_rateless():

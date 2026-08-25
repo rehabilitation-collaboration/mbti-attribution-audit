@@ -33,17 +33,24 @@ lists them.)
 
 **Main analysis: the 58 works with `venue_class == "journal_article"`.** The
 audit's claim is about the peer-reviewed literature, and that column is the only
-venue evidence the metadata supports. Every other class is coded too, and
+venue evidence the metadata supports. ⚠️ **The first half of that sentence is
+wrong and is left standing as written; see §12 (2026-08-25).** `journal_article`
+is a metadata assertion and certifies no refereeing, so the claim is about the
+journal-article literature. The manuscript carries the corrected statement. Every other class is coded too, and
 reported, but is not in the main denominator. The boundary is fixed here and is
 not moved after results are seen; §11 lists the arms that vary it.
 
 **Input is the full text**, not the abstract. A work whose full text cannot be
 obtained is coded `unobtainable` and leaves the denominator; the count and the
-reason are reported. This bites: retrieval reached **61 of 99 works, and 42 of
-the 58 journal articles** (`data/fulltext_log.csv`, 2026-08-19). Ten of the
-sixteen missing journal articles are publishers refusing programmatic access
-(HTTP 403 or 404). Those refusals are recorded, not worked around, which is what
-makes the open-access frame a declared one.
+reason are reported. This bites — corrected 2026-08-25, see §12: retrieval reached **64 of 99
+works, and 44 of the 58 journal articles**, of which **61 works and 42 journal
+articles entered coding** (`data/fulltext_log.csv`). The gap is the three
+retrieved texts carrying no vendor word form, two of them journal articles. Of
+the **fourteen** journal articles that could not be retrieved, **eight** are
+publishers refusing programmatic access (HTTP 403 or 404) and **two** failed at
+the TLS layer, which is a broken server rather than a refusal. Those refusals are
+recorded, not worked around, which is what makes the open-access frame a declared
+one.
 
 **Two kinds of absence are counted separately**, because they mean opposite
 things:
@@ -532,6 +539,10 @@ Fixed regardless of pattern:
   two of them fall outside the main analysis is stated in Methods.
 - Open-access-only is described as a declared sampling frame; every figure is a
   lower bound, and the direction of the bias is stated.
+  ⚠️ **"Every figure is a lower bound" is false and this instruction was departed
+  from; see §12 (2026-08-25).** The text is left exactly as written because §10's
+  value is that it records what was promised before the counts existed, and
+  editing it would destroy the only property that makes it evidence.
 - Europe PMC contributed no work that OpenAlex did not already contain, so it is
   reported as independent confirmation of the frame, not as a second frame.
 - The unobtainable-full-text count is reported next to every proportion.
@@ -774,3 +785,71 @@ being wrong in the same direction.
   file and in the manuscript, and it is computed by published code rather than
   read off by a person. §10's two measures are unchanged, and the branch still
   returns P1 from the same counts.
+
+**2026-08-25 (second entry) — §1 and §10, three passages that contradict the
+manuscript published beside them, and one addition to the reporting. Every count
+existed; the manuscript had been drafted, reviewed twice, revised and typeset.**
+A three-reviewer read of the revised manuscript against this protocol found that
+the two documents disagree in three places, and that the manuscript is right in
+all three. The treatment differs by what each passage is *for*, and that is the
+part worth stating: a protocol does two jobs that pull apart once a passage turns
+out to be wrong. Where the text is a **rule that still governs**, leaving it false
+licenses wrong coding by anyone who re-runs the study, so it is corrected in
+place. Where the text is a **pre-commitment whose only remaining value is that it
+was fixed before the counts**, editing it destroys the property that makes it
+evidence, so it is left standing and marked. Neither route is silent.
+
+- **§1's retrieval figures were wrong, and are corrected in place.** §1 read
+  "retrieval reached 61 of 99 works, and 42 of the 58 journal articles … Ten of
+  the sixteen missing journal articles are publishers refusing programmatic
+  access (HTTP 403 or 404)". Those are the *coded* counts presented as the
+  *retrieved* counts, which double-counts the three works retrieved without a
+  vendor word form as missing and yields sixteen where `fulltext_log.csv` gives
+  fourteen. §1 also contradicted itself within four paragraphs, defining
+  `no_word_form` as "text was retrieved" and then counting those works as
+  unretrieved. The error is statable independently of any count it changes — a
+  work that was retrieved is not missing — which is what §0 requires of a
+  correction this late. The parenthetical was wrong too: of the ten failures,
+  eight returned HTTP 403 or 404 and two failed at the TLS layer, which is a
+  broken server and not a refusal. That distinction is load-bearing, because the
+  sentence is the evidence for calling the open-access frame declared rather than
+  incidental. The repository README carried the same figures and is corrected
+  with it. Nothing evidential is lost: these were descriptions of a data file
+  published alongside and contradicting them.
+- **§1's "the audit's claim is about the peer-reviewed literature" is left
+  standing and marked.** It is false — `venue_class == "journal_article"` is a
+  metadata assertion that certifies no refereeing, and this corpus contains at
+  least one conference-supplement abstract filed as a journal article. But it is
+  a scope statement rather than a coding rule; no code depended on it, and
+  correcting it in place would edit a sentence whose only remaining function is
+  to record what was claimed. The manuscript carries the corrected statement and
+  now points here.
+- **§10's "every figure is a lower bound" is left standing and marked, and the
+  departure from it is reported as a departure.** The instruction is false by
+  arithmetic: when numerator and denominator can both only rise, the ratio can
+  move either way, so the counts are bounded and the proportions are not. This
+  can be shown without looking at a single count. §10 is the section whose entire
+  value is that it fixed the reporting before the results existed, and the
+  manuscript's Methods stakes the study's integrity on exactly that; rewriting it
+  now would buy a tidier document at the cost of the evidence. So the text stays
+  and the manuscript declares what it did instead. **This is a deviation from a
+  pre-committed reporting instruction, and a study built on pre-commitment has to
+  label its deviations as deviations rather than as edits.** Limitations 2 named
+  the error but attributed it to "an earlier version of this paragraph", which
+  points at the manuscript's own drafts and conceals that the instruction
+  departed from is this protocol's; it now says so.
+- **§10's list of reported quantities gains one row, for the reason the first
+  2026-08-25 entry gives.** That entry added the conflation flags of the main
+  analysis split by instrument code. As drawn it did not add up: C1∪C2 plus C0
+  left one (a) work unaccounted for, because C0 is defined against C1-C3 and that
+  work carries C3 alone. The block now reports C3 and the union of all three, and
+  `aggregate.py` refuses to produce it unless the flagged and unflagged counts
+  partition the works of every instrument code. The corrected figure is that
+  **16 of the 17 works coded (a) carry at least one conflating statement**, where
+  the manuscript had said 15 and invited a reader to infer that two carried none.
+  The addition raises a number and is recorded for that reason: the rule this
+  protocol has followed throughout is to take the reading that weakens the
+  headline where it is silent, and this is not that. It is an arithmetic
+  correction to a table that did not sum, made against columns coded, scored and
+  adjudicated in August, and it is reported with the same unplanned label as the
+  rest of the block.

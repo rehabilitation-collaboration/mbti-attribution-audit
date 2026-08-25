@@ -1,6 +1,6 @@
 # What Do Papers Administer When They Say "MBTI"?
 
-An attribution audit of the peer-reviewed literature. When a paper reports MBTI
+An attribution audit of the journal-article literature. When a paper reports MBTI
 results, it may have administered the published instrument, or a free web test
 that shares its four-letter codes but not its theory or its publisher, or
 something it never names. This study measures how often each is the case.
@@ -23,10 +23,13 @@ find, unasked: **what was actually administered.**
   shared definition (`src/build_corpus.py`); every count and the exact query is
   written to `data/query_log.json` on each run.
 - **Frame.** Open-access full text only. This is a declared sampling frame, not
-  a workaround: figures are stated as lower bounds and the direction of the bias
-  is reported. Retrieval reached 61 of the 99 works and 42 of the 58 journal
-  articles; most of what is missing is a publisher refusing programmatic access,
-  and that refusal is recorded rather than worked around.
+  a workaround: observed positive counts are stated as lower bounds, and the
+  direction of the bias in the proportions is stated to be unknown. Retrieval
+  reached 64 of the 99 works and 44 of the 58 journal articles, of which 61 works
+  and 42 journal articles entered coding; the difference is three retrieved texts
+  carrying no vendor word form. Of the fourteen journal articles that could not
+  be retrieved, eight are publishers refusing programmatic access and two failed
+  at the TLS layer, and those refusals are recorded rather than worked around.
 - **Classification (planned).** Works are first coded by where their type data
   came from, because a good deal of the corpus administered nothing to anybody:
   classifiers trained on scraped labels, language models answering the

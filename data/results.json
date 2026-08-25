@@ -650,7 +650,9 @@
         "works": 17,
         "c1_identity": 13,
         "c2_provenance": 10,
+        "c3_authority": 7,
         "c1_or_c2": 15,
+        "any_conflation": 16,
         "c0_no_conflating_statement": 1,
         "states_distinction": 3
       },
@@ -658,7 +660,9 @@
         "works": 1,
         "c1_identity": 0,
         "c2_provenance": 0,
+        "c3_authority": 0,
         "c1_or_c2": 0,
+        "any_conflation": 0,
         "c0_no_conflating_statement": 1,
         "states_distinction": 0
       },
@@ -666,7 +670,9 @@
         "works": 9,
         "c1_identity": 4,
         "c2_provenance": 2,
+        "c3_authority": 1,
         "c1_or_c2": 5,
+        "any_conflation": 5,
         "c0_no_conflating_statement": 4,
         "states_distinction": 0
       }

@@ -111,6 +111,9 @@ def haystacks() -> dict[str, str]:
         key: normalise(" ".join(read_source(n) for n in names))
         for key, names in ARCHIVED.items()
     }
+    # The protocol is published with the manuscript and the manuscript quotes it,
+    # including sentences it quotes in order to withdraw them.
+    stacks["protocol"] = normalise((ROOT / "data" / "coding_protocol.md").read_text(encoding="utf-8"))
     quotes = []
     with CLASSIFICATION.open(encoding="utf-8") as handle:
         for row in csv.DictReader(handle):

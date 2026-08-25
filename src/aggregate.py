@@ -475,14 +475,28 @@ def post_hoc(coded: pd.DataFrame, instrument: pd.Series) -> dict:
             continue
         c1 = booleans(rows, "c1_final")
         c2 = booleans(rows, "c2_final")
+        c3 = booleans(rows, "c3_final")
         by_code[code] = {
             "works": len(rows),
             "c1_identity": int(c1.sum()),
             "c2_provenance": int(c2.sum()),
+            "c3_authority": int(c3.sum()),
             "c1_or_c2": int((c1 | c2).sum()),
+            # The union over all three, which is what M2 rates across the whole
+            # corpus. Without it the block did not add up: C1∪C2 plus C0 left one
+            # (a) work unaccounted for, because C0 is defined against C1-C3 and
+            # that work carries C3 alone. Reported here so the column closes.
+            "any_conflation": int((c1 | c2 | c3).sum()),
             "c0_no_conflating_statement": int(booleans(rows, "c0_final").sum()),
             "states_distinction": int(booleans(rows, "states_distinction_final").sum()),
         }
+        counted = by_code[code]["any_conflation"] + by_code[code]["c0_no_conflating_statement"]
+        if counted != len(rows):
+            raise ResultsError(
+                f"the conflation flags of instrument code ({code}) do not partition its "
+                f"{len(rows)} works: {by_code[code]['any_conflation']} carry a flag and "
+                f"{by_code[code]['c0_no_conflating_statement']} carry C0, totalling {counted}"
+            )
     return {
         "planned": False,
         "added": "2026-08-25",
@@ -652,7 +666,9 @@ def show(results: dict) -> None:
             continue
         print(f"  ({code}) n={counts['works']:<3} C1 {counts['c1_identity']}"
               f"  C2 {counts['c2_provenance']}"
+              f"  C3 {counts['c3_authority']}"
               f"  C1-or-C2 {counts['c1_or_c2']}"
+              f"  any C1-C3 {counts['any_conflation']}"
               f"  C0 {counts['c0_no_conflating_statement']}"
               f"  states_distinction {counts['states_distinction']}")
 
