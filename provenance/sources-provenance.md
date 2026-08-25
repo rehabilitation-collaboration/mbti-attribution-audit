@@ -50,6 +50,10 @@ Verification log:
   the KCI one-page preview at 791 characters, which is what a one-page preview
   should be. The two vendor pages this study quotes are now both held in a form
   that carries their text.
+- 2026-08-25: `scopus-ext-list_Jul2026.xlsx` and its extract added and hashed
+  (**13/13 OK**), after an internal review found the manuscript's claim about
+  Elsevier's discontinued-titles list to be the one assertion in the paper that
+  no reviewer had been able to check.
 - 2026-08-25: **quotations checked, not just references.** Every quoted span of
   20 characters or more in `manuscript.md` was matched against the archived text
   it is attributed to (`src/verify_manuscript_quotes.py`, record published at
@@ -69,6 +73,7 @@ Verification log:
 | `16personalities-our-theory_2026-08-17.html` | `https://www.16personalities.com/articles/our-theory` | 2026-08-17 | `curl -s -L` |
 | `16personalities-our-framework_2026-08-25.pdf` | `https://www.16personalities.com/articles/our-framework` | 2026-08-25 | browser print-to-PDF (see note) |
 | `Bennett2011_PLoSMed_2026-08-25.pdf` | `https://journals.plos.org/plosmedicine/article/file?id=10.1371/journal.pmed.1001069&type=printable` | 2026-08-25 | `curl -sSL` |
+| `scopus-ext-list_Jul2026.xlsx` / `…_IJM-extract.txt` | `https://downloads.ctfassets.net/o78em1y1w4i4/7xtaTxNiNcWRTeZkV86eNy/8df9934a6138c7e15817214c098deaf2/ext_list_Jul_2026.xlsx` (linked from `https://www.elsevier.com/products/scopus/content`) | 2026-08-25 | `curl -sSL` |
 | `LeeKim2024_KCI-preview-p1_2026-08-17.pdf` / `.txt` | `https://www.kci.go.kr/kciportal/ci/sereArticleSearch/artiPreView.kci?sereArticleSearchBean.artiId=ART003137485&v=2019` | 2026-08-17 | `curl -s -L` |
 | `LeeSeongbin2024_MA-thesis_GNU_2026-08-17.pdf` / `.txt` | see "Korean thesis" below | 2026-08-17 | cookie session |
 
@@ -121,6 +126,32 @@ downloads.
   | the four published checklists it identified were unvalidated | "We identified four published checklists ... none of which were validated" |
   | the 117 survey papers it examined | "117 recently published reports of self-administered surveys" |
   | "there is limited guidance and no consensus regarding the optimal reporting of survey research" | same, in the abstract's Conclusions and again in the Discussion |
+
+- **`scopus-ext-list_Jul2026.xlsx` is the one third-party document this study
+  makes a specific factual claim about, so it is held rather than cited from
+  memory.** The Discussion states that Elsevier's Scopus source list records
+  *International Journal of Management* (IAEME) as inactive and discontinued, at
+  an issue earlier than the one carrying Makwana & Dave 2020. An external
+  reviewer could corroborate the discontinuation from a third-party index but not
+  the issue-level detail, which is exactly the kind of claim that should not rest
+  on a reviewer's inability to check it. The workbook was therefore downloaded
+  and the two relevant rows extracted verbatim into
+  `scopus-ext-list_Jul2026_IJM-extract.txt`, which `verify_manuscript_quotes.py`
+  matches against. The rows read:
+
+  | Sheet | Field | Value |
+  |---|---|---|
+  | Scopus Sources Jul. 2026 | Sourcerecord ID | 21100945713 |
+  | | Source Title / ISSN | International Journal of Management / 09766502 |
+  | | Active or Inactive | **Inactive** |
+  | | Coverage | **2019-2020** |
+  | | Titles Discontinued by Scopus | **Discontinued by Scopus** |
+  | | Publisher | IAEME Publication |
+  | Discontinued Titles Jul. 2026 | Final coverage | **2020, volume 11, issue 6, pp. 267-276** |
+
+  The paper in question is volume 11, issue 9, pp. 257-265, so it appeared three
+  issues after the last one Scopus covered. The workbook is 19,939,838 bytes and
+  is kept locally only; the extract carries the text the manuscript relies on.
 
 - **`LeeKim2024_KCI-preview-p1_*` is the first page only** (cover, abstract and
   footnotes), not the full article. The publisher releases only a one-page

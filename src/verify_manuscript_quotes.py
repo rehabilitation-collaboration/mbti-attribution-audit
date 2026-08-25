@@ -75,6 +75,10 @@ ARCHIVED = {
     # reviewer previously caught being quoted for the opposite of its conclusion,
     # which is the reason it is archived rather than trusted.
     "bennett-2011": ("Bennett2011_PLoSMed_2026-08-25.pdf",),
+    # Elsevier's Scopus source list, July 2026. The workbook is 20 MB; the rows
+    # for the one journal this paper names are extracted verbatim beside it so
+    # the quotations can be matched without loading the spreadsheet.
+    "scopus-source-list": ("scopus-ext-list_Jul2026_IJM-extract.txt",),
 }
 
 

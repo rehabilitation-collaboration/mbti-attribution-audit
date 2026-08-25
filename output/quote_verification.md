@@ -23,7 +23,8 @@ Every quoted span of 20 characters or more in `manuscript.md`, checked against t
 | OK | protocol + coded-work | a popular MBTI questionnaire | 28 characters matched |
 | OK | for-ai | Last updated: June 11, 2026 | 27 characters matched |
 | OK | bennett-2011 | there is limited guidance and no consensus regarding the optimal reporting of survey re… | 93 characters matched |
+| OK | scopus-source-list | Discontinued by Scopus | 22 characters matched |
 | OK | protocol | every figure is a lower bound | 29 characters matched |
 
-18 spans: 13 found in an archived source, 0 verified by hand against an external source, 5 not source quotations, 0 unaccounted for.
+19 spans: 14 found in an archived source, 0 verified by hand against an external source, 5 not source quotations, 0 unaccounted for.
 
