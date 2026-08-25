@@ -37,6 +37,12 @@ Verification log:
   On the same date the five vendor URLs were re-requested and returned HTTP 200
   with byte counts identical to the stored captures (16130 / 15805 / 14548 /
   1941 / 38087), so the live pages had not changed since retrieval.
+- 2026-08-25: `16personalities-our-framework_2026-08-25.pdf` added and hashed.
+  Recorded together with the finding that a byte-identical capture can still be
+  empty of content: `our-theory` passes its checksum and carries 628 characters
+  of text. A checksum certifies that a file has not changed, not that it says
+  anything, and the two vendor pages this study quotes are now held in a form
+  that carries the text.
 
 ## Files
 
@@ -47,6 +53,7 @@ Verification log:
 | `16p-for-ai_2026-08-17.json` | `https://www.16personalities.com/for-ai.json` | 2026-08-17 | `curl -s -L` |
 | `16p-llms_2026-08-17.txt` | `https://www.16personalities.com/llms.txt` | 2026-08-17 | `curl -s -L` |
 | `16personalities-our-theory_2026-08-17.html` | `https://www.16personalities.com/articles/our-theory` | 2026-08-17 | `curl -s -L` |
+| `16personalities-our-framework_2026-08-25.pdf` | `https://www.16personalities.com/articles/our-framework` | 2026-08-25 | browser print-to-PDF (see note) |
 | `LeeKim2024_KCI-preview-p1_2026-08-17.pdf` / `.txt` | `https://www.kci.go.kr/kciportal/ci/sereArticleSearch/artiPreView.kci?sereArticleSearchBean.artiId=ART003137485&v=2019` | 2026-08-17 | `curl -s -L` |
 | `LeeSeongbin2024_MA-thesis_GNU_2026-08-17.pdf` / `.txt` | see "Korean thesis" below | 2026-08-17 | cookie session |
 
@@ -64,6 +71,20 @@ downloads.
   `acronym` each occur zero times. It is retained as a record of retrieval only
   and is not usable as evidence. The rendered text was read separately through a
   JavaScript-capable fetch on 2026-08-17.
+- **`16personalities-our-framework_2026-08-25.pdf` is the load-bearing source for
+  what the vendor claims and denies about its own lineage**, and it exists as a
+  PDF for a reason. The page is client-rendered like `our-theory`: a plain `curl`
+  returns navigation only, which is why two earlier attempts to check the point
+  found no mention of Jung and could neither confirm nor refute it. The capture
+  was therefore taken by opening the URL in a browser and printing to PDF. It is
+  10 pages and carries the full article text, including the two passages the
+  manuscript quotes — "Our approach has its roots in two different philosophies …
+  Carl Gustav Jung" and "unlike Myers-Briggs or other theories based on the
+  Jungian model, we have not incorporated Jungian concepts such as cognitive
+  functions". Unlike a `curl` capture its bytes are not reproducible by
+  re-running a command, so the checksum records this copy rather than certifying
+  the live page; the URL and retrieval date are given so a reader can repeat the
+  reading.
 - **`LeeKim2024_KCI-preview-p1_*` is the first page only** (cover, abstract and
   footnotes), not the full article. The publisher releases only a one-page
   preview through KCI.

@@ -449,6 +449,52 @@ def descriptive(coded: pd.DataFrame, log: pd.DataFrame, venue_counts: dict[str, 
     }
 
 
+def post_hoc(coded: pd.DataFrame, instrument: pd.Series) -> dict:
+    """The conflation flags of the main analysis, cross-tabulated by instrument code.
+
+    **Nothing here was planned.** §10 named M1 and M2 and §12 closed the list on
+    2026-08-22; this block was added on 2026-08-25, after every count existed, and
+    §12 records it as an amendment with the reason. It answers a question M1 does
+    not: M1 reports which instrument each work administered, and says nothing
+    about whether the work attributed that instrument correctly. The C flags do,
+    and they were coded twice, scored and adjudicated before any of this was
+    computed — so the cross-tabulation reads columns that were already settled
+    rather than coding anything again.
+
+    It is reported as counts against a stated denominator and carries no interval,
+    which is the form §12 fixed for every quantity outside M1, M2 and the arms.
+    The distinction matters more here than elsewhere precisely because this is the
+    figure a reader is most likely to want promoted to a rate.
+    """
+    main = coded[coded["work_venue_class"].isin(MAIN_VENUES) & (coded["e_final"] == "E1")]
+    by_code: dict[str, dict] = {}
+    for code in INSTRUMENTS:
+        rows = main[instrument.loc[main.index] == code]
+        if rows.empty:
+            by_code[code] = {"works": 0}
+            continue
+        c1 = booleans(rows, "c1_final")
+        c2 = booleans(rows, "c2_final")
+        by_code[code] = {
+            "works": len(rows),
+            "c1_identity": int(c1.sum()),
+            "c2_provenance": int(c2.sum()),
+            "c1_or_c2": int((c1 | c2).sum()),
+            "c0_no_conflating_statement": int(booleans(rows, "c0_final").sum()),
+            "states_distinction": int(booleans(rows, "states_distinction_final").sum()),
+        }
+    return {
+        "planned": False,
+        "added": "2026-08-25",
+        "form": "counts against a stated denominator; no proportion, no interval",
+        "why": "M1 measures what was administered, not whether the work attributed it "
+               "correctly. The manuscript had read M1 as the second quantity; it is not. "
+               "These columns carry the attribution and were settled before this was computed.",
+        "denominator": "E1 works in the main analysis, split by instrument code",
+        "by_instrument_code": by_code,
+    }
+
+
 def calibration(coded: pd.DataFrame) -> dict:
     """Where §7's three records sit, and whether the pipeline reproduced them.
 
@@ -537,6 +583,7 @@ def build() -> dict:
         "sensitivity": sensitivity(coded, instrument, sources, query_log, venue_counts),
         "calibration": calibration(coded),
         "descriptive_counts_no_rate": descriptive(coded, log, venue_counts),
+        "post_hoc_counts_not_planned": post_hoc(coded, instrument),
     }
 
 
@@ -596,6 +643,18 @@ def show(results: dict) -> None:
     print(f"  retrieval: {r['coded']} coded, {r['unobtainable']['total']} unobtainable "
           f"{r['unobtainable']['by_reason']}, {r['no_word_form']['count']} no_word_form "
           f"of {r['no_word_form']['checkable_works']} checkable")
+
+    ph = results["post_hoc_counts_not_planned"]
+    print(f"\nUNPLANNED, added {ph['added']} — conflation flags by instrument code "
+          f"({ph['form']})")
+    for code, counts in ph["by_instrument_code"].items():
+        if not counts["works"]:
+            continue
+        print(f"  ({code}) n={counts['works']:<3} C1 {counts['c1_identity']}"
+              f"  C2 {counts['c2_provenance']}"
+              f"  C1-or-C2 {counts['c1_or_c2']}"
+              f"  C0 {counts['c0_no_conflating_statement']}"
+              f"  states_distinction {counts['states_distinction']}")
 
     c = results["calibration"]
     print(f"\n§7 calibration records: {c['outside_main_analysis']} of {len(CALIBRATION)} contribute "

@@ -31,6 +31,7 @@ from aggregate import (
     check,
     measures,
     pattern,
+    post_hoc,
     proportion,
     wilson,
 )
@@ -298,3 +299,50 @@ def test_s7_reads_the_narrow_flags_and_leaves_m1_alone():
     assert wide["m2"]["any_conflation"]["k"] == 1
     assert narrow["m2"]["any_conflation"]["k"] == 0
     assert wide["m1"] == narrow["m1"]
+
+
+# --- the unplanned cross-tabulation ----------------------------------------
+
+
+def test_post_hoc_splits_the_conflation_flags_by_instrument_code():
+    rows = frame(
+        work("a1", instrument_final="a", c0_final=False, c1_final=True),
+        work("a2", instrument_final="a", c0_final=False, c2_final=True),
+        work("a3", instrument_final="a", c0_final=False, c1_final=True, c2_final=True),
+        work("a4", instrument_final="a"),
+        work("c1w", instrument_final="c", instrument_sublabel="c-unnamed",
+             c0_final=False, c3_final=True),
+    )
+    block = post_hoc(rows, rows["instrument_final"])["by_instrument_code"]
+    assert block["a"] == {
+        "works": 4,
+        "c1_identity": 2,
+        "c2_provenance": 2,
+        "c1_or_c2": 3,
+        "c0_no_conflating_statement": 1,
+        "states_distinction": 0,
+    }
+    # C3 alone is neither an identity nor a provenance claim, so the (c) work
+    # counts as neither — the union must not quietly become "any C flag".
+    assert block["c"]["c1_or_c2"] == 0
+    assert block["b"] == {"works": 0}
+
+
+def test_post_hoc_counts_only_e1_works_inside_the_main_analysis():
+    rows = frame(
+        work("in", instrument_final="a", c0_final=False, c1_final=True),
+        work("venue", work_venue_class="preprint", instrument_final="a",
+             c0_final=False, c1_final=True),
+        work("gate", e_final="E2", instrument_final="", c0_final=False, c1_final=True),
+    )
+    block = post_hoc(rows, rows["instrument_final"])["by_instrument_code"]
+    assert block["a"]["works"] == 1
+    assert block["a"]["c1_identity"] == 1
+
+
+def test_post_hoc_declares_itself_unplanned_and_rateless():
+    block = post_hoc(frame(), frame()["instrument_final"])
+    assert block["planned"] is False
+    # No key may carry a proportion or an interval: §12 fixed that only M1, M2
+    # and the arms do, and this block was added after every count existed.
+    assert not {"p", "ci_low", "ci_high"} & set(block["by_instrument_code"]["a"])

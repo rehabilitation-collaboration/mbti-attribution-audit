@@ -638,5 +638,38 @@
       "note": "§6 records this shape and refuses it a rate: the corpus is built from 16Personalities word forms, so a proportion over it would have no denominator"
     },
     "text_is_abstract": 4
+  },
+  "post_hoc_counts_not_planned": {
+    "planned": false,
+    "added": "2026-08-25",
+    "form": "counts against a stated denominator; no proportion, no interval",
+    "why": "M1 measures what was administered, not whether the work attributed it correctly. The manuscript had read M1 as the second quantity; it is not. These columns carry the attribution and were settled before this was computed.",
+    "denominator": "E1 works in the main analysis, split by instrument code",
+    "by_instrument_code": {
+      "a": {
+        "works": 17,
+        "c1_identity": 13,
+        "c2_provenance": 10,
+        "c1_or_c2": 15,
+        "c0_no_conflating_statement": 1,
+        "states_distinction": 3
+      },
+      "b": {
+        "works": 1,
+        "c1_identity": 0,
+        "c2_provenance": 0,
+        "c1_or_c2": 0,
+        "c0_no_conflating_statement": 1,
+        "states_distinction": 0
+      },
+      "c": {
+        "works": 9,
+        "c1_identity": 4,
+        "c2_provenance": 2,
+        "c1_or_c2": 5,
+        "c0_no_conflating_statement": 4,
+        "states_distinction": 0
+      }
+    }
   }
 }

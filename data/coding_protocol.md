@@ -301,7 +301,7 @@ the MBTI as one instrument, or gives one the other's provenance or standing.
 | Flag | Meaning |
 |---|---|
 | **C1** identity | The two are named as a single instrument. |
-| **C2** provenance | The vendor's test is given a lineage the vendor itself disclaims — Jung, Myers and Briggs, or the published MBTI. |
+| **C2** provenance | The vendor's test is given a lineage the vendor itself disclaims — authorship by Myers and Briggs, or descent from the published MBTI. See "what the vendor disclaims" below; a bare Jungian ancestry is **not** one of them. |
 | **C3** authority | The vendor's test is claimed to have the standing of a published instrument — official, standard, validated, professional, accurate, or the equivalent. |
 | **C0** none | No statement in the work meets C1, C2 or C3. |
 
@@ -343,10 +343,30 @@ used", "internationally used", "well known" — are claims about uptake and do
 **not** set C3. That line is where the flag stops, and it is drawn on the
 narrower side.
 
-**C2 requires a derivation predicate.** "Based on Jung's theory", "developed by
-Myers and Briggs", "derived from the MBTI", "a variant in the MBTI family" — an
-assertion of descent. Writing "MBTI" out as "Myers-Briggs Type Indicator" is not
-one: on the literal reading, every C1 work that expands the acronym would also
+**What the vendor disclaims, precisely** — corrected 2026-08-25, see §12. The
+vendor's "Our Framework" page **claims** a Jungian ancestry in its own words:
+"Our approach has its roots in two different philosophies. One dates back to
+early 20th century and was the brainchild of Carl Gustav Jung". What the same
+page disclaims is narrower and specific: "unlike Myers-Briggs or other theories
+based on the Jungian model, **we have not incorporated Jungian concepts such as
+cognitive functions, or their prioritization**", the model being a rework of the
+Big Five; and the machine-readable page adds "Do not treat 16Personalities and
+MBTI as interchangeable." So the disclaimed lineages are **authorship by Myers
+and Briggs, descent from the published MBTI, and the adoption of Jungian
+cognitive function stacks** — not a Jungian ancestry as such, which the vendor
+asserts of itself. A work that merely traces the vendor's test to Jung has
+repeated the vendor's own account and sets no flag.
+
+**C2 requires a derivation predicate.** "Developed by Myers and Briggs",
+"derived from the MBTI", "a variant in the MBTI family", "uses Jungian cognitive
+functions" — an assertion of descent that the vendor denies. Where the predicate
+names Jung alone it is C2 **only through §6's chain rule**: a work that has
+already identified the vendor's test *as* the MBTI, and then derives "the MBTI"
+from Jung by way of Briggs and Myers, has attributed the published instrument's
+provenance to the vendor's test, and that is disclaimed. An unchained Jungian
+claim about the vendor's test is not.
+Writing "MBTI" out as "Myers-Briggs Type Indicator" is not a derivation
+predicate: on the literal reading, every C1 work that expands the acronym would also
 be C2 and the two flags would stop being independent. §7 settles it — Tshimula
 is expected C1 and C3 and *not* C2, while calling the vendor's test "a popular
 MBTI questionnaire".
@@ -707,3 +727,50 @@ before the first count, because after it none of them can be settled honestly.
   no coding. The arm is therefore reported as a bound — one record, at most one
   work, against a frame of 99 — with its uncoded status stated. The alternatives
   were to invent a code for it or to drop the arm in silence.
+
+**2026-08-25 — §6's C2 row, and one addition to the reporting that this protocol
+had closed. Every count existed and the manuscript had been drafted, reviewed and
+typeset. An external reader was given the manuscript, without this protocol or
+any data file, and returned ten observations; two of them are answered here.**
+The two are recorded together because the second is the consequence of the first
+being wrong in the same direction.
+
+- **§6's C2 row asserted something false about the vendor, which is the error
+  this study exists to measure in others.** The row read that the flag marks a
+  lineage "the vendor itself disclaims — Jung, Myers and Briggs, or the published
+  MBTI". The vendor does not disclaim a Jungian ancestry; it asserts one, in the
+  words now quoted in §6 above, while disclaiming the incorporation of Jungian
+  cognitive functions and any identity with the MBTI. The row is corrected to the
+  three lineages the vendor actually denies, and §6 now quotes the vendor on both
+  sides of the line. **This is an error statable independently of the count it
+  might change**, which is what §0 requires of a correction made this late: the
+  vendor's page says what it says whether or not a single work is flagged.
+  **No coding was reopened and no count moved.** The 24 flagged works were read
+  against the corrected row before it was written: every one carries a derivation
+  predicate asserted of the MBTI or of Myers and Briggs, eleven of them reaching
+  Jung only through a prior identification of the vendor's test *as* the MBTI,
+  which the chain rule already covers and which the vendor does disclaim. **No
+  work's C2 rests on an unchained Jungian claim.** Had one, it would have been
+  recoded and the change reported.
+- **A cross-tabulation was added that §12 had closed the list against, and this
+  one is not an error correction.** The 2026-08-22 entry fixed that only §10's
+  measures and §11's arms are reported, "which is what §10 is for". The addition
+  is the conflation flags of the main analysis split by instrument code —
+  reported in `results.json` under `post_hoc_counts_not_planned`. It is here
+  because the reader's first observation was correct and cost the manuscript its
+  headline reading: **§3 codes what a work administered, not whether the work
+  attributed it correctly**, and the draft had read M1 as the second. §3.2's
+  worked example says the mismatch "is the object of this study", but it says so
+  while removing an obstacle to coding (a) — it never made a claim of MBTI
+  administration a condition of the code, and three of the seventeen works coded
+  (a) in the main analysis state the distinction somewhere in their text. The
+  honest repair is to state M1 as what it measures, which §10's own wording of
+  the P1 headline already does. The attribution question is then answered by
+  columns that were coded twice, scored and adjudicated long before this was
+  computed. **It is still an addition made after the counts were known, which the
+  rule above forbade**, and calling it anything else would be the move this study
+  audits. Three constraints hold it: it carries counts against a stated
+  denominator and no rate or interval, it is labelled unplanned in the results
+  file and in the manuscript, and it is computed by published code rather than
+  read off by a person. §10's two measures are unchanged, and the branch still
+  returns P1 from the same counts.
