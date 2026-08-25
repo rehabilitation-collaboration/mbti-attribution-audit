@@ -77,9 +77,20 @@ def load() -> tuple[dict, dict]:
 
 
 def save(fig, stem: str) -> None:
+    """Write both formats, with no wall-clock stamp in either.
+
+    Matplotlib writes a `/CreationDate` into the PDF, so re-running this script
+    produced a file that differed from the committed one in exactly five bytes —
+    the minute it was run. The repository claims that its outputs reproduce
+    byte-for-byte, and that claim was true of the PNGs and false of the PDFs;
+    suppressing the stamp makes it true of both. Passing `None` removes the key
+    rather than setting it, which is matplotlib's documented behaviour.
+    """
     OUT.mkdir(exist_ok=True)
+    metadata = {"pdf": {"CreationDate": None}, "png": {"Software": None}}
     for suffix in ("pdf", "png"):
-        fig.savefig(OUT / f"{stem}.{suffix}", dpi=300, bbox_inches="tight")
+        fig.savefig(OUT / f"{stem}.{suffix}", dpi=300, bbox_inches="tight",
+                    metadata=metadata[suffix])
     plt.close(fig)
     print(f"  wrote figures/{stem}.pdf and .png")
 
