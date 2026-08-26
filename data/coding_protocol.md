@@ -477,9 +477,9 @@ not only here. The load-bearing evidence for reproducibility is that every code
 carries a located verbatim quote, so a reader can check the coding against the
 same text.
 
-**Who adjudicates.** The author — 瑞樹 — rules on every disagreement, reading the
+**Who adjudicates.** The author rules on every disagreement, reading the
 located quote against the full text. An agent may *propose* a ruling; it does not
-make one. This mirrors the ninth study, where every coverage difference was
+make one. This mirrors an earlier study by the same author, uncited here for the same reason, where every coverage difference was
 resolved by the author rather than by an agreement statistic.
 
 **Output: `data/classification.csv`**, one row per work:

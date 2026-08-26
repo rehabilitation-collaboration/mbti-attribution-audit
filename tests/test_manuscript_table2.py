@@ -117,7 +117,7 @@ def test_the_prose_figure_matches_the_table(computed, section):
         "abstract": rf"{a['c1_identity']} of the {a['works']} describing it as the MBTI"
                     rf"\*\*, contrary to the vendor's 2026 statement",
         "results": rf"\*\*{a['c1_identity']} of the {a['works']} described the vendor's test "
-                   rf"as the MBTI\*\* \(C1\) — \*\*the central finding\*\*",
+                   rf"as the MBTI\*\* \(C1\) — \*\*the central attribution finding\*\*",
         "discussion": r"\*\*(\w+) of seventeen described the vendor-hosted test as the MBTI, "
                       r"contrary to the vendor's 2026 statement",
     }

@@ -64,7 +64,17 @@ data/query_log.json          queries, counts, window and word-form sensitivity, 
 data/coding_protocol.md      how each work is coded, and what is claimed for each result
 data/fulltext_log.csv        what was retrieved, from where, and why a failure failed
 data/boundary_notes.md       records inspected by hand: duplicates, false positives, edge venues
-provenance/                  where each primary source came from, and its hash
+provenance/                  retrieval URL, date, method and SHA-256 for every third-party document
+data/classification.csv      the per-work coding, with the located quotation each code rests on
+data/agreement.csv           inter-coder agreement, by code
+data/adjudications.csv       the author's ruling on every contested item
+data/discharged.csv          works read by the author and left unchanged, recorded rather than assumed
+data/results.json            every figure the manuscript reports, computed
+data/gap_check.json          the three novelty searches and their filter strings
+data/coder_brief*.md         what each coder was told
+src/aggregate.py             §10's measures and §11's arms, computed from the coded corpus
+src/make_figures.py          the four figures, drawn from results.json
+output/                      the typeset manuscript and two verification records
 ```
 
 ### What is frozen, and what is not
@@ -104,3 +114,13 @@ title normaliser that emptied every non-Latin title, and a grouping rule that
 counted a work once per DOI and so split Zenodo versions and preprint/article
 pairs. Both were found after the corpus had been published, and both moved a
 reported count. Each test fails if its fault is reintroduced.
+
+## Licence
+
+The code in `src/` and `tests/` is under the MIT licence in `LICENSE`.
+**The manuscript text, its tables and its figures are under CC BY 4.0**, matching
+the licence the paper is posted under. Third-party material quoted in the paper —
+two vendor web pages and a publisher's source list — is quoted in short excerpt
+under the terms of scholarly quotation and is not redistributed; the full captures
+are held locally and are not in this repository, with their provenance recorded in
+`provenance/`.
