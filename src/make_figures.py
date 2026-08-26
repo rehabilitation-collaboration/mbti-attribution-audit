@@ -290,7 +290,7 @@ def figure4(d: dict) -> None:
         "S4": "S4  OpenAlex only",
         "S5": "S5  widened word form",
         "S6": "S6  abstract-texts excluded",
-        "S7": "S7  narrow conflation reading",
+        "S7": "S7  narrow C-flag reading",
     }
     panels = [
         ("A  M1 — vendor-hosted; no published MBTI form identifiable", d["m1"]["distribution"]["a"],

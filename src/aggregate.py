@@ -420,7 +420,7 @@ def sensitivity(coded: pd.DataFrame, instrument: pd.Series, sources: dict[str, t
     }
 
     arms["S7"] = {
-        "arm": "conflation flags on the narrow reading — works that name the vendor's test or site",
+        "arm": "pre-defined C flags on the narrow reading — works that name the vendor's test or site",
         **measures(coded, MAIN_VENUES, instrument, NARROW_C_FLAGS),
         "note": (
             "M1 is untouched: the narrow reading is a rule about §6's flags. The stopping "
