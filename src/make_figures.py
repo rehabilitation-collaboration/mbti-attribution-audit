@@ -192,7 +192,7 @@ def figure2(d: dict) -> None:
     rows = [
         ("(a)  vendor-hosted; no MBTI form identifiable", "a"),
         ("(b)  a published MBTI form", "b"),
-        ("(c)  not identifiable from the work", "c"),
+        ("(c)  other/insufficiently identified", "c"),
     ]
     fig, ax = plt.subplots(figsize=(7.2, 2.5))
     for i, (label, code) in enumerate(rows):
@@ -293,7 +293,7 @@ def figure4(d: dict) -> None:
         "S7": "S7  narrow conflation reading",
     }
     panels = [
-        ("A  M1 — administered a vendor-hosted test", d["m1"]["distribution"]["a"],
+        ("A  M1 — vendor-hosted; no published MBTI form identifiable", d["m1"]["distribution"]["a"],
          lambda a: a["m1"]["distribution"]["a"] if a["m1"] and a["m1"]["distribution"] else None,
          lambda p: f"{p['k']}/{p['n']}"),
         ("B  M2 — any pre-defined C1-C3 flag", d["m2"]["any_conflation"],

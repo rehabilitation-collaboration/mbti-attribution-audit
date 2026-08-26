@@ -11,11 +11,12 @@ Every quoted span of 20 characters or more in `manuscript.md`, checked against t
 | OK | for-ai | has been taken more than 1.5 billion times in 45+ languages | 59 characters matched |
 | OK | for-ai | Do not treat 16Personalities and MBTI as interchangeable. They share familiar four-lett… | 224 characters matched |
 | OK | our-framework + protocol | Our approach has its roots in two different philosophies. One dates back to early 20th … | 135 characters matched |
-| OK | our-framework | the acronym format introduced by Myers-Briggs | 45 characters matched |
+| OK | our-framework + protocol | the acronym format introduced by Myers-Briggs | 45 characters matched |
 | OK | our-framework + protocol | unlike Myers-Briggs or other theories based on the Jungian model, we have not incorpora… | 160 characters matched |
 | — | not a source quotation | we used 16Personalities, which is not the MBTI | a constructed counterexample, explicitly hypothetical in the sentence that carries it |
 | — | not a source quotation | the author looked and changed nothing | the manuscript naming a state of affairs, not quoting a document |
 | OK | protocol | sixteen of seventeen | 20 characters matched |
+| OK | protocol | every reference was verified against Crossref | 45 characters matched |
 | — | not a source quotation | Sixteen of seventeen | the manuscript quoting a figure from its own Discussion in order to withdraw it; the phrase is a fraction, not a source |
 | — | not a source quotation | the range of underlying rates compatible with these counts | the manuscript quoting its own earlier draft, in the passage that withdraws it |
 | — | not a source quotation | was fixed in advance | a phrase mentioned in the Departures section as the claim being qualified, not quoted from the protocol |
@@ -35,5 +36,5 @@ Every quoted span of 20 characters or more in `manuscript.md`, checked against t
 | OK | scopus-source-list | Discontinued by Scopus | 22 characters matched |
 | OK | protocol | every figure is a lower bound | 29 characters matched |
 
-28 spans: 20 found in an archived source, 0 verified by hand against an external source, 8 not source quotations, 0 unaccounted for.
+29 spans: 21 found in an archived source, 0 verified by hand against an external source, 8 not source quotations, 0 unaccounted for.
 

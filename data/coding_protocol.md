@@ -1004,3 +1004,59 @@ happened to quote, so they can only prove those sentences are gone. A negative
 control has been added alongside them — a string that must never appear, checked
 together with the proportion of the file the scanner still sees — so that a ban
 that has stopped looking fails loudly instead of passing.
+
+**2026-08-26 (second entry) — §12's closed list of reported proportions, and five
+claims stronger than the evidence behind them. Every count existed; the manuscript
+had been through a fourth round of model-assisted review. No coded value changed.**
+
+The reviewer's judgement was that the paper remains worth publishing and that it
+has not retreated too far — it stated the finding the evidence supports in one
+sentence, unprompted, and that sentence matches the paper's own. It also found
+five errors, one of them arithmetic.
+
+- **The worst-case range over the unretrieved works was asserted and got it
+  backwards.** The manuscript said the missing works "cannot move the figure
+  further than the interval already printed beside it". That contradicts Methods,
+  which states plainly that the intervals carry no uncertainty from retrieval, and
+  it is false: if all fourteen unretrieved journal articles were eligible, the share
+  could run from 17/41 (41.5%) to 31/41 (75.6%), and 41.5% lies below the interval's
+  lower bound of 44.2%. The range is now reported, labelled a worst case rather than
+  an interval, and **added to the departures table**, because two proportions the
+  planned reporting never named are exactly what §12 closed the list against. The
+  error is statable without reference to any count it changes — an interval that
+  models no retrieval uncertainty cannot bound retrieval — which is what §0 requires
+  this late.
+- **Code (c) was described as though the works said nothing.** Of the nine (c) works
+  in the main analysis, one reports author-constructed items, one a translated
+  questionnaire, and one an unnamed online test; four name "the MBTI" and no form,
+  publisher, version or URL. Calling all nine works that "do not say what" they
+  administered overstates the code. (c) now reads "other or insufficiently
+  identified; no published MBTI form identifiable", in the table, the figure and
+  §3, and the Discussion describes the partial descriptions rather than a silence.
+  **No work was recoded; the rule §3 applies is unchanged.**
+- **Three sentences claimed more than this study checked**: that the two
+  instruments' equivalence "has never been shown" (an exhaustive claim about a
+  literature this study did not survey), that the vendor's test is "by a wide margin
+  the most accessible instrument of its kind" (no comparison was run), and that a
+  paper may have used "a different questionnaire" from the one it names (the
+  non-identity this paper does not establish). All three are narrowed to what was
+  measured.
+- **The Abstract said the protocol was fixed before classification** while the
+  departures section says in terms that this is true of the first version and not
+  of the document as it stands. The Abstract now says an initial protocol set them
+  and that the change log records the amendments since.
+- **"Every reference was verified against Crossref" was false**: three references
+  carry no DOI — two vendor pages and a publisher's source list, the last of which
+  was added the previous day. Both statements now say eleven DOI-bearing references.
+
+Also corrected: the calibration description re-blurred C2 by naming "a Jungian
+lineage" without the chain the section requires; §6 now gives descent an
+operational definition, since the vendor does state that it uses "the acronym
+format introduced by Myers-Briggs" and a work observing that alone sets no flag;
+S5 was called a bound without giving one, and now reports 17-18 of 28 and 44-45 of
+62; the disclosure of AI use omitted the four-reader internal review of this date;
+and the manuscript now states that the departures table and this log do not
+correspond one to one, several departures having been recorded together in a
+single entry. The account of the 15 → 16 → 15 sequence is compressed, keeping what
+matters — that the two figures differ by definition, 16 being any of C1-C3 and 15
+being C1 or C2 — and leaving the per-reviewer chronology here.
