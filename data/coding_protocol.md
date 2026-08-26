@@ -1109,3 +1109,28 @@ Abstract, Table 2's column head, or two Discussion phrases, one of which
 review rounds and so went stale each round; and the Introduction's description of
 the vendor's statement as an admission against its own commercial interest was an
 inference about motive that nothing here supports.
+
+**2026-08-26 (fourth entry) — no rule; the previous entry's retreat, carried to
+the places it had not reached. Every count existed; the manuscript had been
+through a sixth round of model-assisted review, which reported no new major
+problem. No coded value changed.**
+
+The third entry of this date redefined C2 as a count of assertions this study does
+not adjudicate, and moved the central finding to C1 alone. That reading had reached
+the Introduction, §6's row, the Abstract and the Conclusion, and had not reached
+seven other passages, which still called C2 a conflation, still described the flag
+as recording a lineage "the vendor disclaims", and still offered the chain rule as
+evidence that a derivation claim is false. All are corrected. The chain rule stays
+where it belongs, as the rule that decides what a coder does with an anaphoric
+reference, and it no longer stands as a verdict.
+
+Two further defects of the same kind: the manuscript announced three entries dated
+26 August and described two, and it attributed the arithmetic correction to the
+fourth entry of 25 August when the log puts it in the second. The rename of code
+(c) had likewise reached the tables and figures and not the Abstract, the
+Introduction or the three places the Discussion called the category a silence.
+
+**Nothing here is a finding about the corpus.** Every item is a sentence that
+survived a change made elsewhere, which is the sixth consecutive round in which
+that has been the largest category, and the reason the manuscript's counts are
+read from files and its retracted phrasings are pinned by tests.
