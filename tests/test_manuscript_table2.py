@@ -72,7 +72,8 @@ def test_every_cell_matches_the_computed_counts(computed, label, key):
     assert transcribed()[label] == [codes[c][key] for c in ("a", "b", "c")]
 
 
-WORDS = {"one": 1, "two": 2, "three": 3, "fifteen": 15, "sixteen": 16, "seventeen": 17}
+WORDS = {"one": 1, "two": 2, "three": 3, "thirteen": 13, "fifteen": 15,
+         "sixteen": 16, "seventeen": 17}
 
 # A permanent counter-example. The bans below are a list, and a list can only
 # prove that the sentences already on it are gone — three sentences this list
@@ -108,22 +109,30 @@ def test_the_prose_figure_matches_the_table(computed, section):
     """
     a = computed["by_instrument_code"]["a"]
     text = MANUSCRIPT.read_text(encoding="utf-8")
+    # C1 is the centre: the vendor states plainly that its test is not the MBTI, so
+    # a work calling it the MBTI contradicts something the vendor actually says. C2
+    # records an asserted derivation the vendor neither claims nor denies, so it is
+    # pinned as the broader reading and never as the headline.
     patterns = {
-        "abstract": rf"{a['c1_or_c2']} of the {a['works']} describing it as the MBTI "
-                    rf"or as descended from it",
-        "results": rf"\*\*{a['c1_or_c2']} of the {a['works']} either did that or gave the "
-                   rf"vendor's test the MBTI's provenance\*\*",
-        "discussion": r"\*\*(\w+) of seventeen described the vendor-hosted test as the "
-                      r"MBTI or as descended from it",
+        "abstract": rf"{a['c1_identity']} of the {a['works']} describing it as the MBTI"
+                    rf"\*\*, contrary to the vendor's 2026 statement",
+        "results": rf"\*\*{a['c1_identity']} of the {a['works']} described the vendor's test "
+                   rf"as the MBTI\*\* \(C1\) — \*\*the central finding\*\*",
+        "discussion": r"\*\*(\w+) of seventeen described the vendor-hosted test as the MBTI, "
+                      r"contrary to the vendor's 2026 statement",
     }
     match = re.search(patterns[section], text)
     assert match, f"the {section} no longer states the count in its expected wording"
     if section == "discussion":
-        assert WORDS[match.group(1).lower()] == a["c1_or_c2"]
-    # The C3-only work must not be folded into the attribution figure anywhere.
-    spelled = {v: k.capitalize() for k, v in WORDS.items()}[a["any_conflation"]]
-    assert f"{spelled} of seventeen described the vendor-hosted test" not in text
-    assert f"{a['any_conflation']} of the {a['works']} describing it as the MBTI" not in text
+        assert WORDS[match.group(1).lower()] == a["c1_identity"]
+    # The broader reading is still reported, and still as the broader reading.
+    assert (f"**{a['c1_or_c2']} of the {a['works']} either did that or asserted that the "
+            f"vendor's test derives from the MBTI**") in text
+    # Neither the C1-or-C2 nor the any-flag count may be given C1's wording.
+    spelled = {v: k.capitalize() for k, v in WORDS.items()}
+    for n in (a["c1_or_c2"], a["any_conflation"]):
+        assert f"{spelled[n]} of seventeen described the vendor-hosted test as the MBTI," not in text
+        assert f"{n} of the {a['works']} describing it as the MBTI**" not in text
 
 
 def test_states_distinction_is_never_described_as_drawing_the_distinction(computed):
@@ -198,6 +207,27 @@ def test_the_union_of_the_c_flags_is_never_called_a_conflation_rate():
                    "reproduced the conflation in prose"):
         assert banned not in prose, f"{banned!r} calls the C1-C3 union a conflation"
     assert "any pre-defined C1–C3 flag" in prose
+
+
+def test_the_paper_never_says_the_vendor_disclaims_a_derivation_from_the_mbti():
+    """The vendor denies being the MBTI. It does not deny descending from it.
+
+    Its framework page states that it uses "the acronym format introduced by
+    Myers-Briggs" and recounts the MBTI's origins approvingly; what it denies is
+    identity and the incorporation of Jungian cognitive functions. C2's row twice
+    claimed a denial the sources do not contain — first naming Jung, then, after
+    that correction, naming descent from the published MBTI. Attributing to a
+    source a position it does not hold is the error this study measures, so the
+    ban is permanent and C2 carries no verdict.
+    """
+    prose = unquoted(MANUSCRIPT.read_text(encoding="utf-8"))
+    for banned in ("a lineage the vendor disclaims",
+                   "the lineages the vendor denies",
+                   "the three the vendor denies",
+                   "lineages C2 covers are the three",
+                   "descent from the published MBTI, and the use of Jungian"):
+        assert banned not in prose, f"{banned!r} attributes a denial the vendor never made"
+    assert "this study does not adjudicate it" in prose
 
 
 def test_every_file_the_manuscript_points_at_is_published():

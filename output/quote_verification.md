@@ -14,6 +14,7 @@ Every quoted span of 20 characters or more in `manuscript.md`, checked against t
 | OK | our-framework + protocol | the acronym format introduced by Myers-Briggs | 45 characters matched |
 | OK | our-framework + protocol | unlike Myers-Briggs or other theories based on the Jungian model, we have not incorpora… | 160 characters matched |
 | — | not a source quotation | we used 16Personalities, which is not the MBTI | a constructed counterexample, explicitly hypothetical in the sentence that carries it |
+| OK | protocol | the vendor disclaims | 20 characters matched |
 | — | not a source quotation | the author looked and changed nothing | the manuscript naming a state of affairs, not quoting a document |
 | OK | protocol | sixteen of seventeen | 20 characters matched |
 | OK | protocol | every reference was verified against Crossref | 45 characters matched |
@@ -36,5 +37,5 @@ Every quoted span of 20 characters or more in `manuscript.md`, checked against t
 | OK | scopus-source-list | Discontinued by Scopus | 22 characters matched |
 | OK | protocol | every figure is a lower bound | 29 characters matched |
 
-29 spans: 21 found in an archived source, 0 verified by hand against an external source, 8 not source quotations, 0 unaccounted for.
+30 spans: 22 found in an archived source, 0 verified by hand against an external source, 8 not source quotations, 0 unaccounted for.
 

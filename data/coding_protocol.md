@@ -952,8 +952,11 @@ retrievability conditions the analytic corpus of 61 and not the frame.
 
 **One correction this log owes itself.** The manuscript said the protocol had been
 "amended six times", which counted three same-day entries as one. This log carries
-eleven dated entries as of 2026-08-26 and the manuscript says so, read from the log
-rather than from memory.
+its entries dated, and the manuscript states how many by counting them in this
+file rather than from memory. **This entry no longer states the total itself**: it
+did, and the next entry appended made it wrong — the fifth time in this repository
+that a count written from memory went stale, and the first time the stale count was
+inside the log that the rule was written to consult.
 
 **2026-08-26 — nothing in this protocol's rules, and six places where a correction
 made on 2026-08-25 had not been carried to the artefact beside it. Every count
@@ -1060,3 +1063,49 @@ correspond one to one, several departures having been recorded together in a
 single entry. The account of the 15 → 16 → 15 sequence is compressed, keeping what
 matters — that the two figures differ by definition, 16 being any of C1-C3 and 15
 being C1 or C2 — and leaving the per-reviewer chronology here.
+
+**2026-08-26 (third entry) — §6's C2 row, for the second time, and the claim the
+manuscript's central finding rests on. Every count existed; the manuscript had
+been through a fifth round of model-assisted review. No coded value changed.**
+
+**C2's row asserted a denial the vendor has never made.** The row was corrected
+once on 2026-08-25, when it named Jung among the lineages the vendor disclaims and
+the vendor claims a Jungian ancestry of itself. The corrected row still said the
+vendor disclaims "descent from the published MBTI". It does not. What the two
+pages this study quotes actually contain is that the two are not interchangeable,
+that the model is proprietary, and that Jungian cognitive functions are not
+incorporated — while the framework page states that the vendor uses "the acronym
+format introduced by Myers-Briggs" and recounts the MBTI's own origins
+approvingly. Being a proprietary model and being uninfluenced by the MBTI are
+different propositions, and only the first is asserted.
+
+**This is the error this study exists to measure, committed by the study.** It
+attributed to a source a position the source does not hold, and it did so in the
+row that carries a quarter of the works it codes.
+
+**What changes.** C2 is now defined as what it observes — a derivation predicate
+asserted of the published instrument or of its authors — and is reported as a
+count of assertions whose truth this study does not adjudicate. **The central
+finding moves to C1 alone: 13 of the 17.** C1 records an identity claim, which is
+the one thing the vendor addresses directly and denies plainly, so a work calling
+the vendor-hosted test the MBTI contradicts a statement its operator has made. The
+15 of 17 figure is retained as the broader pre-defined reading and is labelled as
+counting assertions rather than errors. **No work was recoded and no count moved**:
+C1 is 13, C2 is 24, C1-or-C2 is 15 and any C1-C3 is 16, exactly as before. What
+changed is which of them the paper leans on and what it says the others mean.
+
+The chain rule stays in §6 as a coding rule, because it decides what a coder does
+with an anaphoric reference, but it is no longer offered as a defence of C2's
+truth: a work that identifies the two and then says "the MBTI derives from Jung"
+has made an identity error C1 already records, and adding a second flag for the
+lineage does not make the lineage claim false.
+
+Also corrected in the manuscript: S5's bound was conditioned on the added record
+being a journal article and an E1 work, which is right for M1 and wrong for M2,
+whose denominator is every coded work of any venue class and any gate code — the
+arm now states three branches; the rename of code (c) had not reached the
+Abstract, Table 2's column head, or two Discussion phrases, one of which
+("decline to identify") implied concealment; the AI-use disclosure counted the
+review rounds and so went stale each round; and the Introduction's description of
+the vendor's statement as an admission against its own commercial interest was an
+inference about motive that nothing here supports.

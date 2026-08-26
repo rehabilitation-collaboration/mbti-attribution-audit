@@ -40,7 +40,7 @@ find, unasked: **what was actually administered.**
   questionnaire, studies *of* the instrument rather than *with* it. Works whose
   authors did administer something are then coded (a) a vendor-hosted test with no
   published MBTI form identifiable from the work, (b) a published MBTI form, or
-  (c) not identifiable. Both vendor pages this study quotes were retrieved in
+  (c) other or insufficiently identified. Both vendor pages this study quotes were retrieved in
   2026, so (a) carries no claim about the product's specification at any earlier
   date. Two independent coders,
   kappa reported, disagreements adjudicated.
