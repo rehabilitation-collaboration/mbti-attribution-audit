@@ -952,7 +952,7 @@ retrievability conditions the analytic corpus of 61 and not the frame.
 
 **One correction this log owes itself.** The manuscript said the protocol had been
 "amended six times", which counted three same-day entries as one. This log carries
-ten dated entries as of 2026-08-26 and the manuscript says so, read from the log
+eleven dated entries as of 2026-08-26 and the manuscript says so, read from the log
 rather than from memory.
 
 **2026-08-26 — nothing in this protocol's rules, and six places where a correction

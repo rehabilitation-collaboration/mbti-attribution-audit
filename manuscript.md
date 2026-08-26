@@ -320,7 +320,7 @@ Four arms warrant a sentence each. Neither S2 nor S5 yields an estimate, and the
 
 **S4 is an identity.** All 61 coded works are in OpenAlex, so restricting to that source removes nothing. This is the measured form of the statement made in Methods: Europe PMC confirms the frame and does not extend it.
 
-**S5 is a bound rather than a recount.** The widened word form takes the OpenAlex intersection from 108 records to 109 and leaves Europe PMC at 10. The added record is not in the corpus: it was never retrieved and carries no code. The arm therefore bounds the effect at one record — at most one work against a frame of 99. Since the added record carries no code, it can only enter as a numerator-and-denominator or as a denominator alone, so M1 lies between 17 and 18 of 28 and M2 between 44 and 45 of 62. Those are the bounds the arm asserts; no code is invented for the record, and the arm is not dropped in silence.
+**S5 is a bound rather than a recount.** The widened word form takes the OpenAlex intersection from 108 records to 109 and leaves Europe PMC at 10. The added record is not in the corpus: it was never retrieved and carries no code. The arm therefore bounds the effect at one record — at most one work against a frame of 99. The record's venue class and gate status are unknown, because it was never retrieved, so it may not reach either denominator at all. **If it were retrievable, a journal article and an E1 work**, M1 would lie between 17 and 18 of 28 and M2 between 44 and 45 of 62; if it were not, neither measure moves. Those are the bounds the arm asserts, and they are conditional; no code is invented for the record, and the arm is not dropped in silence.
 
 ### Calibration
 
