@@ -49,3 +49,7 @@ GPT-*.md
 # src/verify_manuscript_refs.py, which is published.
 output/reference_verification.md
 output/reference_verification.json
+
+# Submission guides: working documents for one submission, like PLAN.md above.
+# The last two papers in the series kept these out of the repository too.
+ssrn-*.html
