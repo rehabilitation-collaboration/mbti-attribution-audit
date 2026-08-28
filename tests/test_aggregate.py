@@ -17,6 +17,9 @@ published Wilson bounds, and against statsmodels where statsmodels is present.
 
 from __future__ import annotations
 
+import re
+from pathlib import Path
+
 import pandas as pd
 import pytest
 
@@ -24,6 +27,7 @@ from aggregate import (
     C_FLAGS,
     MAIN_VENUES,
     NARROW_C_FLAGS,
+    PATTERNS,
     R_FLAGS,
     ResultsError,
     any_of,
@@ -369,3 +373,92 @@ def test_post_hoc_declares_itself_unplanned_and_rateless():
     # No key may carry a proportion or an interval: §12 fixed that only M1, M2
     # and the arms do, and this block was added after every count existed.
     assert not {"p", "ci_low", "ci_high"} & set(block["by_instrument_code"]["a"])
+
+
+# --- §10's promised wording is a quotation, so it is pinned as one -------------
+
+PROTOCOL = Path(__file__).resolve().parent.parent / "data" / "coding_protocol.md"
+
+
+def _protocol_patterns() -> dict[str, tuple[str, str]]:
+    """P1-P5 as they stand in §10's table: (what the abstract leads with, wording)."""
+    rows = re.findall(
+        r"^\|\s*\*\*(P[1-5])\*\*\s*\|(.*?)\|(.*?)\|(.*?)\|\s*$",
+        PROTOCOL.read_text(encoding="utf-8"),
+        re.M,
+    )
+    return {name: (leads.strip(), wording.strip()) for name, _cond, leads, wording in rows}
+
+
+def test_the_protocol_table_is_still_parseable():
+    """A negative control for the two tests below.
+
+    Both compare `PATTERNS` against rows extracted from the protocol. If the
+    table is reformatted and the pattern stops matching, the extraction returns
+    nothing and every comparison below passes over an empty set — the shape of
+    failure this repository keeps finding in itself. So the count is asserted
+    first, and it is asserted against the names, not just the length.
+    """
+    found = _protocol_patterns()
+    assert set(found) == {"P1", "P2", "P3", "P4", "P5"}, (
+        "§10's table no longer yields five patterns; the tests below would pass vacuously"
+    )
+    assert all(w for _, w in found.values()), "a pattern row parsed to an empty wording"
+
+
+@pytest.mark.parametrize("name", ["P1", "P2", "P3", "P4", "P5"])
+def test_the_promised_wording_is_quoted_character_for_character(name):
+    """`PATTERNS` quotes §10; a quotation that has been tidied is not evidence.
+
+    Three of these were paraphrases until 2026-08-28, under a comment saying all
+    five were verbatim. P3 had lost "of papers reporting MBTI results" — the
+    population claim this study spent Limitation 1 and two departure rows
+    retracting — which made the pre-commitment read better than it was.
+
+    Compared raw. Normalising would fold exactly the differences that mattered:
+    an ASCII ellipsis for U+2026, a dropped pair of quotation marks, a full stop
+    changed to a semicolon.
+    """
+    promised_leads, promised_wording = _protocol_patterns()[name]
+    assert PATTERNS[name][1] == promised_wording
+    assert PATTERNS[name][0] == promised_leads
+
+
+# --- the rules are read as rules, not as a record -----------------------------
+
+# Phrases the change log has retracted. Each may still stand in §§1-11 — a rule
+# rewritten after the fact is no longer evidence of what the coders were given —
+# but only with its correction marked where a reader meets it.
+RETRACTED_IN_THE_RULES = [
+    "the vendor itself disclaims",
+    "an assertion of descent that the vendor denies",
+    "and that is disclaimed",
+    "descent from the published MBTI, and the adoption of Jungian",
+]
+
+
+@pytest.mark.parametrize("phrase", RETRACTED_IN_THE_RULES)
+def test_a_retracted_rule_stands_only_with_its_correction_marked(phrase):
+    """§§1-11 are what the coders were given; §12 is the record of what changed.
+
+    Every guard in this repository reads `manuscript.md`. None read the protocol
+    as rules, and on 2026-08-28 that gap surfaced: four sentences in §6 still
+    defined C2 by a denial the vendor never made — the error this study exists to
+    measure — while §12 recorded that the correction had reached them. It had not.
+    The manuscript meanwhile called the row "an earlier version" of itself.
+
+    The sentences stay. What must never again be absent is the mark beside them.
+    """
+    text = PROTOCOL.read_text(encoding="utf-8")
+    rules = text[: text.index("## 12. Changes after coding began")]
+    assert len(rules) > 0.2 * len(text), "the rules/log split has moved; this test is scanning nothing"
+    if phrase not in rules:
+        return  # the sentence was removed outright, which is also fine
+    start = 0
+    while (idx := rules.find(phrase, start)) != -1:
+        window = rules[max(0, idx - 400) : idx + 700]
+        assert "\u26a0" in window, (
+            f"{phrase!r} stands in the rules with no correction mark beside it; "
+            "the log retracted it, so a reader of §§1-11 is being given a rule the study disowns"
+        )
+        start = idx + 1

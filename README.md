@@ -46,8 +46,11 @@ find, unasked: **what was actually administered.**
   kappa reported, disagreements adjudicated.
 - **Secondary measures (planned).** What the vendor's site is cited *as* — the
   instrument, the theory, population norms, reliability evidence, a scraping
-  target, or a passing mention — and whether the work states outright that the
-  vendor's test and the MBTI are the same instrument.
+  target, a passing mention, or the object of study — and whether the work names
+  the vendor's test as the MBTI (C1), asserts a derivation from it or from its
+  authors (C2), or claims for it the standing of a published instrument (C3).
+  **Only C1 records a claim the vendor addresses; C2 and C3 are counted and not
+  adjudicated**, so their union is a flag count and never a rate of conflation.
 - **Rules before results.** `data/coding_protocol.md` fixes the codes, the
   boundary cases, the sensitivity analyses, and what the manuscript claims under
   each result pattern. It was written before any work was classified, and it

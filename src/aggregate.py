@@ -92,15 +92,19 @@ CALIBRATION = {
 }
 
 PATTERNS = {
-    # §10's promised wording, kept verbatim because the promise is the evidence.
-    # The manuscript departs from it — only 2026 vendor pages were ever retrieved, so
+    # §10's promised wording, quoted character for character from the table in
+    # `data/coding_protocol.md`; `tests/test_aggregate.py` compares them raw and fails
+    # on a single changed character. An earlier version paraphrased three of the five,
+    # which made the pre-commitment read better than it was: P3 lost "of papers
+    # reporting MBTI results", the population claim this study retracted.
+    # The manuscript departs from P1 — only 2026 vendor pages were ever retrieved, so
     # non-identity at the date each coded paper was written is not established. The
     # departure is carried in `pattern.headline_departed_from` below, not by editing this.
-    "P1": ("M1", "X% (95% CI ...) administered an instrument that is not the MBTI"),
-    "P2": ("M1", "the same figure stated as imprecise; the word 'substantial' is not used"),
-    "P3": ("M1, framed on (c)", "X% do not identify the instrument they administered — a reporting failure, not a substitution one"),
-    "P4": ("M2", "attribution in administration is mostly accurate; the claim moves to citation practice and conflation, and the (a) cases are reported as a case series"),
-    "P5": ("M2", "no headline rate from M1; M1 is reported descriptively with its interval and explicitly called imprecise"),
+    'P1': ('M1', '"X% (95% CI …) administered an instrument that is not the MBTI"'),
+    'P2': ('M1', 'Same figure, stated as imprecise: "X%, though the interval is wide (95% CI …)". The word *substantial* is not used.'),
+    'P3': ('M1, framed on (c)', '"X% of papers reporting MBTI results do not identify the instrument they administered" — a reporting failure, not a substitution one'),
+    'P4': ('M2', 'Attribution in administration is mostly accurate; the claim moves to citation practice and conflation, and the (a) cases are reported as a case series'),
+    'P5': ('M2', 'No headline rate from M1. M1 is reported descriptively with its interval and explicitly called imprecise'),
 }
 
 
@@ -272,7 +276,16 @@ def measures(coded: pd.DataFrame, main_venues: tuple[str, ...], instrument: pd.S
     m2 = {
         "n": n2,
         "r4": proportion(int(booleans(coded, "r4_final").sum()), n2),
+        # Schema key, not a claim: the manuscript reports this union as "the share
+        # carrying any pre-defined C1-C3 flag" and states plainly that it is not a
+        # rate of conflation, because C3 alone is a claim of standing this study
+        # does not adjudicate. The key is left unrenamed so that a reader's saved
+        # path keeps working; `any_conflation_note` says what it counts.
         "any_conflation": proportion(int(any_of(coded, c_flags).sum()), n2),
+        "any_conflation_note": (
+            "share carrying at least one pre-defined C1-C3 flag; not a rate of "
+            "conflation - C2 and C3 are counted and not adjudicated"
+        ),
         "conflation_flags": list(c_flags),
     }
     return {"m1": m1, "m2": m2}

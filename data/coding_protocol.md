@@ -308,7 +308,7 @@ the MBTI as one instrument, or gives one the other's provenance or standing.
 | Flag | Meaning |
 |---|---|
 | **C1** identity | The two are named as a single instrument. |
-| **C2** provenance | The vendor's test is given a lineage the vendor itself disclaims — authorship by Myers and Briggs, or descent from the published MBTI. See "what the vendor disclaims" below; a bare Jungian ancestry is **not** one of them. |
+| **C2** provenance | The vendor's test is given a lineage the vendor itself disclaims — authorship by Myers and Briggs, or descent from the published MBTI. See "what the vendor disclaims" below; a bare Jungian ancestry is **not** one of them. ⚠️ **"the vendor itself disclaims" is wrong and is left standing as written: the vendor denies descent from the published MBTI no more than it denies Jung. C2 counts asserted derivations and adjudicates none of them; see §12 (2026-08-26, third entry, and 2026-08-28).** |
 | **C3** authority | The vendor's test is claimed to have the standing of a published instrument — official, standard, validated, professional, accurate, or the equivalent. |
 | **C0** none | No statement in the work meets C1, C2 or C3. |
 
@@ -350,7 +350,7 @@ used", "internationally used", "well known" — are claims about uptake and do
 **not** set C3. That line is where the flag stops, and it is drawn on the
 narrower side.
 
-**What the vendor disclaims, precisely** — corrected 2026-08-25, see §12. The
+**What the vendor disclaims, precisely** — corrected 2026-08-25 and again 2026-08-26; see §12. ⚠️ **The summary sentence below still names descent from the published MBTI as disclaimed, which the entry of 2026-08-26 retracted; it is left standing with the error marked. See §12 (2026-08-28).** The
 vendor's "Our Framework" page **claims** a Jungian ancestry in its own words:
 "Our approach has its roots in two different philosophies. One dates back to
 early 20th century and was the brainchild of Carl Gustav Jung". What the same
@@ -361,16 +361,23 @@ Big Five; and the machine-readable page adds "Do not treat 16Personalities and
 MBTI as interchangeable." So the disclaimed lineages are **authorship by Myers
 and Briggs, descent from the published MBTI, and the adoption of Jungian
 cognitive function stacks** — not a Jungian ancestry as such, which the vendor
-asserts of itself. A work that merely traces the vendor's test to Jung has
+asserts of itself. ⚠️ **Wrong as to the second: descent from the published MBTI
+is nowhere disclaimed in the pages this study quotes. Left standing; see §12
+(2026-08-28).** A work that merely traces the vendor's test to Jung has
 repeated the vendor's own account and sets no flag.
 
 **C2 requires a derivation predicate.** "Developed by Myers and Briggs",
 "derived from the MBTI", "a variant in the MBTI family", "uses Jungian cognitive
-functions" — an assertion of descent that the vendor denies. Where the predicate
+functions" — an assertion of descent that the vendor denies. ⚠️ **"that the
+vendor denies" is wrong; the flag records the assertion and judges it not at all.
+See §12 (2026-08-28).** Where the predicate
 names Jung alone it is C2 **only through §6's chain rule**: a work that has
 already identified the vendor's test *as* the MBTI, and then derives "the MBTI"
 from Jung by way of Briggs and Myers, has attributed the published instrument's
-provenance to the vendor's test, and that is disclaimed. An unchained Jungian
+provenance to the vendor's test, and that is disclaimed. ⚠️ **"disclaimed" is
+wrong here for the same reason; the chain rule decides what a coder does with an
+anaphoric reference and asserts nothing about the truth of the derivation. See
+§12 (2026-08-28).** An unchained Jungian
 claim about the vendor's test is not.
 Writing "MBTI" out as "Myers-Briggs Type Indicator" is not a derivation
 predicate: on the literal reading, every C1 work that expands the acronym would also
@@ -1134,3 +1141,34 @@ Introduction or the three places the Discussion called the category a silence.
 survived a change made elsewhere, which is the sixth consecutive round in which
 that has been the largest category, and the reason the manuscript's counts are
 read from files and its retracted phrasings are pinned by tests.
+
+**2026-08-28 — no rule; §6's C2 row and three sentences that rest on it, which the
+third entry of 2026-08-26 recorded as corrected and did not correct. Every count
+existed; the manuscript had been through an eighth round of model-assisted review
+and a fifth internal one. No coded value changed.**
+
+That entry states the retreat "had reached the Introduction, §6's row, the
+Abstract and the Conclusion". **It had not reached §6's row.** The row still
+defined C2 as "a lineage the vendor itself disclaims — authorship by Myers and
+Briggs, or descent from the published MBTI", and three sentences below it still
+rested on that reading: the summary of what "the disclaimed lineages" are, "an
+assertion of descent that the vendor denies", and "that is disclaimed". All four
+assert the position the same entry had retracted — in the document this
+repository's README calls the rules that were fixed before the results.
+
+The four are left standing with the error marked, as §1's and §10's are, because
+a rule rewritten after the fact is no longer evidence of what the coders were
+given. What is corrected here is the record: the entry of 2026-08-26 claimed a
+reach it did not have.
+
+Two further corrections of the same kind. The claim in that entry that "C2 is now
+defined as what it observes" describes the manuscript, not this file. And the
+closing note above says the manuscript's "retracted phrasings are pinned by
+tests" — a guarantee this section elsewhere voids, and one the manuscript itself
+deleted on 2026-08-26 for that reason; it is left here with the same mark.
+
+**This is the seventh consecutive round in which the largest category of finding
+is a sentence that survived a change made elsewhere. It is the first in which the
+surviving sentence was in this file rather than in the manuscript, and the first
+found only because a reviewer was told to read the protocol as rules rather than
+as a record.**

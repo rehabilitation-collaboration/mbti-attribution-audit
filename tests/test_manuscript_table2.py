@@ -34,11 +34,26 @@ ROWS = {
 }
 
 
+def _works_row(text: str, start: int) -> int:
+    """Offset of Table 2's denominator row, whatever weight its label is set in.
+
+    This anchor located the row by the literal `| **Works**`, which pinned a
+    typographic choice: when emphasis was reserved for the claims the paper
+    asserts, the bold came off every row of this exploratory table and the
+    anchor stopped matching. What the tests below check is the counts, and the
+    counts are read cell by cell with `*` stripped, so the anchor has no reason
+    to care either way.
+    """
+    match = re.search(r"^\|\s*\*{0,2}Works\*{0,2}\s*\|", text[start:], re.M)
+    assert match, "Table 2 has no denominator row — the table has been restructured"
+    return start + match.start()
+
+
 def transcribed() -> dict[str, list[int]]:
     """The cells of Table 2, keyed by their row label, in column order (a), (b), (c)."""
     text = MANUSCRIPT.read_text(encoding="utf-8")
     start = text.index("**Table 2.** Pre-defined C flags")
-    block = text[start : text.index("\n\n", text.index("| **Works**", start))]
+    block = text[start : text.index("\n\n", _works_row(text, start))]
     cells: dict[str, list[int]] = {}
     for line in block.splitlines():
         if not line.startswith("|"):
@@ -270,7 +285,7 @@ def test_the_table_prints_no_percentage_and_no_interval():
     """
     text = MANUSCRIPT.read_text(encoding="utf-8")
     start = text.index("**Table 2.** Pre-defined C flags")
-    block = text[start : text.index("\n\n", text.index("| **Works**", start))]
+    block = text[start : text.index("\n\n", _works_row(text, start))]
     assert "%" not in block and "CI" not in block
 
 
