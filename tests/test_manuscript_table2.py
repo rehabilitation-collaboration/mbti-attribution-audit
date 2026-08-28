@@ -419,3 +419,20 @@ def test_the_legends_are_stripped_from_the_body_so_they_print_once():
     )
     for n in range(1, 5):
         assert f"**Figure {n}.**" not in stripped, f"Figure {n}'s legend would print twice"
+
+
+def test_the_pdf_page_count_is_read_from_the_pdf_not_from_spotlight():
+    """`mdls` answers from a Spotlight index that lags a rewritten file.
+
+    On 2026-08-28 it returned 36 for a PDF that had just become 35, and that
+    stale number went into a brief sent to a reviewer. The count is now read
+    from the file itself. Skipped where the built PDF is absent, loudly.
+    """
+    pdf = ROOT / "output" / "manuscript.pdf"
+    if not pdf.exists():
+        pytest.skip("output/manuscript.pdf is not built in this checkout")
+    from pdfminer.pdfpage import PDFPage
+
+    with pdf.open("rb") as fh:
+        pages = len(list(PDFPage.get_pages(fh)))
+    assert pages > 20, f"the manuscript rendered to {pages} pages; the build is broken"
