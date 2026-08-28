@@ -8,7 +8,7 @@ Mizuki Shirai, MHS^1^
 
 ^1^ Specified Nonprofit Corporation Rehabilitation Collaboration, Suita, Osaka, Japan
 
-**Corresponding author:** Mizuki Shirai, MHS, Specified Nonprofit Corporation Rehabilitation Collaboration, Suita, Osaka, Japan. Email: reha-collab@manabu-lab.com. ORCID: 0009-0005-3615-0670.
+**Corresponding author:** Mizuki Shirai, MHS, Specified Nonprofit Corporation Rehabilitation Collaboration, Suita, Osaka, Japan. Email: rehabilitation.collaboration@gmail.com. ORCID: 0009-0005-3615-0670.
 
 ---
 
