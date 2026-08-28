@@ -16,15 +16,14 @@ Every quoted span of 20 characters or more in `manuscript.md`, checked against t
 | — | not a source quotation | we used 16Personalities, which is not the MBTI | a constructed counterexample, explicitly hypothetical in the sentence that carries it |
 | OK | protocol | the vendor disclaims | 20 characters matched |
 | — | not a source quotation | the author looked and changed nothing | the manuscript naming a state of affairs, not quoting a document |
+| — | not a source quotation | vendor-hosted, and no published MBTI form identifiable from the work | the manuscript stating how its own code should be read, not quoting a document |
 | OK | protocol | sixteen of seventeen | 20 characters matched |
-| OK | protocol | every reference was verified against Crossref | 45 characters matched |
 | — | not a source quotation | Sixteen of seventeen | the manuscript quoting a figure from its own Discussion in order to withdraw it; the phrase is a fraction, not a source |
 | — | not a source quotation | the range of underlying rates compatible with these counts | the manuscript quoting its own earlier draft, in the passage that withdraws it |
 | — | not a source quotation | was fixed in advance | a phrase mentioned in the Departures section as the claim being qualified, not quoted from the protocol |
 | OK | protocol | Every figure is a lower bound | 29 characters matched |
 | OK | protocol | the peer-reviewed literature | 28 characters matched |
 | OK | protocol | The instrument administered was the 16Personalities test / NERIS Type Explorer | 76 characters matched |
-| — | not a source quotation | vendor-hosted, and no published MBTI form identifiable from the work | the manuscript stating how its own code should be read, not quoting a document |
 | OK | protocol | X% (95% CI …) administered an instrument that is not the MBTI | 61 characters matched |
 | OK | protocol | a validated instrument | 22 characters matched |
 | OK | coded-work | grounded in the Big Five framework | 34 characters matched |
@@ -37,5 +36,5 @@ Every quoted span of 20 characters or more in `manuscript.md`, checked against t
 | OK | scopus-source-list | Discontinued by Scopus | 22 characters matched |
 | OK | protocol | every figure is a lower bound | 29 characters matched |
 
-30 spans: 22 found in an archived source, 0 verified by hand against an external source, 8 not source quotations, 0 unaccounted for.
+29 spans: 21 found in an archived source, 0 verified by hand against an external source, 8 not source quotations, 0 unaccounted for.
 

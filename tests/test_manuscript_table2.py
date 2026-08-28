@@ -113,12 +113,19 @@ def test_the_prose_figure_matches_the_table(computed, section):
     # a work calling it the MBTI contradicts something the vendor actually says. C2
     # records an asserted derivation the vendor neither claims nor denies, so it is
     # pinned as the broader reading and never as the headline.
+    #
+    # These patterns once required the surrounding `**`. That pinned a typographic
+    # choice the test was never about: emphasis was later reserved for the few
+    # claims the paper asserts, and three of these sentences lost their bold while
+    # every count stayed put. What the test exists to catch is a count edited in
+    # one section and left behind in the others, so it now reads the wording and
+    # the number and says nothing about the weight of the type.
     patterns = {
         "abstract": rf"{a['c1_identity']} of the {a['works']} describing it as the MBTI"
-                    rf"\*\*, contrary to the vendor's 2026 statement",
-        "results": rf"\*\*{a['c1_identity']} of the {a['works']} described the vendor's test "
-                   rf"as the MBTI\*\* \(C1\) — \*\*the central attribution finding\*\*",
-        "discussion": r"\*\*(\w+) of seventeen described the vendor-hosted test as the MBTI, "
+                    rf"\*{{0,2}}, contrary to the vendor's 2026 statement",
+        "results": rf"{a['c1_identity']} of the {a['works']} described the vendor's test "
+                   rf"as the MBTI\*{{0,2}} \(C1\) — \*{{0,2}}the central attribution finding",
+        "discussion": r"(\w+) of seventeen described the vendor-hosted test as the MBTI, "
                       r"contrary to the vendor's 2026 statement",
     }
     match = re.search(patterns[section], text)
@@ -126,13 +133,15 @@ def test_the_prose_figure_matches_the_table(computed, section):
     if section == "discussion":
         assert WORDS[match.group(1).lower()] == a["c1_identity"]
     # The broader reading is still reported, and still as the broader reading.
-    assert (f"**{a['c1_or_c2']} of the {a['works']} either did that or asserted that the "
-            f"vendor's test derives from the MBTI**") in text
-    # Neither the C1-or-C2 nor the any-flag count may be given C1's wording.
+    assert (f"{a['c1_or_c2']} of the {a['works']} either did that or asserted that the "
+            f"vendor's test derives from the MBTI") in text
+    # Neither the C1-or-C2 nor the any-flag count may be given C1's wording. Dropping
+    # the trailing `**` widens these two bans rather than narrowing them: the wrong
+    # count is now forbidden in that wording whether or not it is set in bold.
     spelled = {v: k.capitalize() for k, v in WORDS.items()}
     for n in (a["c1_or_c2"], a["any_conflation"]):
         assert f"{spelled[n]} of seventeen described the vendor-hosted test as the MBTI," not in text
-        assert f"{n} of the {a['works']} describing it as the MBTI**" not in text
+        assert f"{n} of the {a['works']} describing it as the MBTI" not in text
 
 
 def test_states_distinction_is_never_described_as_drawing_the_distinction(computed):
