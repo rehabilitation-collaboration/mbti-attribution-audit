@@ -443,24 +443,10 @@ The corpus, the query log with retrieval dates, the coding protocol including it
 
 ## Figure Legends
 
-Every figure here describes the enriched, programmatically retrievable intersection — works naming the MBTI in title or abstract whose retrieved full text contains a 16Personalities word form — and no proportion in it estimates a rate among papers reporting MBTI results in general.
+**Figure 1.** Flow of works from the two bibliographic frames to the main analysis, showing the two conditions a work had to meet: the MBTI named in title or abstract, and a 16Personalities word form present in the retrieved full text. Frames (OpenAlex 3,105; Europe PMC 166, both from 2015 and retrieved 19 August 2026) narrow to the intersection (118 records, 99 distinct works), to the works classified as journal articles (58), to those whose full text was retrieved and coded (42), and to those that administered an instrument (27). Attrition at each step is annotated with its reason, distinguishing works that could not be retrieved from works retrieved without a vendor word form. Enriched, programmatically retrievable intersection: works naming the MBTI in title or abstract whose retrieved full text contains a 16Personalities word form. No proportion here estimates a rate among papers reporting MBTI results in general.
 
-**Figure 1.** Flow of works from the two bibliographic frames to the main analysis, showing the two conditions a work had to meet: the MBTI named in title or abstract, and a 16Personalities word form present in the retrieved full text. Frames (OpenAlex 3,105; Europe PMC 166, both from 2015 and retrieved 19 August 2026) narrow to the intersection (118 records, 99 distinct works), to the works classified as journal articles (58), to those whose full text was retrieved and coded (42), and to those that administered an instrument (27). Attrition at each step is annotated with its reason, distinguishing works that could not be retrieved from works retrieved without a vendor word form.
+**Figure 2.** Instrument administered, among the 27 works in the main analysis that administered an instrument, with model-based Wilson 95% intervals (see Methods): (a) a vendor-hosted test with no published MBTI form identifiable, (b) a published MBTI form, (c) other or insufficiently identified, with no published MBTI form identifiable. Enriched, programmatically retrievable intersection: works naming the MBTI in title or abstract whose retrieved full text contains a 16Personalities word form. No proportion here estimates a rate among papers reporting MBTI results in general.
 
-**Figure 2.** Instrument administered, among the 27 works in the main analysis that administered an instrument, with model-based Wilson 95% intervals (see Methods): (a) a vendor-hosted test with no published MBTI form identifiable, (b) a published MBTI form, (c) other or insufficiently identified, with no published MBTI form identifiable.
+**Figure 3.** Citation-role and C flags across all 61 coded works, as counts. Panel A: the seven citation-role flags. Panel B: the four pre-defined C flags, with the narrow reading shown alongside the wide one, and `states_distinction` — which records that a work noted some difference between the two — displayed separately. Enriched, programmatically retrievable intersection: works naming the MBTI in title or abstract whose retrieved full text contains a 16Personalities word form. No proportion here estimates a rate among papers reporting MBTI results in general.
 
-**Figure 3.** Citation-role and C flags across all 61 coded works, as counts. Panel A: the seven citation-role flags. Panel B: the four pre-defined C flags, with the narrow reading shown alongside the wide one, and `states_distinction` — which records that a work noted some difference between the two — displayed separately.
-
-**Figure 4.** The two reported measures under the main analysis and each of the seven planned sensitivity arms, with model-based Wilson 95% intervals (see Methods). Arms that leave a measure unchanged are shown at the main-analysis value; arms that produced no estimate are annotated with the reason rather than plotted.
-
-## Tables
-
-**Table 1.** Instrument administered, among E1 works in the main analysis (in Results).
-
-**Table 2.** Pre-defined C flags among the works of the main analysis, by instrument code (in Results).
-
-**Table 3.** The two reported measures across all coded works (in Results).
-
-**Table 4.** Inter-coder agreement by code (in Results).
-
-**Table 5.** Sensitivity analyses (in Results).
+**Figure 4.** The two reported measures under the main analysis and each of the seven planned sensitivity arms, with model-based Wilson 95% intervals (see Methods). Arms that leave a measure unchanged are shown at the main-analysis value; arms that produced no estimate are annotated with the reason rather than plotted. Enriched, programmatically retrievable intersection: works naming the MBTI in title or abstract whose retrieved full text contains a 16Personalities word form. No proportion here estimates a rate among papers reporting MBTI results in general.

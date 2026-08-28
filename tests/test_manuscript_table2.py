@@ -366,3 +366,56 @@ def test_figure4_annotates_each_unestimated_arm_with_its_own_reason():
         "both arms would be annotated identically — the defect this parse replaced"
     )
     assert "estimable" in leads["S2"] and "bound" in leads["S5"], leads
+
+
+# --- what the reader actually receives ---------------------------------------
+
+SCOPE_CLAUSE = "Enriched, programmatically retrievable intersection"
+
+
+def test_every_figure_legend_states_the_sample_it_describes():
+    """A figure travels without its paper, so its own caption must say what it is.
+
+    Two external rounds asked for this. The first attempt put one shared sentence
+    at the head of the Figure Legends section — where `generate_pdf.py` never
+    looks, because it extracts only paragraphs beginning `**Figure N.**`. The
+    clause was in the markdown, was reported as done, and reached no reader.
+    """
+    text = MANUSCRIPT.read_text(encoding="utf-8")
+    section = text[text.index("## Figure Legends") :]
+    legends = re.findall(r"\*\*Figure (\d)\.\*\*(.+)", section)
+    assert len(legends) == 4, f"expected four figure legends, found {len(legends)}"
+    for number, body in legends:
+        assert SCOPE_CLAUSE in body, (
+            f"Figure {number}'s legend does not say what sample it describes; "
+            "a reader meeting the figure alone could read its proportion as a population rate"
+        )
+
+
+def test_every_table_caption_states_the_sample_it_describes():
+    """Same requirement, same reason: tables get screenshotted too."""
+    text = MANUSCRIPT.read_text(encoding="utf-8")
+    results = text[text.index("## Results") : text.index("## Discussion")]
+    captions = re.findall(r"\*\*Table (\d)\.\*\*(.+)", results)
+    assert len(captions) == 5, f"expected five table captions in Results, found {len(captions)}"
+    for number, body in captions:
+        assert SCOPE_CLAUSE in body, f"Table {number}'s caption does not state its sample"
+
+
+def test_the_legends_are_stripped_from_the_body_so_they_print_once():
+    """The generator prints each legend under its figure and must not print it twice.
+
+    `generate_pdf.py` removes the legends section from the body before rendering.
+    That substitution terminated on the next `## ` heading only. When the
+    abbreviated Tables index was deleted on 2026-08-28 there was no next heading,
+    the removal silently stopped matching, and all four legends printed twice —
+    once in the body, once under the figure. Nothing in the markdown looked wrong.
+    """
+    text = MANUSCRIPT.read_text(encoding="utf-8")
+    stripped = re.sub(r"## Figure Legends\n.*?(?=\n## |\Z)", "", text, flags=re.DOTALL)
+    assert "## Figure Legends" not in stripped, (
+        "the legends section survives the strip the PDF generator performs; "
+        "every legend would print twice"
+    )
+    for n in range(1, 5):
+        assert f"**Figure {n}.**" not in stripped, f"Figure {n}'s legend would print twice"

@@ -141,7 +141,10 @@ def build() -> Path:
             sys.exit(f"{label} legend came out suspiciously short: {caption!r}")
 
     # The legends are rebuilt below with their images attached.
-    md_text = re.sub(r"## Figure Legends\n.*?(?=\n## )", "", md_text, flags=re.DOTALL)
+    # `\Z` matters: when `## Tables` was removed on 2026-08-28 this pattern stopped
+    # matching, the legends section stayed in the body, and every legend printed twice —
+    # once in the body and once under its figure. `extract_legends` above already had it.
+    md_text = re.sub(r"## Figure Legends\n.*?(?=\n## |\Z)", "", md_text, flags=re.DOTALL)
     # Pandoc-style superscripts for the affiliation marker.
     md_text = re.sub(r"\^([^^]+?)\^", r"<sup>\1</sup>", md_text)
 
