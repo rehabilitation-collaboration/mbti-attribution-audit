@@ -138,7 +138,9 @@ def figure1(d: dict, q: dict) -> None:
         (f"Bibliographic frames, from 2015\n"
          f"OpenAlex {frames['openalex_from_2015']:,}  ·  Europe PMC {frames['europepmc_from_2015']:,}",
          f"retrieved {frames['retrieved_on']}; the frames move,\nso every figure carries its date"),
-        (f"Records matching both term sets\n"
+        (f"Records meeting both conditions\n"
+         f"MBTI named in title or abstract, and a 16Personalities\n"
+         f"word form in the retrieved full text\n"
          f"{q['openalex']['records']} OpenAlex  +  {q['europepmc']['records']} Europe PMC  =  {records}",
          "Europe PMC contributed no work\nOpenAlex did not already hold"),
         (f"Distinct works\nn = {retrieval['works']}",
@@ -155,7 +157,7 @@ def figure1(d: dict, q: dict) -> None:
     ]
 
     fig, ax = plt.subplots(figsize=(7.4, 8.0))
-    step, box_w, box_h = 1.42, 5.7, 0.86
+    step, box_w, box_h = 1.50, 5.7, 0.98
     ax.set_xlim(0, 10.2); ax.set_ylim(0, len(stages) * step); ax.axis("off")
 
     for i, (text, note) in enumerate(stages):
