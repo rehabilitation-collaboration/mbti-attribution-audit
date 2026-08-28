@@ -482,7 +482,7 @@ def descriptive(coded: pd.DataFrame, log: pd.DataFrame, venue_counts: dict[str, 
 
 
 def post_hoc(coded: pd.DataFrame, instrument: pd.Series) -> dict:
-    """The conflation flags of the main analysis, cross-tabulated by instrument code.
+    """The pre-defined C flags of the main analysis, cross-tabulated by instrument code.
 
     **Nothing here was planned.** §10 named M1 and M2 and §12 closed the list on
     2026-08-22; this block was added on 2026-08-25, after every count existed, and
@@ -525,7 +525,7 @@ def post_hoc(coded: pd.DataFrame, instrument: pd.Series) -> dict:
         counted = by_code[code]["any_conflation"] + by_code[code]["c0_no_conflating_statement"]
         if counted != len(rows):
             raise ResultsError(
-                f"the conflation flags of instrument code ({code}) do not partition its "
+                f"the C flags of instrument code ({code}) do not partition its "
                 f"{len(rows)} works: {by_code[code]['any_conflation']} carry a flag and "
                 f"{by_code[code]['c0_no_conflating_statement']} carry C0, totalling {counted}"
             )
